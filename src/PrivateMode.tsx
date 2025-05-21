@@ -1,9 +1,11 @@
+import { Box, Typography } from "@mui/material";
+
 const PrivateMode = () => {
     return (
-        <div>
-            <h1>Private Mode</h1>
-            <p>This is a private mode page.</p>
-        </div>
+        <Box>
+            <Typography fontSize={40}>Private Mode</Typography>
+            <Typography>This is a private mode page.</Typography>
+        </Box>
     );
 };
 
