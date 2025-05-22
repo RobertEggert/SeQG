@@ -4,7 +4,8 @@ const PrivateMode = () => {
     return (
         <Box>
             <Typography fontSize={40}>Private Mode</Typography>
-            <Typography>This is a private mode page.</Typography>
+            <Typography>This is the private mode page.</Typography>
+            <Typography>QR CODE</Typography>
         </Box>
     );
 };
