@@ -24,5 +24,3 @@ const RootRouteComponent = () => {
         </>
     );
 };
-
-// TanStackRouterDevtools is only for development

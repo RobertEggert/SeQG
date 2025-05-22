@@ -33,7 +33,7 @@ const MainScreen = ({ mode, setMode }: MainScreenProps) => {
                 } else if (mode === "PRIVATE") {
                     navigate({ to: "/private" });
                 }
-            }, 1000); // 1000 ms = 1 second
+            }, 1000); // 1000 ms => 1 second
         }
     };
 
