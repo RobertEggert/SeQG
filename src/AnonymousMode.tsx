@@ -1,45 +1,50 @@
 import { Box, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-type STATUS = "pending" | "connected" | "disconnected";
+type STATUS = "open" | "connected" | "disconnected" | "already_connected";
 
 const LOCAL_SERVER = "192.168.2.80";
 const VITE_PORT = 5173;
 
 const AnonymousMode = () => {
     const [session, setSession] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("pending");
+    const [token, setToken] = useState<string | null>(null);
+    const [status, setStatus] = useState<STATUS>("open");
 
-    if (!session) {
-        console.log("Generating new session ID...");
-        const id = crypto.randomUUID();
-        setSession(id);
+    useEffect(() => {
+        fetch(`http://${LOCAL_SERVER}:3001/connect/host`)
+            .then((res) => res.json())
+            .then(({ session, token }) => {
+                setSession(session);
+                setToken(token);
+            });
+    }, []);
 
-        const ws = new WebSocket(`ws://${LOCAL_SERVER}:3001/ws/${id}`);
+    useEffect(() => {
+        if (session && token) {
+            const socket = io(`http://${LOCAL_SERVER}:3001`);
+            socket.on("connect", () => {
+                socket.emit("register", { token, role: "host" });
+            });
 
-        if (ws.readyState === WebSocket.OPEN) {
-            ws.onopen = () => console.log("WebSocket opened");
+            socket.on("status", (msg) => {
+                console.log("Status:", msg);
+                if (msg === "connected") setStatus("connected");
+                else if (msg === "disconnected") setStatus("disconnected");
+            });
 
-            ws.onmessage = (e) => {
-                console.log("Received from server:", e.data);
-                if (e.data === "connected") {
-                    setStatus("connected");
-                } else if (e.data === "disconnected") {
-                    setStatus("disconnected");
-                }
+            return () => {
+                socket.disconnect();
             };
-
-            ws.onclose = () => {
-                console.log("WebSocket closed");
-            };
-
-            return () => ws.close();
         }
-    }
+    }, [session, token]);
 
-    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${session}`;
+    if (!session || !token) return null;
 
+    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${session}?token=${token}`;
+    console.log(connectUrl);
     return (
         <Box>
             <Typography fontSize={40}>Anonymous Mode</Typography>
@@ -52,7 +57,7 @@ const AnonymousMode = () => {
                             ❌ Disconnected — Scan QR Code again:
                         </Typography>
                     )}
-                    {status === "pending" && (
+                    {status === "open" && (
                         <Typography>Scan this QR Code:</Typography>
                     )}
                     <QRCodeSVG value={connectUrl} size={200} />

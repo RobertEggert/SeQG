@@ -16,7 +16,7 @@ type MainScreenProps = {
 
 const MainScreen = ({ mode, setMode }: MainScreenProps) => {
     const navigate = useNavigate();
-    const holdTimeout = useRef<number | null>(null);
+    const holdTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const colorModes = {
         start: "#ADD8E6" as COLORMODES,
