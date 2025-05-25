@@ -1,5 +1,5 @@
 // src/routes/connect/$session.tsx
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/connect/$session")({
 });
 
 const SessionConnector = () => {
-    const [isError, setIsError] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean | null>(null);
     const { session } = Route.useParams();
 
     useEffect(() => {
@@ -30,6 +30,8 @@ const SessionConnector = () => {
         socket.on("status", (msg) => {
             if (msg === "already_connected") {
                 setIsError(true);
+            } else {
+                setIsError(false);
             }
         });
 
@@ -47,14 +49,19 @@ const SessionConnector = () => {
             socket.disconnect();
         };
     }, [session]);
+    console.log(isError);
 
-    return !isError ? (
+    return isError === null ? (
         <Box>
-            <h1>Client! Welcome to the Anonymous mode</h1>
+            <CircularProgress />
+        </Box>
+    ) : isError ? (
+        <Box>
+            <h1>Joining session prohibited!</h1>
         </Box>
     ) : (
         <Box>
-            <h1>Joining session prohibited!</h1>
+            <h1>Client! Welcome to the Anonymous mode</h1>
         </Box>
     );
 };

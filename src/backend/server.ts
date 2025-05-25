@@ -29,7 +29,7 @@ const activeSessions = new Map<string, { host?: string; client?: string }>();
 
 app.get("/connect/host", (req: Request, res: Response) => {
     const session = randomUUID();
-    const token = jwt.sign({ session }, SECRET, { expiresIn: "1m" });
+    const token = jwt.sign({ session }, SECRET, { expiresIn: "1h" });
     res.json({ session, token });
 });
 

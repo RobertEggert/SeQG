@@ -11,7 +11,7 @@ const VITE_PORT = 5173;
 const AnonymousMode = () => {
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("open");
+    const [status, setStatus] = useState<STATUS>("open"); // only for client
 
     useEffect(() => {
         fetch(`http://${LOCAL_SERVER}:3001/connect/host`)
