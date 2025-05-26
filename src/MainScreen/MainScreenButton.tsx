@@ -3,19 +3,33 @@ import { doWidthCalc, doHeightCalc } from "../utils/calcUtils";
 import MainScreenCircularProcessBar from "./MainScreenCircularProcessBar";
 import MainScreenIconText from "./MainScreenIconText";
 import type { COLORMODES, MODES } from "./MainScreen";
-import { useRef } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-const MainScreenButton = (mode: MODES) => {
+type MainScreenButtonProps = {
+    mode: MODES;
+    buttonMode: MODES;
+    startColor: COLORMODES;
+    modeColor: COLORMODES;
+    progressBarColor: COLORMODES;
+    icon: IconDefinition;
+    setMode: Dispatch<SetStateAction<MODES>>;
+};
+
+const MainScreenButton = ({
+    mode,
+    buttonMode,
+    startColor,
+    modeColor,
+    progressBarColor,
+    icon,
+    setMode
+}: MainScreenButtonProps) => {
     const navigate = useNavigate();
+    const [progress, setProgress] = useState(0);
     const progressTimer = useRef<NodeJS.Timeout | null>(null);
     const holdTimeout = useRef<NodeJS.Timeout | null>(null);
-
-    const colorModes = {
-        start: "rgba(173, 216, 230, 0.95)" as COLORMODES,
-        anonymous: "rgba(120, 144, 156, 0.95)" as COLORMODES,
-        private: "rgba(81, 45, 168, 0.95)" as COLORMODES
-    };
 
     const handleMouseDown = (buttonMode: MODES) => {
         if (buttonMode === mode) {
@@ -34,11 +48,8 @@ const MainScreenButton = (mode: MODES) => {
 
             holdTimeout.current = setTimeout(() => {
                 console.log("Long press triggered for mode:", buttonMode);
-                if (mode === "ANONYMOUS") {
-                    navigate({ to: "/mode/anonymous" });
-                } else if (mode === "PRIVATE") {
-                    navigate({ to: "/mode/private" });
-                }
+                const navigateToMode = "/mode/" + mode?.toLowerCase();
+                navigate({ to: navigateToMode });
             }, 1500);
         }
     };
@@ -53,17 +64,19 @@ const MainScreenButton = (mode: MODES) => {
         <Button
             variant="contained"
             sx={{
+                display: "flex",
+                flexDirection: "row",
                 backgroundColor: mode
-                    ? mode === "PRIVATE"
-                        ? colorModes.private
-                        : colorModes.start
-                    : colorModes.start,
-                width: doWidthCalc(mode, "PRIVATE"),
-                height: doHeightCalc(mode, "PRIVATE"),
+                    ? mode === buttonMode
+                        ? modeColor
+                        : startColor
+                    : startColor,
+                width: doWidthCalc(mode, buttonMode),
+                height: doHeightCalc(mode, buttonMode),
                 transition: "width 0.5s ease, height 0.5s ease"
             }}
-            onClick={() => setMode("PRIVATE")}
-            onMouseDown={() => handleMouseDown("PRIVATE")}
+            onClick={() => setMode(buttonMode)}
+            onMouseDown={() => handleMouseDown(buttonMode)}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
         >
@@ -74,10 +87,15 @@ const MainScreenButton = (mode: MODES) => {
                     alignItems: "center"
                 }}
             >
-                <MainScreenIconText mode={mode} />
-                {mode === "PRIVATE" && (
+                <MainScreenIconText
+                    mode={buttonMode}
+                    icon={icon}
+                    iconSize={mode === buttonMode ? "3rem" : "1.5rem"}
+                    textSize={mode === buttonMode ? "1.5rem" : "1rem"}
+                />
+                {mode === buttonMode && (
                     <MainScreenCircularProcessBar
-                        colorMode={colorModes.anonymous}
+                        colorMode={progressBarColor}
                         progress={progress}
                     />
                 )}

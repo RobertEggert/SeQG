@@ -1,9 +1,19 @@
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Typography, Box } from "@mui/material";
 import type { MODES } from "./MainScreen";
 
-const MainScreenIconText = ({ mode }: { mode: MODES }) => {
+const MainScreenIconText = ({
+    mode,
+    icon,
+    iconSize,
+    textSize
+}: {
+    mode: MODES;
+    icon: IconDefinition;
+    iconSize: string;
+    textSize: string;
+}) => {
     return (
         <Box
             sx={{
@@ -13,15 +23,15 @@ const MainScreenIconText = ({ mode }: { mode: MODES }) => {
             }}
         >
             <FontAwesomeIcon
-                icon={faLock}
+                icon={icon}
                 style={{
-                    fontSize: mode === "PRIVATE" ? "3rem" : "1.5rem",
+                    fontSize: iconSize,
                     transition: "font-size 0.7s ease-in-out"
                 }}
             />
             <Typography
                 style={{
-                    fontSize: mode === "PRIVATE" ? "1.5rem" : "1rem",
+                    fontSize: textSize,
                     transition: "font-size 0.8s"
                 }}
             >
