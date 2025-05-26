@@ -29,9 +29,9 @@ const MainScreen = ({ mode, setMode }: MainScreenProps) => {
             holdTimeout.current = setTimeout(() => {
                 console.log("Long press triggered for mode:", buttonMode);
                 if (mode === "ANONYMOUS") {
-                    navigate({ to: "/anonymous" });
+                    navigate({ to: "/mode/anonymous" });
                 } else if (mode === "PRIVATE") {
-                    navigate({ to: "/private" });
+                    navigate({ to: "/mode/private" });
                 }
             }, 1000); // 1000 ms => 1 second
         }

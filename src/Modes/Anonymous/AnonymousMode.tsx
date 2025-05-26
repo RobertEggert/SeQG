@@ -2,16 +2,26 @@ import { Box, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import AnonymousLLMQuestions from "./AnonymousLLMQuestions";
+import { useNavigate } from "@tanstack/react-router";
 
-type STATUS = "open" | "connected" | "disconnected" | "already_connected";
+type STATUS =
+    | "pending"
+    | "connected"
+    | "disconnected"
+    | "already_connected"
+    // in progress
+    | "invalid_token"
+    | "invalid_role";
 
 const LOCAL_SERVER = "192.168.2.80";
 const VITE_PORT = 5173;
 
-const PrivateMode = () => {
+const AnonymousMode = () => {
+    const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("open"); // only for client
+    const [status, setStatus] = useState<STATUS>("pending"); // only for client
 
     useEffect(() => {
         fetch(`http://${LOCAL_SERVER}:3001/connect/host`)
@@ -47,24 +57,22 @@ const PrivateMode = () => {
     console.log(connectUrl);
     return (
         <Box>
-            <Typography fontSize={40}>Private Mode</Typography>
+            <Typography fontSize={40}>Anonymous Mode</Typography>
             {status === "connected" ? (
-                <Typography color="green">✅ Connected</Typography>
+                <AnonymousLLMQuestions />
             ) : (
                 <>
-                    {status === "disconnected" && (
-                        <Typography color="red">
-                            ❌ Disconnected — Scan QR Code again:
-                        </Typography>
+                    {status === "disconnected" && navigate({ to: "/" })}
+                    {status === "pending" && (
+                        <>
+                            <Typography>Scan this QR Code:</Typography>
+                            <QRCodeSVG value={connectUrl} size={200} />
+                        </>
                     )}
-                    {status === "open" && (
-                        <Typography>Scan this QR Code:</Typography>
-                    )}
-                    <QRCodeSVG value={connectUrl} size={200} />
                 </>
             )}
         </Box>
     );
 };
 
-export default PrivateMode;
+export default AnonymousMode;

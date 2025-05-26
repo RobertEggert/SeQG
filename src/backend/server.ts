@@ -27,7 +27,7 @@ const BE_PORT = 3001;
 // Map<sessionId, { host?: socketId, client?: socketId }>
 const activeSessions = new Map<string, { host?: string; client?: string }>();
 
-app.get("/connect/host", (req: Request, res: Response) => {
+app.get("/connect/host", (_: Request, res: Response) => {
     const session = randomUUID();
     const token = jwt.sign({ session }, SECRET, { expiresIn: "1h" });
     res.json({ session, token });
