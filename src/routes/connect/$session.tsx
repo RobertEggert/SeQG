@@ -1,14 +1,20 @@
 // src/routes/connect/$session.tsx
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
+import Prohibited from "../../Prohibited";
+import AnonymousLLMPrecondition from "../../Modes/Anonymous/AnonymousLLMPrecondition";
 
 export const Route = createFileRoute("/connect/$session")({
-    component: () => <SessionConnector />
+    component: () => <AnonymousSession />
 });
 
-const SessionConnector = () => {
+const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
+    return isError ? <Prohibited /> : <AnonymousLLMPrecondition />;
+};
+
+const AnonymousSession = () => {
     const [isError, setIsError] = useState<boolean | null>(null);
     const { session } = Route.useParams();
 
@@ -16,54 +22,32 @@ const SessionConnector = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 
-        fetch("http://192.168.2.80:3001/connect", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ session, token })
-        });
-
         const socket: Socket = io("http://192.168.2.80:3001");
         socket.on("connect", () => {
             socket.emit("register", { token, role: "client" });
         });
 
         socket.on("status", (msg) => {
-            if (msg === "already_connected") {
+            if (msg === "already_connected" || msg === "invalid_role") {
                 setIsError(true);
             } else {
                 setIsError(false);
             }
         });
 
-        const handleBeforeUnload = () => {
-            navigator.sendBeacon(
-                "http://192.168.2.80:3001/disconnect",
-                JSON.stringify({ session, token, role: "client" })
-            );
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-
         return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
             socket.disconnect();
         };
     }, [session]);
-    console.log(isError);
 
     return isError === null ? (
-        <Box>
-            <CircularProgress />
-        </Box>
-    ) : isError ? (
-        <Box>
-            <h1>Joining session prohibited!</h1>
-        </Box>
+        <CircularProgress
+            size={100}
+            sx={{ display: "flex", justifyContent: "center" }}
+        />
     ) : (
-        <Box>
-            <h1>Client! Welcome to the Anonymous mode</h1>
-        </Box>
+        <DisplayCorrectBehavior isError={isError} />
     );
 };
 
-export default SessionConnector;
+export default AnonymousSession;
