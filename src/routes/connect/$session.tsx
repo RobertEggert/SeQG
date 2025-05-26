@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import Prohibited from "../../Prohibited";
+import Prohibited from "../../Modes/Prohibited";
 import AnonymousLLMPrecondition from "../../Modes/Anonymous/AnonymousLLMPrecondition";
 
 export const Route = createFileRoute("/connect/$session")({

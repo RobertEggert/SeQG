@@ -1,9 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import AnonymousLLMQuestions from "./AnonymousLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
+import { colorModes } from "../../styling/theme";
 
 type STATUS =
     | "pending"
@@ -56,21 +57,42 @@ const AnonymousMode = () => {
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${session}?token=${token}`;
     console.log(connectUrl);
     return (
-        <Box>
-            <Typography fontSize={40}>Anonymous Mode</Typography>
-            {status === "connected" ? (
-                <AnonymousLLMQuestions />
-            ) : (
-                <>
-                    {status === "disconnected" && navigate({ to: "/" })}
-                    {status === "pending" && (
-                        <>
-                            <Typography>Scan this QR Code:</Typography>
-                            <QRCodeSVG value={connectUrl} size={200} />
-                        </>
-                    )}
-                </>
-            )}
+        <Box
+            sx={{
+                backgroundColor: colorModes.anonymous,
+                display: "flex",
+                justifyContent: "center",
+                width: "100vw",
+                height: "100vh"
+            }}
+        >
+            <Paper
+                elevation={3}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginTop: 10,
+                    padding: 10,
+                    width: "70%",
+                    height: "70%"
+                }}
+            >
+                <Typography fontSize={40}>Anonymous Mode</Typography>
+                {status === "connected" ? (
+                    <AnonymousLLMQuestions />
+                ) : (
+                    <>
+                        {status === "disconnected" && navigate({ to: "/" })}
+                        {status === "pending" && (
+                            <>
+                                <Typography>Scan this QR Code:</Typography>
+                                <QRCodeSVG value={connectUrl} size={200} />
+                            </>
+                        )}
+                    </>
+                )}
+            </Paper>
         </Box>
     );
 };

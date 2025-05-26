@@ -1,6 +1,6 @@
 import { CircularProgress, Fade, Box, Typography } from "@mui/material";
-import type { COLORMODES } from "./MainScreen";
 import { useEffect, useState } from "react";
+import type { COLORMODES } from "../styling/theme";
 
 type MainScreenCircularProcessBarProps = {
     colorMode: COLORMODES;

@@ -2,10 +2,11 @@ import { Button, Box } from "@mui/material";
 import { doWidthCalc, doHeightCalc } from "../utils/calcUtils";
 import MainScreenCircularProcessBar from "./MainScreenCircularProcessBar";
 import MainScreenIconText from "./MainScreenIconText";
-import type { COLORMODES, MODES } from "./MainScreen";
+import type { MODES } from "./MainScreen";
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import type { COLORMODES } from "../styling/theme";
 
 type MainScreenButtonProps = {
     mode: MODES;
