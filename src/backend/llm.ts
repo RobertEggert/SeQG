@@ -42,7 +42,6 @@ app.post(
                     The amount of single choice questions should not be more then 4.
 
                     You are PROHIBITED from returning any other text, format, additional information, or explanations.
-                    If you cannot generate a question, return an empty JSON object: {}.
                     `;
 
         try {
@@ -61,6 +60,9 @@ app.post(
             );
 
             const data = (await ollamaRes.json()) as { response: string };
+            if (data) {
+                console.log("Questions fetched successfully!");
+            }
             const rawOutput: string = data.response;
 
             // Attempt to extract JSON content
