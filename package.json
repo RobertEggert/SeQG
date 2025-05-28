@@ -4,12 +4,15 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
         "format": "prettier --write .",
-        "backend": "node ./src/backend/server.ts"
+        "backend": "node ./src/backend/server.ts",
+        "llmBackend": "node ./src/backend/llm.ts",
+        "llm": "ollama run llama3.1",
+        "start:backend": "concurrently -k -n BACKEND,LLMBACKEND,LLAMA3.1 -c cyan,magenta,red \"pnpm run backend\" \"pnpm run llmBackend\" \"pnpm run llm\""
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -28,6 +31,7 @@
         "express": "^5.1.0",
         "font-awesome": "^4.7.0",
         "jsonwebtoken": "^9.0.2",
+        "node-fetch": "^3.3.2",
         "prettier": "^3.5.3",
         "qrcode.react": "^4.2.0",
         "react": "^19.1.0",
@@ -40,6 +44,7 @@
     "devDependencies": {
         "@eslint/js": "^9.25.0",
         "@tanstack/router-plugin": "^1.120.5",
+        "@types/body-parser": "^1.19.5",
         "@types/cors": "^2.8.18",
         "@types/express": "^5.0.2",
         "@types/node": "^22.15.21",
@@ -47,6 +52,7 @@
         "@types/react-dom": "^19.1.2",
         "@types/socket.io": "^3.0.2",
         "@vitejs/plugin-react": "^4.4.1",
+        "concurrently": "^9.1.2",
         "eslint": "^9.25.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-react-hooks": "^5.2.0",
