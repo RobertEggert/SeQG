@@ -24,6 +24,7 @@ app.use(express.json());
 const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
 const LLM_PORT = process.env.LLM_PORT || 3002;
 const LLM_MODEL = process.env.LLM_MODEL || "llama3.1";
+const LLM_API_PORT = process.env.LLM_API_PORT || 11434;
 
 app.post(
     "/api/question",
@@ -42,7 +43,7 @@ app.post(
         try {
             console.log("Fetching question from LLM");
             const ollamaRes = await fetch(
-                "http://localhost:11434/api/generate",
+                `http://localhost:${LLM_API_PORT}/api/generate`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

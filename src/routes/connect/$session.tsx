@@ -5,6 +5,12 @@ import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import Prohibited from "../../Modes/Prohibited";
 import AnonymousLLMPrecondition from "../../Modes/Anonymous/AnonymousLLMPrecondition";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
+const BE_PORT = process.env.BE_PORT || 3001;
 
 export const Route = createFileRoute("/connect/$session")({
     component: () => <AnonymousSession />
@@ -22,7 +28,7 @@ const AnonymousSession = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 
-        const socket: Socket = io("http://192.168.2.80:3001");
+        const socket: Socket = io(`http://${LOCAL_ADDRESS}:${BE_PORT}`);
         socket.on("connect", () => {
             socket.emit("register", { token, role: "client" });
         });

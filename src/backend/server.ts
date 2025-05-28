@@ -23,8 +23,8 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-const SECRET = process.env.JWL_SECRET || "VERI SICRET";
-const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
+const JWL_SECRET = process.env.JWL_SECRET || "VERI SICRET";
+const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
 const BE_PORT = process.env.BE_PORT || 3001;
 
 // Map<sessionId, { host?: socketId, client?: socketId }>
@@ -32,7 +32,7 @@ const activeSessions = new Map<string, { host?: string; client?: string }>();
 
 app.get("/connect/host", (_: Request, res: Response) => {
     const session = randomUUID();
-    const token = jwt.sign({ session }, SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ session }, JWL_SECRET, { expiresIn: "1h" });
     res.json({ session, token });
 });
 
@@ -41,7 +41,9 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("register", ({ token, role }: { token: string; role: ROLES }) => {
         try {
-            const payload = jwt.verify(token, SECRET) as { session: string };
+            const payload = jwt.verify(token, JWL_SECRET) as {
+                session: string;
+            };
             const session = payload.session;
 
             if (!["host", "client"].includes(role)) {
@@ -100,5 +102,5 @@ io.on("connection", (socket: Socket) => {
 });
 
 server.listen(BE_PORT, () => {
-    console.log(`Server is running on http://${LOCAL_SERVER}:${BE_PORT}`);
+    console.log(`Server is running on http://${LOCAL_ADDRESS}:${BE_PORT}`);
 });

@@ -5,6 +5,9 @@ import { io } from "socket.io-client";
 import AnonymousLLMQuestions from "./AnonymousLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes } from "../../styling/theme";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type STATUS =
     | "pending"
@@ -15,8 +18,9 @@ type STATUS =
     | "invalid_token"
     | "invalid_role";
 
-const LOCAL_SERVER = "192.168.2.80";
-const VITE_PORT = 5173;
+const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
+const BE_PORT = process.env.BE_PORT || 3001;
+const VITE_PORT = process.env.VITE_PORT || 5173;
 
 const AnonymousMode = () => {
     const navigate = useNavigate();
@@ -25,7 +29,7 @@ const AnonymousMode = () => {
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
 
     useEffect(() => {
-        fetch(`http://${LOCAL_SERVER}:3001/connect/host`)
+        fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`)
             .then((res) => res.json())
             .then(({ session, token }) => {
                 setSession(session);
@@ -35,7 +39,7 @@ const AnonymousMode = () => {
 
     useEffect(() => {
         if (session && token) {
-            const socket = io(`http://${LOCAL_SERVER}:3001`);
+            const socket = io(`http://${LOCAL_SERVER}:${BE_PORT}`);
             socket.on("connect", () => {
                 socket.emit("register", { token, role: "host" });
             });
