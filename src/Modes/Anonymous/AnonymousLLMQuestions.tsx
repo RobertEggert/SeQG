@@ -9,7 +9,7 @@ type LLM_API_Type = {
 };
 
 const AnonymousLLMQuestions = () => {
-    const [age, setAge] = useState<string | null>(null);
+    const [age, setAge] = useState<string>("");
     const [experience, setExperience] = useState<number | null>(null);
 
     const [fetchData, setFetchData] = useState(false);
@@ -77,16 +77,17 @@ const AnonymousLLMQuestions = () => {
     return (
         <>
             <Box sx={{ p: 3 }}>
-                <Typography color="green">✅ Connected</Typography>
-
                 {/* Ask about age and experience */}
                 {(!age || !experience) && (
-                    <AgeExpreience
-                        age={age}
-                        experience={experience}
-                        setAge={setAge}
-                        setExperience={setExperience}
-                    />
+                    <>
+                        <Typography color="green">✅ Connected</Typography>
+                        <AgeExpreience
+                            age={age}
+                            experience={experience}
+                            setAge={setAge}
+                            setExperience={setExperience}
+                        />
+                    </>
                 )}
 
                 {/* Loading screen when data is not defined - TODO*/}
@@ -155,7 +156,7 @@ const AnonymousLLMQuestions = () => {
                 >
                     {!age || !experience
                         ? "Tell age and experience first"
-                        : "Skip question"}
+                        : "Next question"}
                 </Button>
             </Box>
         </>
