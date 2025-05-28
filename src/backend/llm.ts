@@ -1,13 +1,9 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import fetch from "node-fetch";
-import fs from "fs";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 interface QuestionRequest {
-    age: string;
+    age: string | number;
     experience: number;
 }
 
@@ -21,23 +17,32 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const LLM_PORT = process.env.LLM_PORT || 3002;
-const LLM_MODEL = process.env.LLM_MODEL || "llama3.1";
+const LOCAL_SERVER = "192.168.2.80";
+const LLM_PORT = 3002;
 
 app.post(
     "/api/question",
     async (req: Request<object, object, QuestionRequest>, res: Response) => {
         const { age, experience } = req.body;
 
-        const rawPrompt = fs.readFileSync(
-            "src/backend/prompts/cybersecurity_prompt.txt",
-            "utf-8"
-        );
+        const prompt = `
+                    You are a Cybersecurity tutor.
+                    Generate a single-choice question based on the user's profile:
 
-        const prompt = rawPrompt
-            .replace("{{age}}", age)
-            .replace("{{experience}}", String(experience));
+                    - Age: ${age}
+                    - Cybersecurity experience: ${experience} out of 5
+
+                    Return strictly in this JSON format:
+                    {
+                        "question": "Your question?",
+                        "options": ["Wrong answer", "Correct answer", "Another wrong answer", ...],
+                        "correctIndex": 1
+                    }
+                    Where as the index is read like an array starting from 0.
+                    The amount of single choice questions should not be more then 4.
+
+                    You are PROHIBITED from returning any other text, format, additional information, or explanations.
+                    `;
 
         try {
             console.log("Fetching question from LLM");
@@ -47,7 +52,7 @@ app.post(
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        model: LLM_MODEL,
+                        model: "llama3.1",
                         prompt,
                         stream: false
                     })
@@ -60,7 +65,7 @@ app.post(
             }
             const rawOutput: string = data.response;
 
-            // In case something else gets returned too
+            // Attempt to extract JSON content
             const jsonStart = rawOutput.indexOf("{");
             const jsonEnd = rawOutput.lastIndexOf("}");
             const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
