@@ -3,6 +3,9 @@ import { useNavigate } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type STATUS =
     | "pending"
@@ -13,8 +16,9 @@ type STATUS =
     | "invalid_token"
     | "invalid_role";
 
-const LOCAL_SERVER = "192.168.2.80";
-const VITE_PORT = 5173;
+const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
+const BE_PORT = process.env.BE_PORT || 3001;
+const VITE_PORT = process.env.VITE_PORT || 5173;
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -23,7 +27,7 @@ const PrivateMode = () => {
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
 
     useEffect(() => {
-        fetch(`http://${LOCAL_SERVER}:3001/connect/host`)
+        fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/connect/host`)
             .then((res) => res.json())
             .then(({ session, token }) => {
                 setSession(session);
@@ -33,7 +37,7 @@ const PrivateMode = () => {
 
     useEffect(() => {
         if (session && token) {
-            const socket = io(`http://${LOCAL_SERVER}:3001`);
+            const socket = io(`http://${LOCAL_ADDRESS}:${BE_PORT}`);
             socket.on("connect", () => {
                 socket.emit("register", { token, role: "host" });
             });
@@ -52,7 +56,7 @@ const PrivateMode = () => {
 
     if (!session || !token) return null;
 
-    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${session}?token=${token}`;
+    const connectUrl = `http://${LOCAL_ADDRESS}:${VITE_PORT}/connect/${session}?token=${token}`;
     console.log(connectUrl);
     return (
         <Box>
