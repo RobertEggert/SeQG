@@ -53,7 +53,7 @@ const AgeExpreience = ({
 }: {
     age: string | null;
     experience: number | null;
-    setAge: Dispatch<SetStateAction<string | null>>;
+    setAge: Dispatch<SetStateAction<string>>;
     setExperience: Dispatch<SetStateAction<number | null>>;
 }) => {
     const handleChange = (event: SelectChangeEvent) => {
@@ -90,10 +90,10 @@ const AgeExpreience = ({
                             handleChange(e as SelectChangeEvent<string>)
                         }
                     >
-                        <MenuItem value="">Select age</MenuItem>
-                        <MenuItem value="10">{"< 18"}</MenuItem>
-                        <MenuItem value="20">{"18 <= 27"}</MenuItem>
-                        <MenuItem value="30">{"30 +"}</MenuItem>
+                        <MenuItem value="">Do not wish to answer</MenuItem>
+                        <MenuItem value="< 18">{"< 18"}</MenuItem>
+                        <MenuItem value="18 <= 27">{"18 <= 27"}</MenuItem>
+                        <MenuItem value="30 +">{"30 +"}</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
