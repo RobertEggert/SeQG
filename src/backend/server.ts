@@ -5,6 +5,9 @@ import { Server, Socket } from "socket.io";
 import cors from "cors";
 import { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type ROLES = "host" | "client";
 
@@ -20,9 +23,9 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-const SECRET = "they will never know";
-const LOCAL_SERVER = "192.168.2.80";
-const BE_PORT = 3001;
+const SECRET = process.env.JWL_SECRET || "VERI SICRET";
+const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
+const BE_PORT = process.env.BE_PORT || 3001;
 
 // Map<sessionId, { host?: socketId, client?: socketId }>
 const activeSessions = new Map<string, { host?: string; client?: string }>();
