@@ -5,12 +5,6 @@ import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import Prohibited from "../../Modes/Prohibited";
 import AnonymousLLMPrecondition from "../../Modes/Anonymous/AnonymousLLMPrecondition";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const BE_PORT = process.env.BE_PORT || 3001;
 
 export const Route = createFileRoute("/connect/$session")({
     component: () => <AnonymousSession />
@@ -23,6 +17,8 @@ const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
 const AnonymousSession = () => {
     const [isError, setIsError] = useState<boolean | null>(null);
     const { session } = Route.useParams();
+    const LOCAL_ADDRESS = import.meta.env.LOCAL_ADDRESS || "192.168.2.80";
+    const BE_PORT = import.meta.env.BE_PORT || 3001;
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -44,7 +40,7 @@ const AnonymousSession = () => {
         return () => {
             socket.disconnect();
         };
-    }, [session]);
+    }, [BE_PORT, LOCAL_ADDRESS, session]);
 
     return isError === null ? (
         <CircularProgress

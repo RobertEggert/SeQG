@@ -3,9 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 type STATUS =
     | "pending"
@@ -16,15 +13,15 @@ type STATUS =
     | "invalid_token"
     | "invalid_role";
 
-const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const BE_PORT = process.env.BE_PORT || 3001;
-const VITE_PORT = process.env.VITE_PORT || 5173;
-
 const PrivateMode = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
+
+    const LOCAL_ADDRESS = import.meta.env.LOCAL_ADDRESS || "192.168.2.80";
+    const BE_PORT = import.meta.env.BE_PORT || 3001;
+    const VITE_PORT = import.meta.env.VITE_PORT || 5173;
 
     useEffect(() => {
         fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/connect/host`)
@@ -52,7 +49,7 @@ const PrivateMode = () => {
                 socket.disconnect();
             };
         }
-    }, [session, token]);
+    }, [BE_PORT, LOCAL_ADDRESS, session, token]);
 
     if (!session || !token) return null;
 
