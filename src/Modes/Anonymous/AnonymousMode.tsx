@@ -5,9 +5,6 @@ import { io } from "socket.io-client";
 import AnonymousLLMQuestions from "./AnonymousLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes } from "../../styling/theme";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 type STATUS =
     | "pending"
@@ -18,15 +15,15 @@ type STATUS =
     | "invalid_token"
     | "invalid_role";
 
-const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const BE_PORT = process.env.BE_PORT || 3001;
-const VITE_PORT = process.env.VITE_PORT || 5173;
-
 const AnonymousMode = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
+
+    const LOCAL_SERVER = import.meta.env.LOCAL_ADDRESS || "192.168.2.80";
+    const BE_PORT = import.meta.env.BE_PORT || 3001;
+    const VITE_PORT = import.meta.env.VITE_PORT || 5173;
 
     useEffect(() => {
         fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`)
@@ -54,7 +51,7 @@ const AnonymousMode = () => {
                 socket.disconnect();
             };
         }
-    }, [session, token]);
+    }, [BE_PORT, LOCAL_SERVER, session, token]);
 
     if (!session || !token) return null;
 
