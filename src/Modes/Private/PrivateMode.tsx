@@ -19,9 +19,9 @@ const PrivateMode = () => {
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
 
-    const LOCAL_ADDRESS = import.meta.env.LOCAL_ADDRESS || "192.168.2.80";
-    const BE_PORT = import.meta.env.BE_PORT || 3001;
-    const VITE_PORT = import.meta.env.VITE_PORT || 5173;
+    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
+    const VITE_PORT = import.meta.env.VITE_VITE_PORT || 5173;
 
     useEffect(() => {
         fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/connect/host`)

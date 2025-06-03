@@ -23,9 +23,9 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-const JWL_SECRET = process.env.JWL_SECRET || "VERI SICRET";
-const LOCAL_ADDRESS = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const BE_PORT = process.env.BE_PORT || 3001;
+const JWL_SECRET = process.env.VITE_JWL_SECRET || "VERI SICRET";
+const LOCAL_ADDRESS = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+const BE_PORT = process.env.VITE_BE_PORT || 3001;
 
 // Map<sessionId, { host?: socketId, client?: socketId }>
 const activeSessions = new Map<string, { host?: string; client?: string }>();

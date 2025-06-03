@@ -17,8 +17,8 @@ const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
 const AnonymousSession = () => {
     const [isError, setIsError] = useState<boolean | null>(null);
     const { session } = Route.useParams();
-    const LOCAL_ADDRESS = import.meta.env.LOCAL_ADDRESS || "192.168.2.80";
-    const BE_PORT = import.meta.env.BE_PORT || 3001;
+    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

@@ -21,10 +21,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const LOCAL_SERVER = process.env.LOCAL_ADDRESS || "192.168.2.80";
-const LLM_PORT = process.env.LLM_PORT || 3002;
-const LLM_MODEL = process.env.LLM_MODEL || "llama3.1";
-const LLM_API_PORT = process.env.LLM_API_PORT || 11434;
+const LOCAL_SERVER = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+const LLM_PORT = process.env.VITE_LLM_PORT || 3002;
+const LLM_MODEL = process.env.VITE_LLM_MODEL || "llama3.1";
+const LLM_API_PORT = process.env.VITE_LLM_API_PORT || 11434;
 
 app.post(
     "/api/question",
