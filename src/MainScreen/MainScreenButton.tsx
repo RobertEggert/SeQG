@@ -32,12 +32,11 @@ const MainScreenButton = ({
     const progressTimer = useRef<NodeJS.Timeout | null>(null);
     const holdTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    const handleMouseDown = (buttonMode: MODES) => {
+    const handlePressStart = () => {
         if (buttonMode === mode) {
-            setProgress(0); // start at 0 immediately
+            setProgress(0);
             let currentProgress = 0;
 
-            // First tick after delay
             progressTimer.current = setInterval(() => {
                 setProgress(currentProgress);
                 currentProgress += 12;
@@ -55,7 +54,7 @@ const MainScreenButton = ({
         }
     };
 
-    const handleMouseUp = () => {
+    const handlePressEnd = () => {
         if (holdTimeout.current) clearTimeout(holdTimeout.current);
         if (progressTimer.current) clearInterval(progressTimer.current);
         setProgress(0);
@@ -77,9 +76,12 @@ const MainScreenButton = ({
                 transition: "width 0.5s ease, height 0.5s ease"
             }}
             onClick={() => setMode(buttonMode)}
-            onMouseDown={() => handleMouseDown(buttonMode)}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
+            onMouseDown={handlePressStart}
+            onMouseUp={handlePressEnd}
+            onMouseLeave={handlePressEnd}
+            onTouchStart={handlePressStart}
+            onTouchEnd={handlePressEnd}
+            onTouchCancel={handlePressEnd}
         >
             <Box
                 flexDirection={"column"}
