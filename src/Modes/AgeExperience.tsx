@@ -16,6 +16,13 @@ import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 
+type AgeExprienceType = {
+    age: string | null;
+    experience: number | null;
+    setAge: Dispatch<SetStateAction<string | null>>;
+    setExperience: Dispatch<SetStateAction<number | null>>;
+};
+
 const customIcons: {
     [index: number]: {
         icon: React.ReactElement;
@@ -50,12 +57,7 @@ const AgeExpreience = ({
     experience,
     setAge,
     setExperience
-}: {
-    age: string | null;
-    experience: number | null;
-    setAge: Dispatch<SetStateAction<string>>;
-    setExperience: Dispatch<SetStateAction<number | null>>;
-}) => {
+}: AgeExprienceType) => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
     };
@@ -84,7 +86,7 @@ const AgeExpreience = ({
                     <Select
                         labelId="age-select-label"
                         id="age-select"
-                        value={age}
+                        value={age !== null ? age : ""}
                         label="Age"
                         onChange={(e) =>
                             handleChange(e as SelectChangeEvent<string>)

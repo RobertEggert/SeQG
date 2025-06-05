@@ -1,78 +1,29 @@
-import { Box, Button, CircularProgress, Fade, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useState } from "react";
 import AgeExpreience from "../AgeExperience";
-
-type LLM_API_Type = {
-    question: string;
-    options: string[];
-    correctIndex: number;
-};
+import {
+    type LLM_API_Explanation_Type,
+    type LLM_API_Question_Type
+} from "../../utils/LLMFetcher";
+import ExplainAnswer from "../ExplainAnswer";
+import GetQuestion from "../GetQuestion";
 
 const AnonymousLLMQuestions = () => {
-    const [age, setAge] = useState<string>("");
+    const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
 
-    const [fetchData, setFetchData] = useState(false);
-    const [data, setData] = useState<LLM_API_Type | null>(null);
-    const [feedback, setFeedback] = useState<string | null>(null);
+    const [q_fetch, setQFetch] = useState(false);
+    const [e_fetch, setEFetch] = useState(false);
+    const [q_data, setQData] = useState<LLM_API_Question_Type | null>(null);
+    const [e_data, setEData] = useState<LLM_API_Explanation_Type | null>(null);
 
-    const [showFade, setShowFade] = useState(false);
+    console.log(q_data);
 
-    const fetchQuestionFromLLM = async () => {
-        const response = await fetch("http://localhost:3002/api/question", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ age, experience })
-        });
-        const LLMdata: LLM_API_Type = await response.json();
-
-        if (!LLMdata?.options || !Array.isArray(LLMdata.options)) {
-            console.error("Invalid response from server:", LLMdata);
-            return;
-        }
-
-        setData(LLMdata);
-        setFetchData(false);
+    const handleNextQButtonClick = () => {
+        setQFetch(true);
+        setQData(null);
+        setEData(null);
     };
-
-    const handleAnswerClick = (choice: number) => {
-        if (!data) {
-            console.error("No data available.");
-            return;
-        }
-        setFeedback(
-            choice === data.correctIndex
-                ? "✅ Correct!"
-                : "❌ Incorrect. Try again."
-        );
-    };
-
-    const handleButtonClick = () => {
-        setFeedback(null);
-        setFetchData(true);
-        setData(null);
-    };
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setShowFade((prev) => !prev);
-        }, 1300); // toggle every second
-
-        return () => clearInterval(interval);
-    }, [showFade]);
-
-    useEffect(() => {
-        if (age && experience) {
-            setFetchData(true);
-        }
-    }, [age, experience]);
-
-    useEffect(() => {
-        if (fetchData) {
-            fetchQuestionFromLLM();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchData]);
 
     return (
         <>
@@ -90,53 +41,29 @@ const AnonymousLLMQuestions = () => {
                     </>
                 )}
 
-                {/* Loading screen when data is not defined - TODO*/}
-                {fetchData && (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            paddingTop: 5
-                        }}
-                    >
-                        <CircularProgress
-                            size={60}
-                            color="secondary"
-                            thickness={2}
-                        />
-                        <Fade in={showFade} timeout={500}>
-                            <Typography
-                                variant="subtitle1"
-                                sx={{ color: "black" }}
-                            >
-                                Fetching data
-                            </Typography>
-                        </Fade>
-                    </Box>
-                )}
-
-                {/* Display Question */}
-                {data && (
-                    <Box sx={{ mt: 4 }}>
-                        <Typography variant="h6">{data.question}</Typography>
-                        <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
-                            {data.options.map((option, index) => (
-                                <Button
-                                    key={index}
-                                    variant="outlined"
-                                    onClick={() => handleAnswerClick(index)}
-                                >
-                                    {option}
-                                </Button>
-                            ))}
-                        </Box>
-                        {feedback && (
-                            <Typography sx={{ mt: 2 }}>{feedback}</Typography>
-                        )}
-                    </Box>
-                )}
+                {/* Question */}
+                <GetQuestion
+                    setQData={setQData}
+                    setQFetch={setQFetch}
+                    setEData={setEData}
+                    setEFetch={setEFetch}
+                    q_fetch={q_fetch}
+                    q_data={q_data}
+                    e_fetch={e_fetch}
+                    e_data={e_data}
+                    age={age}
+                    experience={experience}
+                />
+                {/* Explanation if wrongfully answered */}
+                <ExplainAnswer
+                    setEData={setEData}
+                    setEFetch={setEFetch}
+                    e_fetch={e_fetch}
+                    e_data={e_data}
+                    q_data={q_data}
+                    age={age}
+                    experience={experience}
+                />
             </Box>
 
             {/* Refetching Question */}
@@ -151,8 +78,8 @@ const AnonymousLLMQuestions = () => {
             >
                 <Button
                     variant="contained"
-                    disabled={data === null}
-                    onClick={handleButtonClick}
+                    disabled={q_data === null || e_fetch}
+                    onClick={handleNextQButtonClick}
                 >
                     {!age || !experience
                         ? "Tell age and experience first"
