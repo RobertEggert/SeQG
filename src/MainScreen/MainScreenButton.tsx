@@ -47,7 +47,6 @@ const MainScreenButton = ({
             }, 150);
 
             holdTimeout.current = setTimeout(() => {
-                console.log("Long press triggered for mode:", buttonMode);
                 const navigateToMode = "/mode/" + mode?.toLowerCase();
                 navigate({ to: navigateToMode });
             }, 1500);

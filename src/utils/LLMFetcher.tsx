@@ -1,4 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
+import type {
+    ExplainStateType,
+    QuestionStateType
+} from "../Modes/Anonymous/AnonymousLLMQuestions";
 
 export type LLM_API_Question_Type = {
     question: string;
@@ -11,15 +15,13 @@ export type LLM_API_Explanation_Type = {
 };
 
 type FetchQuestionType = {
-    setQData: Dispatch<SetStateAction<LLM_API_Question_Type | null>>;
-    setQFetch: Dispatch<SetStateAction<boolean>>;
+    setQuestionState: Dispatch<SetStateAction<QuestionStateType>>;
     age?: string | null;
     experience?: number | null;
 };
 
 type FetchExplanationType = {
-    setEData: Dispatch<SetStateAction<LLM_API_Explanation_Type | null>>;
-    setEFetch: Dispatch<SetStateAction<boolean>>;
+    setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;
     age?: string | null;
     experience?: number | null;
     question?: string;
@@ -28,8 +30,7 @@ type FetchExplanationType = {
 };
 
 export const fetchQuestionFromLLM = async ({
-    setQData,
-    setQFetch,
+    setQuestionState,
     age,
     experience
 }: FetchQuestionType) => {
@@ -44,14 +45,11 @@ export const fetchQuestionFromLLM = async ({
         console.error("Invalid response from server:", LLMdata);
         return;
     }
-
-    setQData(LLMdata);
-    setQFetch(false);
+    setQuestionState({ q_fetch: false, q_data: LLMdata });
 };
 
-export const fetchExplanationFromLLMAdvanced = async ({
-    setEData,
-    setEFetch,
+export const fetchExplanationFromLLMLongTerm = async ({
+    setExplanationState,
     age,
     experience
 }: FetchExplanationType) => {
@@ -70,13 +68,11 @@ export const fetchExplanationFromLLMAdvanced = async ({
         return;
     }
 
-    setEData(LLMdata);
-    setEFetch(false);
+    setExplanationState({ e_fetch: false, e_data: LLMdata });
 };
 
 export const fetchExplanationFromLLMShortTerm = async ({
-    setEData,
-    setEFetch,
+    setExplanationState,
     age,
     experience,
     question,
@@ -103,7 +99,5 @@ export const fetchExplanationFromLLMShortTerm = async ({
         console.error("Invalid response from server:", LLMdata);
         return;
     }
-
-    setEData(LLMdata);
-    setEFetch(false);
+    setExplanationState({ e_fetch: false, e_data: LLMdata });
 };

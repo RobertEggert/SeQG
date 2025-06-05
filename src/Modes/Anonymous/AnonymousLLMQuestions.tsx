@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import AgeExpreience from "../AgeExperience";
 import {
@@ -6,23 +6,37 @@ import {
     type LLM_API_Question_Type
 } from "../../utils/LLMFetcher";
 import ExplainAnswer from "../ExplainAnswer";
-import GetQuestion from "../GetQuestion";
+import Question from "../Question";
+import NextQuestion from "../NextQuestion";
+
+export type ExplainStateType = {
+    e_fetch: boolean;
+    e_data: LLM_API_Explanation_Type | null;
+};
+
+export type QuestionStateType = {
+    q_fetch: boolean;
+    q_data: LLM_API_Question_Type | null;
+};
 
 const AnonymousLLMQuestions = () => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
+    const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
 
-    const [q_fetch, setQFetch] = useState(false);
-    const [e_fetch, setEFetch] = useState(false);
-    const [q_data, setQData] = useState<LLM_API_Question_Type | null>(null);
-    const [e_data, setEData] = useState<LLM_API_Explanation_Type | null>(null);
-
-    console.log(q_data);
+    const [questionState, setQuestionState] = useState<QuestionStateType>({
+        q_fetch: false,
+        q_data: null
+    });
+    const [explanationState, setExplanationState] = useState<ExplainStateType>({
+        e_fetch: false,
+        e_data: null
+    });
 
     const handleNextQButtonClick = () => {
-        setQFetch(true);
-        setQData(null);
-        setEData(null);
+        setAnswerCorrect(null);
+        setQuestionState({ q_fetch: true, q_data: null });
+        setExplanationState({ e_fetch: false, e_data: null });
     };
 
     return (
@@ -42,50 +56,36 @@ const AnonymousLLMQuestions = () => {
                 )}
 
                 {/* Question */}
-                <GetQuestion
-                    setQData={setQData}
-                    setQFetch={setQFetch}
-                    setEData={setEData}
-                    setEFetch={setEFetch}
-                    q_fetch={q_fetch}
-                    q_data={q_data}
-                    e_fetch={e_fetch}
-                    e_data={e_data}
+                <Question
+                    handleNextQButtonClick={handleNextQButtonClick}
+                    setAnswerCorrect={setAnswerCorrect}
+                    answerCorrect={answerCorrect}
+                    setQuestionState={setQuestionState}
+                    setExplanationState={setExplanationState}
+                    questionState={questionState}
+                    explanationState={explanationState}
                     age={age}
                     experience={experience}
                 />
                 {/* Explanation if wrongfully answered */}
                 <ExplainAnswer
-                    setEData={setEData}
-                    setEFetch={setEFetch}
-                    e_fetch={e_fetch}
-                    e_data={e_data}
-                    q_data={q_data}
+                    setExplanationState={setExplanationState}
+                    questionState={questionState}
+                    explanationState={explanationState}
                     age={age}
                     experience={experience}
                 />
             </Box>
 
             {/* Refetching Question */}
-            <Box
-                sx={{
-                    display: "flex",
-                    mt: 4,
-                    right: "12%",
-                    bottom: "10%",
-                    position: "fixed"
-                }}
-            >
-                <Button
-                    variant="contained"
-                    disabled={q_data === null || e_fetch}
-                    onClick={handleNextQButtonClick}
-                >
-                    {!age || !experience
-                        ? "Tell age and experience first"
-                        : "Next question"}
-                </Button>
-            </Box>
+            <NextQuestion
+                handleNextQButtonClick={handleNextQButtonClick}
+                questionState={questionState}
+                explanationState={explanationState}
+                answerCorrect={answerCorrect}
+                age={age}
+                experience={experience}
+            />
         </>
     );
 };
