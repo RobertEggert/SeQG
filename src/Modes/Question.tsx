@@ -5,7 +5,7 @@ import LoadingData from "./LoadingData";
 import type {
     ExplainStateType,
     QuestionStateType
-} from "./Anonymous/AnonymousLLMQuestions";
+} from "./Guest/GuestLLMQuestions";
 
 type QuestionType = {
     handleNextQButtonClick: () => void;

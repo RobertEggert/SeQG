@@ -19,7 +19,7 @@ export type QuestionStateType = {
     q_data: LLM_API_Question_Type | null;
 };
 
-const AnonymousLLMQuestions = () => {
+const GuestLLMQuestions = () => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
@@ -90,4 +90,4 @@ const AnonymousLLMQuestions = () => {
     );
 };
 
-export default AnonymousLLMQuestions;
+export default GuestLLMQuestions;

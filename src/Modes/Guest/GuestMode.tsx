@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import AnonymousLLMQuestions from "./AnonymousLLMQuestions";
+import GuestLLMQuestions from "./GuestLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes } from "../../styling/theme";
 
@@ -15,7 +15,7 @@ type STATUS =
     | "invalid_token"
     | "invalid_role";
 
-const AnonymousMode = () => {
+const GuestMode = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -60,7 +60,7 @@ const AnonymousMode = () => {
     return (
         <Box
             sx={{
-                backgroundColor: colorModes.anonymous,
+                backgroundColor: colorModes.guest,
                 display: "flex",
                 justifyContent: "center",
                 width: "100vw",
@@ -79,9 +79,9 @@ const AnonymousMode = () => {
                     height: "70%"
                 }}
             >
-                <Typography fontSize={40}>Anonymous Mode</Typography>
+                <Typography fontSize={40}>Guest Mode</Typography>
                 {status === "connected" ? (
-                    <AnonymousLLMQuestions />
+                    <GuestLLMQuestions />
                 ) : (
                     <>
                         {status === "disconnected" && navigate({ to: "/" })}
@@ -98,4 +98,4 @@ const AnonymousMode = () => {
     );
 };
 
-export default AnonymousMode;
+export default GuestMode;

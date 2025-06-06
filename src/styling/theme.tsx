@@ -5,6 +5,6 @@ export type COLORMODES =
 
 export const colorModes = {
     start: "rgba(173, 216, 230, 0.95)" as COLORMODES,
-    anonymous: "rgba(120, 144, 156, 0.95)" as COLORMODES,
+    guest: "rgba(120, 144, 156, 0.95)" as COLORMODES,
     private: "rgba(81, 45, 168, 0.95)" as COLORMODES
 };

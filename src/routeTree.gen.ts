@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as ModePrivateImport } from './routes/mode/private'
-import { Route as ModeAnonymousImport } from './routes/mode/anonymous'
+import { Route as ModeGuestImport } from './routes/mode/guest'
 import { Route as ConnectSessionImport } from './routes/connect/$session'
 
 // Create/Update Routes
@@ -30,9 +30,9 @@ const ModePrivateRoute = ModePrivateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ModeAnonymousRoute = ModeAnonymousImport.update({
-  id: '/mode/anonymous',
-  path: '/mode/anonymous',
+const ModeGuestRoute = ModeGuestImport.update({
+  id: '/mode/guest',
+  path: '/mode/guest',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,11 +60,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnectSessionImport
       parentRoute: typeof rootRoute
     }
-    '/mode/anonymous': {
-      id: '/mode/anonymous'
-      path: '/mode/anonymous'
-      fullPath: '/mode/anonymous'
-      preLoaderRoute: typeof ModeAnonymousImport
+    '/mode/guest': {
+      id: '/mode/guest'
+      path: '/mode/guest'
+      fullPath: '/mode/guest'
+      preLoaderRoute: typeof ModeGuestImport
       parentRoute: typeof rootRoute
     }
     '/mode/private': {
@@ -82,14 +82,14 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connect/$session': typeof ConnectSessionRoute
-  '/mode/anonymous': typeof ModeAnonymousRoute
+  '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connect/$session': typeof ConnectSessionRoute
-  '/mode/anonymous': typeof ModeAnonymousRoute
+  '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
 }
 
@@ -97,35 +97,30 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/connect/$session': typeof ConnectSessionRoute
-  '/mode/anonymous': typeof ModeAnonymousRoute
+  '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/connect/$session' | '/mode/anonymous' | '/mode/private'
+  fullPaths: '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/connect/$session' | '/mode/anonymous' | '/mode/private'
-  id:
-    | '__root__'
-    | '/'
-    | '/connect/$session'
-    | '/mode/anonymous'
-    | '/mode/private'
+  to: '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
+  id: '__root__' | '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConnectSessionRoute: typeof ConnectSessionRoute
-  ModeAnonymousRoute: typeof ModeAnonymousRoute
+  ModeGuestRoute: typeof ModeGuestRoute
   ModePrivateRoute: typeof ModePrivateRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnectSessionRoute: ConnectSessionRoute,
-  ModeAnonymousRoute: ModeAnonymousRoute,
+  ModeGuestRoute: ModeGuestRoute,
   ModePrivateRoute: ModePrivateRoute,
 }
 
@@ -141,7 +136,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/connect/$session",
-        "/mode/anonymous",
+        "/mode/guest",
         "/mode/private"
       ]
     },
@@ -151,8 +146,8 @@ export const routeTree = rootRoute
     "/connect/$session": {
       "filePath": "connect/$session.tsx"
     },
-    "/mode/anonymous": {
-      "filePath": "mode/anonymous.tsx"
+    "/mode/guest": {
+      "filePath": "mode/guest.tsx"
     },
     "/mode/private": {
       "filePath": "mode/private.tsx"

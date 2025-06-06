@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import type {
     ExplainStateType,
     QuestionStateType
-} from "./Anonymous/AnonymousLLMQuestions";
+} from "./Guest/GuestLLMQuestions";
 
 type NextQuestionType = {
     handleNextQButtonClick: () => void;
