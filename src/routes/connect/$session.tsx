@@ -4,17 +4,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import Prohibited from "../../Modes/Prohibited";
-import AnonymousLLMPrecondition from "../../Modes/Anonymous/AnonymousLLMPrecondition";
+import GuestLLMPrecondition from "../../Modes/Guest/GuestLLMPrecondition";
 
 export const Route = createFileRoute("/connect/$session")({
-    component: () => <AnonymousSession />
+    component: () => <GuestSession />
 });
 
 const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
-    return isError ? <Prohibited /> : <AnonymousLLMPrecondition />;
+    return isError ? <Prohibited /> : <GuestLLMPrecondition />;
 };
 
-const AnonymousSession = () => {
+const GuestSession = () => {
     const [isError, setIsError] = useState<boolean | null>(null);
     const { session } = Route.useParams();
     const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
@@ -52,4 +52,4 @@ const AnonymousSession = () => {
     );
 };
 
-export default AnonymousSession;
+export default GuestSession;

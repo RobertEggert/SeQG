@@ -5,7 +5,7 @@ import { faLock, faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import MainScreenButton from "./MainScreenButton";
 import { colorModes } from "../styling/theme";
 
-export type MODES = "ANONYMOUS" | "PRIVATE" | null;
+export type MODES = "GUEST" | "PRIVATE" | null;
 
 const MainScreen = () => {
     const [mode, setMode] = useState<MODES>(null);
@@ -24,9 +24,9 @@ const MainScreen = () => {
             <Matrix />
             <MainScreenButton
                 mode={mode}
-                buttonMode={"ANONYMOUS"}
+                buttonMode={"GUEST"}
                 startColor={colorModes.start}
-                modeColor={colorModes.anonymous}
+                modeColor={colorModes.guest}
                 progressBarColor={colorModes.private}
                 icon={faUserSecret}
                 setMode={setMode}
@@ -36,7 +36,7 @@ const MainScreen = () => {
                 buttonMode={"PRIVATE"}
                 startColor={colorModes.start}
                 modeColor={colorModes.private}
-                progressBarColor={colorModes.anonymous}
+                progressBarColor={colorModes.guest}
                 icon={faLock}
                 setMode={setMode}
             />

@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type {
     ExplainStateType,
     QuestionStateType
-} from "../Modes/Anonymous/AnonymousLLMQuestions";
+} from "../Modes/Guest/GuestLLMQuestions";
 
 export type LLM_API_Question_Type = {
     question: string;
