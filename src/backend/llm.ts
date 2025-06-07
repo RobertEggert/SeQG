@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 import fs from "fs";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: `.env.local`, override: true });
 
 interface QuestionRequest {
     age: string;
