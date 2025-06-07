@@ -7,7 +7,7 @@ import { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: `.env.local`, override: true });
 
 type ROLES = "host" | "client";
 
