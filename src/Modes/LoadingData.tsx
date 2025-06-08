@@ -1,17 +1,7 @@
-import { Box, CircularProgress, Fade, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import FadedComponent from "../utils/FadedComponent";
 
 const LoadingData = () => {
-    const [showFade, setShowFade] = useState(false);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setShowFade((prev) => !prev);
-        }, 1300); // toggle every second
-
-        return () => clearInterval(interval);
-    }, [showFade]);
-
     return (
         <Box
             sx={{
@@ -23,11 +13,16 @@ const LoadingData = () => {
             }}
         >
             <CircularProgress size={60} color="secondary" thickness={2} />
-            <Fade in={showFade} timeout={500}>
-                <Typography variant="subtitle1" sx={{ color: "black" }}>
-                    Fetching data
-                </Typography>
-            </Fade>
+            <FadedComponent
+                sxBox={{
+                    position: "absolute",
+                    bottom: 32,
+                    width: "100%",
+                    textAlign: "center"
+                }}
+            >
+                Fetching Question
+            </FadedComponent>
         </Box>
     );
 };
