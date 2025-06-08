@@ -2,6 +2,7 @@ import express, { type Request, type Response } from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import fs from "fs";
+import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config({ path: `.env.local`, override: true });
@@ -44,17 +45,28 @@ app.post(
     async (req: Request<object, object, QuestionRequest>, res: Response) => {
         const { age, experience } = req.body;
 
-        const rawPrompt = fs.readFileSync(
-            "src/backend/prompts/cs_ask.txt",
-            "utf-8"
-        );
-
-        const prompt = rawPrompt
-            .replace("{{age}}", age)
-            .replace("{{experience}}", String(experience));
-
         try {
-            console.log("Fetching question from LLM");
+            // Load topic list and choose one randomly
+            const topicsPath = path.join(
+                __dirname,
+                "./memory/TOPICS_LIST.json"
+            );
+            const topicListRaw = fs.readFileSync(topicsPath, "utf-8");
+            const topicList = JSON.parse(topicListRaw).topics as string[];
+            const topic =
+                topicList[Math.floor(Math.random() * topicList.length)];
+
+            // Load prompt and inject dynamic values
+            const rawPrompt = fs.readFileSync(
+                path.join(__dirname, "./prompts/cs_ask.txt"),
+                "utf-8"
+            );
+            const prompt = rawPrompt
+                .replace("{{age}}", age)
+                .replace("{{experience}}", String(experience))
+                .replace("{{topic}}", topic);
+
+            console.log("Fetching question from LLM...");
             const ollamaRes = await fetch(
                 `http://localhost:${LLM_API_PORT}/api/generate`,
                 {
@@ -70,11 +82,74 @@ app.post(
 
             const data = (await ollamaRes.json()) as { response: string };
             if (data) {
-                console.log("Questions fetched successfully!");
+                console.log(`Question fetched on topic "${topic}"`);
             }
+
             const rawOutput: string = data.response;
 
-            // In case something else gets returned too
+            const jsonStart = rawOutput.indexOf("{");
+            const jsonEnd = rawOutput.lastIndexOf("}");
+            const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
+
+            const parsed: QuestionResponse = JSON.parse(jsonString);
+            res.json(parsed);
+        } catch (err) {
+            console.error("Error fetching or parsing LLM output:", err);
+            res.status(500).json({
+                error: "Failed to fetch question from LLM"
+            });
+        }
+    }
+);
+
+// PRIVATE QUESTION
+app.post(
+    "/api/question/private",
+    async (req: Request<object, object, QuestionRequest>, res: Response) => {
+        const { age, experience } = req.body;
+
+        try {
+            // Load topic list and choose one randomly
+            const topicsPath = path.join(
+                __dirname,
+                "./memory/TOPICS_LIST.json"
+            );
+            const topicListRaw = fs.readFileSync(topicsPath, "utf-8");
+            const topicList = JSON.parse(topicListRaw).topics as string[];
+            const topic =
+                topicList[Math.floor(Math.random() * topicList.length)];
+
+            // Load prompt and inject dynamic values
+            const rawPrompt = fs.readFileSync(
+                path.join(__dirname, "./prompts/cs_ask.txt"),
+                "utf-8"
+            );
+            const prompt = rawPrompt
+                .replace("{{age}}", age)
+                .replace("{{experience}}", String(experience))
+                .replace("{{topic}}", topic);
+
+            console.log("Fetching question from LLM...");
+            const ollamaRes = await fetch(
+                `http://localhost:${LLM_API_PORT}/api/generate`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: LLM_MODEL,
+                        prompt,
+                        stream: false
+                    })
+                }
+            );
+
+            const data = (await ollamaRes.json()) as { response: string };
+            if (data) {
+                console.log(`Question fetched on topic "${topic}"`);
+            }
+
+            const rawOutput: string = data.response;
+
             const jsonStart = rawOutput.indexOf("{");
             const jsonEnd = rawOutput.lastIndexOf("}");
             const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
