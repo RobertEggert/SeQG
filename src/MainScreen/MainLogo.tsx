@@ -1,7 +1,13 @@
 import { Paper, Button, Box, Fade } from "@mui/material";
 import logoStart from "../img/logoandtext.jpg";
 import logoEnd from "../img/logo.png";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+    useEffect,
+    useRef,
+    useState,
+    type Dispatch,
+    type SetStateAction
+} from "react";
 import FadedComponent from "../utils/FadedComponent";
 
 type MainLogoProps = {
@@ -11,6 +17,17 @@ type MainLogoProps = {
 
 const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
     const [showAltLogo, setShowAltLogo] = useState(false);
+    const resetRef = useRef<NodeJS.Timeout | null>(null);
+
+    const TIME_UNTIL_TIMEOUT = 2_000;
+
+    const resetTime = () => {
+        if (resetRef.current) clearTimeout(resetRef.current);
+        resetRef.current = setTimeout(() => {
+            setShowAltLogo(false);
+            setIsPressed(false);
+        }, TIME_UNTIL_TIMEOUT);
+    };
 
     const handleClick = () => {
         setShowAltLogo(true);
@@ -18,6 +35,18 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
             setIsPressed(true);
         }, 100); // Delay before transform
     };
+
+    useEffect(() => {
+        if (!resetRef.current) return;
+
+        document.addEventListener("touchstart", resetTime);
+        resetTime();
+
+        return () => {
+            document.removeEventListener("touchstart", resetTime);
+            if (resetRef.current) clearTimeout(resetRef.current);
+        };
+    }, [isPressed]);
 
     return (
         <Box
