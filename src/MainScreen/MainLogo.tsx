@@ -19,7 +19,7 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
     const [showAltLogo, setShowAltLogo] = useState(false);
     const resetRef = useRef<NodeJS.Timeout | null>(null);
 
-    const TIME_UNTIL_TIMEOUT = 2_000;
+    const TIME_UNTIL_TIMEOUT = 30_000;
 
     const resetTime = () => {
         if (resetRef.current) clearTimeout(resetRef.current);
