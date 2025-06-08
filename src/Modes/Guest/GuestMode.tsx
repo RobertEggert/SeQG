@@ -25,8 +25,6 @@ const GuestMode = () => {
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
     const VITE_PORT = import.meta.env.VITE_VITE_PORT || 5173;
 
-    console.log(LOCAL_SERVER);
-
     useEffect(() => {
         fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`)
             .then((res) => res.json())
