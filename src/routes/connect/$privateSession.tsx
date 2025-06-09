@@ -4,15 +4,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import Prohibited from "../../Modes/Prohibited";
-import GuestLLMPrecondition from "../../Modes/Guest/GuestLLMPrecondition";
 import { v4 as uuidv4 } from "uuid";
+import PrivateLLMPrecondition from "../../Modes/Private/PrivateLLMPrecondition";
 
 export const Route = createFileRoute("/connect/$privateSession")({
     component: () => <PrivateSession />
 });
 
 const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
-    return isError ? <Prohibited /> : <GuestLLMPrecondition />;
+    return isError ? <Prohibited /> : <PrivateLLMPrecondition />;
 };
 
 const PrivateSession = () => {
@@ -40,6 +40,7 @@ const PrivateSession = () => {
         });
 
         socket.on("status", (msg) => {
+            console.log(msg);
             if (msg === "already_connected" || msg === "invalid_role") {
                 setIsError(true);
             } else {

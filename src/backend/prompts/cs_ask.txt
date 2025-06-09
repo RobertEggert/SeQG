@@ -4,14 +4,14 @@ Your task is to generate **one single-choice cybersecurity question** based on t
 
 - Age: {{age}}
 - Cybersecurity experience level (based on knowledge): {{experience}} out of 5 (where 1 = beginner, 5 = expert)
-- Pick only topics from here at random: {{topic}}
+- Pick only questions concerning the topic: {{topic}}
 
 Return your output strictly as a JSON object in the format below:
 {
     "question": "The Question based on everything told",
     "options": ["Wrong answer", "Correct answer", "Another wrong answer", ...],
     "correctIndex": 1,
-    "topic": "your chosen topic"
+    "topic": {{topic}}
 }
 
 Requirements:

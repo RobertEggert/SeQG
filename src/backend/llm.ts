@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
 dotenv.config({ path: `.env.local`, override: true });
 
@@ -33,6 +34,9 @@ interface ExplenationResponse {
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const LOCAL_SERVER = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
 const LLM_PORT = process.env.VITE_LLM_PORT || 3002;

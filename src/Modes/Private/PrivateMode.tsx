@@ -38,7 +38,11 @@ const PrivateMode = () => {
         if (privateSession && token) {
             const socket = io(`http://${LOCAL_SERVER}:${BE_PORT}`);
             socket.on("connect", () => {
-                socket.emit("register", { token, role: "host" });
+                socket.emit("register-private", {
+                    token,
+                    role: "host",
+                    userId: "host-id"
+                });
             });
 
             socket.on("status", (msg) => {

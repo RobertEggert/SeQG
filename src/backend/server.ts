@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import { fileURLToPath } from "url";
 
 dotenv.config({ path: `.env.local`, override: true });
 
@@ -28,6 +29,9 @@ const io = new Server(server, {
 
 app.use(cors());
 app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const JWL_SECRET = process.env.VITE_JWL_SECRET || "VERI SICRET";
 const LOCAL_ADDRESS = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
@@ -51,11 +55,6 @@ app.get("/connect/host", (_: Request, res: Response) => {
 io.on("connection", (socket: Socket) => {
     console.log("Someone tries connecting:", socket.id);
 
-    let sessionEntry: {
-        host?: string;
-        client?: string;
-    } = {};
-
     socket.on("register", ({ token, role }: REGISTER) => {
         try {
             const payload = jwt.verify(token, JWL_SECRET) as {
@@ -69,7 +68,7 @@ io.on("connection", (socket: Socket) => {
                 return;
             }
 
-            sessionEntry = activeSessions.get(session) || {};
+            const sessionEntry = activeSessions.get(session) || {};
 
             if (sessionEntry[role]) {
                 socket.emit("status", "already_connected");
@@ -84,7 +83,7 @@ io.on("connection", (socket: Socket) => {
             activeSessions.set(session, sessionEntry);
 
             console.log(
-                `Socket ${socket.id} registered to session ${session} as a ${role}`
+                `Socket ${socket.id} registered to session ${session} as a ${role} in GUEST mode`
             );
 
             if (sessionEntry.host && sessionEntry.client) {
@@ -129,33 +128,32 @@ io.on("connection", (socket: Socket) => {
                 setTimeout(() => socket.disconnect(), 100);
                 return;
             }
-
-            const userFilePath = path.join(
-                __dirname,
-                `./memory/private-users/${userId}.json`
-            );
-            if (!fs.existsSync(userFilePath)) {
-                const topics = getTopics();
-                const progress = Object.fromEntries(
-                    topics.map((topic) => [topic, { correct: 0, total: 0 }])
+            if (role === "client") {
+                const userFilePath = path.join(
+                    __dirname,
+                    `./memory/private-users/${userId}.json`
                 );
-
-                const userData = {
-                    user_id: userId,
-                    age: "",
-                    experience: -1,
-                    progress
-                };
-
-                fs.writeFileSync(
-                    userFilePath,
-                    JSON.stringify(userData, null, 2)
-                );
-            } else {
-                console.log("Welcome returning user!");
+                if (!fs.existsSync(userFilePath)) {
+                    const topics = getTopics();
+                    const progress = Object.fromEntries(
+                        topics.map((topic) => [topic, { correct: 0, total: 0 }])
+                    );
+                    const userData = {
+                        user_id: userId,
+                        age: "",
+                        experience: -1,
+                        progress
+                    };
+                    fs.writeFileSync(
+                        userFilePath,
+                        JSON.stringify(userData, null, 2)
+                    );
+                } else {
+                    console.log("Welcome returning user!");
+                }
             }
 
-            sessionEntry = activeSessions.get(session) || {};
+            const sessionEntry = activeSessions.get(session) || {};
 
             if (sessionEntry[role]) {
                 socket.emit("status", "already_connected");
@@ -165,12 +163,12 @@ io.on("connection", (socket: Socket) => {
                 );
                 return;
             }
-
+            console.log("TEST - 3");
             sessionEntry[role] = socket.id;
             activeSessions.set(session, sessionEntry);
 
             console.log(
-                `Socket ${socket.id} registered to session ${session} as a ${role}`
+                `Socket ${socket.id} registered to session ${session} as a ${role} in PRIVATE mode`
             );
 
             if (sessionEntry.host && sessionEntry.client) {
@@ -197,7 +195,8 @@ io.on("connection", (socket: Socket) => {
                     }
                 }
             });
-        } catch {
+        } catch (err) {
+            console.error("Error during register-private:", err);
             socket.emit("status", "invalid_token");
             setTimeout(() => socket.disconnect(), 100);
         }
