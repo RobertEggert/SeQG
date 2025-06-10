@@ -1,8 +1,10 @@
-import { Box, Typography } from "@mui/material";
-import { useNavigate } from "@tanstack/react-router";
+import { Box, Paper, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { useNavigate } from "@tanstack/react-router";
+import { colorModes } from "../../styling/theme";
+import PrivateLLMQuestions from "./PrivateLLMQuestions";
 
 type STATUS =
     | "pending"
@@ -15,28 +17,33 @@ type STATUS =
 
 const PrivateMode = () => {
     const navigate = useNavigate();
-    const [session, setSession] = useState<string | null>(null);
+    const [userId, setUserId] = useState("");
+    const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
 
-    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
     const VITE_PORT = import.meta.env.VITE_VITE_PORT || 5173;
 
     useEffect(() => {
-        fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/connect/host`)
+        fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`)
             .then((res) => res.json())
             .then(({ session, token }) => {
-                setSession(session);
+                setPrivateSession(session);
                 setToken(token);
             });
     }, []);
 
     useEffect(() => {
-        if (session && token) {
-            const socket = io(`http://${LOCAL_ADDRESS}:${BE_PORT}`);
+        if (privateSession && token) {
+            const socket = io(`http://${LOCAL_SERVER}:${BE_PORT}`);
             socket.on("connect", () => {
-                socket.emit("register", { token, role: "host" });
+                socket.emit("register-private", {
+                    token,
+                    role: "host",
+                    userId: "host-id"
+                });
             });
 
             socket.on("status", (msg) => {
@@ -45,32 +52,58 @@ const PrivateMode = () => {
                 else if (msg === "disconnected") setStatus("disconnected");
             });
 
+            socket.on("client-id", ({ userId }) => {
+                setUserId(userId);
+                // You can store this in state, context, etc.
+            });
+
             return () => {
                 socket.disconnect();
             };
         }
-    }, [BE_PORT, LOCAL_ADDRESS, session, token]);
+    }, [BE_PORT, LOCAL_SERVER, privateSession, token]);
 
-    if (!session || !token) return null;
+    if (!privateSession || !token) return null;
 
-    const connectUrl = `http://${LOCAL_ADDRESS}:${VITE_PORT}/connect/${session}?token=${token}`;
+    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${privateSession}?token=${token}`;
     console.log(connectUrl);
     return (
-        <Box>
-            <Typography fontSize={40}>Private Mode</Typography>
-            {status === "connected" ? (
-                <Typography color="green">✅ Connected</Typography>
-            ) : (
-                <>
-                    {status === "disconnected" && navigate({ to: "/" })}
-                    {status === "pending" && (
-                        <>
-                            <Typography>Scan this QR Code:</Typography>
-                            <QRCodeSVG value={connectUrl} size={200} />
-                        </>
-                    )}
-                </>
-            )}
+        <Box
+            sx={{
+                backgroundColor: colorModes.private,
+                display: "flex",
+                justifyContent: "center",
+                width: "100vw",
+                height: "100vh"
+            }}
+        >
+            <Paper
+                elevation={3}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginTop: 10,
+                    padding: 10,
+                    width: "70%",
+                    height: "70%"
+                }}
+            >
+                <Typography fontSize={40}>Private Mode</Typography>
+                {status === "connected" ? (
+                    <PrivateLLMQuestions userId={userId} />
+                ) : (
+                    <>
+                        {status === "disconnected" && navigate({ to: "/" })}
+                        {status === "pending" && (
+                            <>
+                                <Typography>Scan this QR Code:</Typography>
+                                <QRCodeSVG value={connectUrl} size={200} />
+                            </>
+                        )}
+                    </>
+                )}
+            </Paper>
         </Box>
     );
 };

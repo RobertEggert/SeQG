@@ -9,7 +9,7 @@ import {
     type IconContainerProps,
     type SelectChangeEvent
 } from "@mui/material";
-import type { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import { type Dispatch, type SetStateAction, type SyntheticEvent } from "react";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
