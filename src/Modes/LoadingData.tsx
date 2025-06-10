@@ -15,8 +15,6 @@ const LoadingData = () => {
             <CircularProgress size={60} color="secondary" thickness={2} />
             <FadedComponent
                 sxBox={{
-                    position: "absolute",
-                    bottom: 32,
                     width: "100%",
                     textAlign: "center"
                 }}
