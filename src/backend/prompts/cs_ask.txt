@@ -5,6 +5,7 @@ Your task is to generate **one single-choice cybersecurity question** based on t
 - Age: {{age}}
 - Cybersecurity experience level (based on knowledge): {{experience}} out of 5 (where 1 = beginner, 5 = expert)
 - Pick only questions concerning the topic: {{topic}}
+- The question you ask must be answerable and it can not be ambiguous!
 
 Return your output strictly as a JSON object in the format below:
 {
@@ -19,5 +20,6 @@ Requirements:
 - The **correct answer must be at a random index in the option array**, where the index starts always at 0 as in most programming languages.
 - The question must be **age-appropriate**, **experience-appropriate**, and **topic-specific**.
 - Do **not include any extra text**, explanation, or formatting. Only return the JSON object as specified.
+- The topic inside the .json format you return has to be the same as i gave you, no extras.
 
 Any deviation from the above format will be rejected.

@@ -17,6 +17,7 @@ type STATUS =
 
 const PrivateMode = () => {
     const navigate = useNavigate();
+    const [userId, setUserId] = useState("");
     const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
@@ -49,6 +50,11 @@ const PrivateMode = () => {
                 console.log("Status:", msg);
                 if (msg === "connected") setStatus("connected");
                 else if (msg === "disconnected") setStatus("disconnected");
+            });
+
+            socket.on("client-id", ({ userId }) => {
+                setUserId(userId);
+                // You can store this in state, context, etc.
             });
 
             return () => {
@@ -85,7 +91,7 @@ const PrivateMode = () => {
             >
                 <Typography fontSize={40}>Private Mode</Typography>
                 {status === "connected" ? (
-                    <PrivateLLMQuestions />
+                    <PrivateLLMQuestions userId={userId} />
                 ) : (
                     <>
                         {status === "disconnected" && navigate({ to: "/" })}

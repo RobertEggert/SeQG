@@ -6,6 +6,7 @@ import type {
     ExplainStateType,
     QuestionStateType
 } from "./Guest/GuestLLMQuestions";
+import { sendAnswerToLLMBackend } from "../utils/LLMAnswerSaver";
 
 type QuestionType = {
     handleNextQButtonClick: () => void;
@@ -17,6 +18,7 @@ type QuestionType = {
     age?: string | null;
     experience?: number | null;
     answerCorrect: boolean | null;
+    userId?: string;
 };
 
 const Question = ({
@@ -28,7 +30,8 @@ const Question = ({
     explanationState,
     answerCorrect,
     age,
-    experience
+    experience,
+    userId
 }: QuestionType) => {
     useEffect(() => {
         if (age && experience) {
@@ -46,14 +49,29 @@ const Question = ({
     const handleAnswerClick = (answerClicked: number) => {
         const isCorrect = answerClicked === questionState.q_data?.correctIndex;
         if (isCorrect) {
+            console.log(userId);
+            if (userId)
+                sendAnswerToLLMBackend(
+                    true,
+                    userId,
+                    questionState.q_data?.topic ?? "NO_TOPIC"
+                );
             setAnswerCorrect(true);
             setTimeout(() => {
                 handleNextQButtonClick();
             }, 2000);
             return;
+        } else {
+            if (userId)
+                sendAnswerToLLMBackend(
+                    false,
+                    userId,
+                    questionState.q_data?.topic ?? "NO_TOPIC"
+                );
+
+            setAnswerCorrect(false);
+            setExplanationState({ e_fetch: true, e_data: null });
         }
-        setAnswerCorrect(false);
-        setExplanationState({ e_fetch: true, e_data: null });
     };
 
     return questionState.q_fetch ? (

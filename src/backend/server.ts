@@ -34,7 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const JWL_SECRET = process.env.VITE_JWL_SECRET || "VERI SICRET";
-const LOCAL_ADDRESS = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+const LOCAL_ADDRESS = process.env.VITE_LOCAL_ADDRESS || "NO_IP_FOUND";
 const BE_PORT = process.env.VITE_BE_PORT || 3001;
 
 const activeSessions = new Map<string, { host?: string; client?: string }>();
@@ -50,6 +50,29 @@ app.get("/connect/host", (_: Request, res: Response) => {
     const session = uuidv4();
     const token = jwt.sign({ session }, JWL_SECRET, { expiresIn: "1h" });
     res.json({ session, token });
+});
+
+app.get("/user-data/:userId", (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const userFilePath = path.join(
+        __dirname,
+        `./memory/private-users/${userId}.json`
+    );
+
+    if (!fs.existsSync(userFilePath)) {
+        res.status(404).json({ error: "User not found" });
+    }
+
+    const rawData = fs.readFileSync(userFilePath, "utf-8");
+    const parsedData = JSON.parse(rawData);
+
+    const { age, experience } = parsedData;
+
+    if (age !== null && experience !== null) {
+        res.json({ age, experience });
+    } else {
+        res.json({ age: null, experience: null });
+    }
 });
 
 io.on("connection", (socket: Socket) => {
@@ -140,8 +163,8 @@ io.on("connection", (socket: Socket) => {
                     );
                     const userData = {
                         user_id: userId,
-                        age: "",
-                        experience: -1,
+                        age: null,
+                        experience: null,
                         progress
                     };
                     fs.writeFileSync(
@@ -174,6 +197,9 @@ io.on("connection", (socket: Socket) => {
             if (sessionEntry.host && sessionEntry.client) {
                 io.to(sessionEntry.host).emit("status", "connected");
                 io.to(sessionEntry.client).emit("status", "connected");
+                if (role === "client") {
+                    io.to(sessionEntry.host).emit("client-id", { userId });
+                }
             }
 
             socket.on("disconnect", () => {

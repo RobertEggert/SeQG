@@ -21,6 +21,12 @@ interface ExplenationRequest {
     correctIndex: number;
 }
 
+interface SaveRequest {
+    isAnswerCorrect: boolean;
+    userId: string;
+    topic: string;
+}
+
 interface QuestionResponse {
     question: string;
     options: [string, string];
@@ -31,6 +37,20 @@ interface ExplenationResponse {
     explain: string;
 }
 
+type ProgressTrackingType = {
+    user_id: string;
+    age: string | null;
+    experience: number | null;
+    progress: {
+        [key: string]: ProgressTopicsType;
+    };
+};
+
+type ProgressTopicsType = {
+    correct: number;
+    total: number;
+};
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -38,9 +58,9 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOCAL_SERVER = process.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+const LOCAL_SERVER = process.env.VITE_LOCAL_ADDRESS || "NO_IP_FOUND";
 const LLM_PORT = process.env.VITE_LLM_PORT || 3002;
-const LLM_MODEL = process.env.VITE_LLM_MODEL || "llama3.1";
+const LLM_MODEL = process.env.VITE_LLM_MODEL || "NO_MODEL_FOUND";
 const LLM_API_PORT = process.env.VITE_LLM_API_PORT || 11434;
 
 // QUESTION
@@ -165,6 +185,50 @@ app.post(
             res.status(500).json({
                 error: "Failed to fetch question from LLM"
             });
+        }
+    }
+);
+
+// SAVE ANSWER
+app.post(
+    "/api/save",
+    async (req: Request<object, object, SaveRequest>, res: Response) => {
+        const { isAnswerCorrect, userId, topic } = req.body;
+
+        try {
+            const userFilePath = path.join(
+                __dirname,
+                `./memory/private-users/${userId}.json`
+            );
+
+            if (!fs.existsSync(userFilePath)) {
+                res.status(404).json({ error: "User not found" });
+            }
+
+            const rawData = fs.readFileSync(userFilePath, "utf-8");
+            const parsedData: ProgressTrackingType = JSON.parse(rawData);
+
+            // Ensure progress exists
+            if (!parsedData.progress) {
+                parsedData.progress = {};
+            }
+
+            // Ensure topic tracking exists
+            if (!parsedData.progress[topic]) {
+                parsedData.progress[topic] = { correct: 0, total: 0 };
+            }
+
+            // Update the progress
+            parsedData.progress[topic].total += 1;
+            console.log(isAnswerCorrect, userId, topic);
+            if (isAnswerCorrect) {
+                parsedData.progress[topic].correct += 1;
+            }
+
+            // Save it back to the file
+            fs.writeFileSync(userFilePath, JSON.stringify(parsedData, null, 2));
+        } catch (err) {
+            console.error("Error updating progress:", err);
         }
     }
 );

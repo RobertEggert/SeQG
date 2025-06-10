@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AgeExpreience from "../AgeExperience";
 import {
+    fetchUserData,
     type LLM_API_Explanation_Type,
     type LLM_API_Question_Type
 } from "../../utils/LLMFetcher";
@@ -19,7 +20,7 @@ export type QuestionStateType = {
     q_data: LLM_API_Question_Type | null;
 };
 
-const PrivateLLMQuestions = () => {
+const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
@@ -37,6 +38,20 @@ const PrivateLLMQuestions = () => {
         setAnswerCorrect(null);
         setQuestionState({ q_fetch: true, q_data: null });
         setExplanationState({ e_fetch: false, e_data: null });
+    };
+
+    useEffect(() => {
+        if (age === null && experience === null) {
+            getUserData(userId);
+        }
+    }, [userId]);
+
+    const getUserData = async (userId: string) => {
+        const userData = await fetchUserData(userId);
+        if (userData.age !== null && userData.experience !== null) {
+            setAge(userData.age);
+            setExperience(userData.experience);
+        }
     };
 
     return (
@@ -66,6 +81,7 @@ const PrivateLLMQuestions = () => {
                     explanationState={explanationState}
                     age={age}
                     experience={experience}
+                    userId={userId}
                 />
                 {/* Explanation if wrongfully answered */}
                 <ExplainAnswer
