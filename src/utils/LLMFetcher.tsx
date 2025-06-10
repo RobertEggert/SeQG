@@ -8,6 +8,7 @@ export type LLM_API_Question_Type = {
     question: string;
     options: string[];
     correctIndex: number;
+    topic: string;
 };
 
 export type LLM_API_Explanation_Type = {
@@ -27,6 +28,11 @@ type FetchExplanationType = {
     question?: string;
     options?: string[];
     correctIndex?: number;
+};
+
+type FetchUserDataType = {
+    age: string | null;
+    experience: number | null;
 };
 
 export const fetchQuestionFromLLM = async ({
@@ -100,4 +106,10 @@ export const fetchExplanationFromLLMShortTerm = async ({
         return;
     }
     setExplanationState({ e_fetch: false, e_data: LLMdata });
+};
+
+export const fetchUserData = async (userId: string) => {
+    const response = await fetch(`http://localhost:3001/user-data/${userId}`);
+    const userData: FetchUserDataType = await response.json();
+    return userData;
 };

@@ -15,6 +15,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ModePrivateImport } from './routes/mode/private'
 import { Route as ModeGuestImport } from './routes/mode/guest'
 import { Route as ConnectSessionImport } from './routes/connect/$session'
+import { Route as ConnectPrivateSessionImport } from './routes/connect/$privateSession'
 
 // Create/Update Routes
 
@@ -42,6 +43,12 @@ const ConnectSessionRoute = ConnectSessionImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ConnectPrivateSessionRoute = ConnectPrivateSessionImport.update({
+  id: '/connect/$privateSession',
+  path: '/connect/$privateSession',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/connect/$privateSession': {
+      id: '/connect/$privateSession'
+      path: '/connect/$privateSession'
+      fullPath: '/connect/$privateSession'
+      preLoaderRoute: typeof ConnectPrivateSessionImport
       parentRoute: typeof rootRoute
     }
     '/connect/$session': {
@@ -81,6 +95,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
   '/connect/$session': typeof ConnectSessionRoute
   '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
@@ -88,6 +103,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
   '/connect/$session': typeof ConnectSessionRoute
   '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
@@ -96,6 +112,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
   '/connect/$session': typeof ConnectSessionRoute
   '/mode/guest': typeof ModeGuestRoute
   '/mode/private': typeof ModePrivateRoute
@@ -103,15 +120,32 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
+  fullPaths:
+    | '/'
+    | '/connect/$privateSession'
+    | '/connect/$session'
+    | '/mode/guest'
+    | '/mode/private'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
-  id: '__root__' | '/' | '/connect/$session' | '/mode/guest' | '/mode/private'
+  to:
+    | '/'
+    | '/connect/$privateSession'
+    | '/connect/$session'
+    | '/mode/guest'
+    | '/mode/private'
+  id:
+    | '__root__'
+    | '/'
+    | '/connect/$privateSession'
+    | '/connect/$session'
+    | '/mode/guest'
+    | '/mode/private'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConnectPrivateSessionRoute: typeof ConnectPrivateSessionRoute
   ConnectSessionRoute: typeof ConnectSessionRoute
   ModeGuestRoute: typeof ModeGuestRoute
   ModePrivateRoute: typeof ModePrivateRoute
@@ -119,6 +153,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConnectPrivateSessionRoute: ConnectPrivateSessionRoute,
   ConnectSessionRoute: ConnectSessionRoute,
   ModeGuestRoute: ModeGuestRoute,
   ModePrivateRoute: ModePrivateRoute,
@@ -135,6 +170,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/connect/$privateSession",
         "/connect/$session",
         "/mode/guest",
         "/mode/private"
@@ -142,6 +178,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/connect/$privateSession": {
+      "filePath": "connect/$privateSession.tsx"
     },
     "/connect/$session": {
       "filePath": "connect/$session.tsx"
