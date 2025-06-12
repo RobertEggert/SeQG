@@ -10,34 +10,66 @@ type FadedImageChangeProps = {
 };
 
 const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
-    const [modeChanged, setModeChanged] = useState(true);
-    const [currentSrc, setCurrentSrc] = useState(guestChar);
-    useEffect(() => {
-        setModeChanged(false);
+    const [displayMode, setDisplayMode] = useState<MODES>("GUEST");
 
-        setTimeout(() => {
-            setCurrentSrc(mode === "GUEST" ? guestChar : privateChar);
-            setModeChanged(true);
-        }, 300);
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDisplayMode(mode);
+        }, 150);
+
+        return () => clearTimeout(timeout);
     }, [mode]);
+
+    const isGuest = displayMode === "GUEST";
+
+    const mainImg = isGuest ? guestChar : privateChar;
+    const shadowImg = isGuest ? privateChar : guestChar;
+
+    const shadowRightPosition = shadowImg === guestChar ? -110 : -40;
+
     return (
         <Box
             sx={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "auto",
+                maxHeight: "45vh",
                 transition: "transform 0.7s ease",
                 transform: enteringMode ? "translateX(50%)" : "translateX(0)"
             }}
         >
-            <Fade in={modeChanged} timeout={600}>
+            {!enteringMode && (
                 <Box
                     component="img"
-                    src={currentSrc}
-                    alt="character"
+                    src={shadowImg}
+                    alt="shadow character"
+                    sx={{
+                        position: "absolute",
+                        right: shadowRightPosition,
+                        top: 20,
+                        height: "35vh",
+                        opacity: 0.3,
+                        filter: "grayscale(80%)",
+                        transform: "scale(0.7)",
+                        transition:
+                            "opacity 0.3s ease, transform 0.3s ease, right 0.3s ease"
+                    }}
+                />
+            )}
+
+            <Fade in timeout={300} key={mainImg} unmountOnExit>
+                <Box
+                    component="img"
+                    src={mainImg}
+                    alt="main character"
                     sx={{
                         padding: 2,
-                        width: "auto",
-                        height: "auto",
                         maxHeight: "45vh",
-                        objectFit: "cover"
+                        objectFit: "cover",
+                        zIndex: 1,
+                        position: "relative"
                     }}
                 />
             </Fade>
