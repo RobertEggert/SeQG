@@ -26,7 +26,7 @@ Return your output strictly as a JSON object in the format below:
 {
     "question": "The Question based on everything told",
     "option_s": ["option"] or ["option1", "option2"] or ["option1", "option2", "option3"] or ["option 1", "option 2", "option 3", "option 4"],
-    "correctAnswer_s": [index or indices of the correct answer(s), depending on questionType],
+    "correctAnswer_s": [index or indice/s of the correct answer/s, depending on questionType],
     "topic": "{{topic}}",
     "questionType": "The type of question you wanted to ask given above in the definition of questionType"
 }
@@ -35,7 +35,8 @@ Requirements:
 - Provide **only 1 - 4 options** per question. 
 - if you provide 1 option, than this can only mean, that we have a "think-event" questionType.
 - if you provide 2 options, than this can only mean, that we have a "single-choice-event" questionType.
-- The **correct answer-s must be at a random index in the option array**, where the index starts always at 0 as in most programming languages.
+- The **correct answer/s must be at a random index in the option array**, where the index starts always at 0 as in most programming languages.
+- There can be multiple answers correct as a statement only in "multiple-choice-event"
 - The question must be **age-appropriate**, **experience-appropriate**, and **topic-specific**.
 - Do **not include any extra text**, explanation, or formatting. Only return the JSON object as specified.
 - The "topic" inside the .json format you return has to be the same as i gave you, no extras.

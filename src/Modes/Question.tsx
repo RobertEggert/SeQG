@@ -72,7 +72,14 @@ const Question = ({
     return questionState.q_fetch ? (
         <LoadingData />
     ) : (
-        <Box sx={{ mt: 4 }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                mt: 4,
+                alignItems: "center"
+            }}
+        >
             <QuestionTypeRecognizer
                 handleNextQButtonClick={handleNextQButtonClick}
                 setExplanationState={setExplanationState}
