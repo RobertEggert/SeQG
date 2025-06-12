@@ -42,7 +42,7 @@ type FetchExplanationType = {
     experience?: number | null;
     question?: string;
     option_s?: string[];
-    correctAnswer_s?: number;
+    correctAnswer_s?: number[];
 };
 
 type FetchUserDataType = {
