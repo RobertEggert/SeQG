@@ -10,8 +10,8 @@ Here is the context:
 - Age: {{age}}
 - Cybersecurity experience: {{experience}} out of 5
 - Question: "{{question}}"
-- Options: {{options}} (array of strings)
-- Correct answer index: {{correctIndex}} (zero-based)
+- Options: {{option_s}} (array of strings)
+- Correct answer index: {{correctAnswer_s}} (zero-based)
 
 Respond strictly in this JSON format:
 {

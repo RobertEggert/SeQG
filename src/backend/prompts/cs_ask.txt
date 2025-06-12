@@ -17,7 +17,7 @@ Each questionType is defined as follows:
 (it does not always! need atleast two correct answers it can also be a "multiple-choice-event" which only has one correct answer).
 - "drag-drop-event": User must drag items to correct target zones or categories.
 - "line-connect-event": User must draw lines between matching pairs.
-- "sorting-event": User must reorder options into a correct sequence. The correct sequence will be sorted by you in the "correctAnswer-S" field
+- "sorting-event": User must reorder options into a correct sequence. The correct sequence will be sorted by you in the "correctAnswer_s" field
 You always provided the options in random order but the correct order, will be sorted by you. for example: options order: 0, 1, 2, 3 (or only 3 options depends on your random behaviour)
 and the correct order would just be: 1, 0, 3, 2
 - "think-event": You send only one and **the** correct option to your question (the rest will be done in a frontend so dont worry)
@@ -25,8 +25,8 @@ and the correct order would just be: 1, 0, 3, 2
 Return your output strictly as a JSON object in the format below:
 {
     "question": "The Question based on everything told",
-    "option-s": ["option"] or ["option1", "option2"] or ["option1", "option2", "option3"] or ["option 1", "option 2", "option 3", "option 4"],
-    "correctAnswer-s": [index or indices of the correct answer(s), depending on questionType],
+    "option_s": ["option"] or ["option1", "option2"] or ["option1", "option2", "option3"] or ["option 1", "option 2", "option 3", "option 4"],
+    "correctAnswer_s": [index or indices of the correct answer(s), depending on questionType],
     "topic": "{{topic}}",
     "questionType": "The type of question you wanted to ask given above in the definition of questionType"
 }

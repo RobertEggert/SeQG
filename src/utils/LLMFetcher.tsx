@@ -2,8 +2,8 @@ import type { Dispatch, SetStateAction } from "react";
 
 export type LLM_API_Question_Type = {
     question: string;
-    options: string[];
-    correctIndex: number;
+    option_s: string[];
+    correctAnswer_s: number;
     topic: string;
     questionType: QuestionType;
 };
@@ -41,8 +41,8 @@ type FetchExplanationType = {
     age?: string | null;
     experience?: number | null;
     question?: string;
-    options?: string[];
-    correctIndex?: number;
+    option_s?: string[];
+    correctAnswer_s?: number;
 };
 
 type FetchUserDataType = {
@@ -62,7 +62,7 @@ export const fetchQuestionFromLLM = async ({
     });
     const LLMdata: LLM_API_Question_Type = await response.json();
 
-    if (!LLMdata?.options || !Array.isArray(LLMdata.options)) {
+    if (!LLMdata?.option_s || !Array.isArray(LLMdata.option_s)) {
         console.error("Invalid response from server:", LLMdata);
         return;
     }
@@ -97,8 +97,8 @@ export const fetchExplanationFromLLMShortTerm = async ({
     age,
     experience,
     question,
-    options,
-    correctIndex
+    option_s,
+    correctAnswer_s
 }: FetchExplanationType) => {
     const response = await fetch(
         "http://localhost:3002/api/explanation/shortterm",
@@ -109,8 +109,8 @@ export const fetchExplanationFromLLMShortTerm = async ({
                 age,
                 experience,
                 question,
-                options,
-                correctIndex
+                option_s,
+                correctAnswer_s
             })
         }
     );

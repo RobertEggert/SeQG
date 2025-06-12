@@ -12,10 +12,10 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-import { Route as ModePrivateImport } from './routes/mode/private'
-import { Route as ModeGuestImport } from './routes/mode/guest'
-import { Route as ConnectSessionImport } from './routes/connect/$session'
-import { Route as ConnectPrivateSessionImport } from './routes/connect/$privateSession'
+import { Route as FrontendModePrivateImport } from './routes/frontend-mode/private'
+import { Route as FrontendModeGuestImport } from './routes/frontend-mode/guest'
+import { Route as ClientConnectPrivatePrivateSessionImport } from './routes/client-connect/private/$privateSession'
+import { Route as ClientConnectGuestSessionImport } from './routes/client-connect/guest/$session'
 
 // Create/Update Routes
 
@@ -25,27 +25,28 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ModePrivateRoute = ModePrivateImport.update({
-  id: '/mode/private',
-  path: '/mode/private',
+const FrontendModePrivateRoute = FrontendModePrivateImport.update({
+  id: '/frontend-mode/private',
+  path: '/frontend-mode/private',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ModeGuestRoute = ModeGuestImport.update({
-  id: '/mode/guest',
-  path: '/mode/guest',
+const FrontendModeGuestRoute = FrontendModeGuestImport.update({
+  id: '/frontend-mode/guest',
+  path: '/frontend-mode/guest',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ConnectSessionRoute = ConnectSessionImport.update({
-  id: '/connect/$session',
-  path: '/connect/$session',
-  getParentRoute: () => rootRoute,
-} as any)
+const ClientConnectPrivatePrivateSessionRoute =
+  ClientConnectPrivatePrivateSessionImport.update({
+    id: '/client-connect/private/$privateSession',
+    path: '/client-connect/private/$privateSession',
+    getParentRoute: () => rootRoute,
+  } as any)
 
-const ConnectPrivateSessionRoute = ConnectPrivateSessionImport.update({
-  id: '/connect/$privateSession',
-  path: '/connect/$privateSession',
+const ClientConnectGuestSessionRoute = ClientConnectGuestSessionImport.update({
+  id: '/client-connect/guest/$session',
+  path: '/client-connect/guest/$session',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,32 +61,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/connect/$privateSession': {
-      id: '/connect/$privateSession'
-      path: '/connect/$privateSession'
-      fullPath: '/connect/$privateSession'
-      preLoaderRoute: typeof ConnectPrivateSessionImport
+    '/frontend-mode/guest': {
+      id: '/frontend-mode/guest'
+      path: '/frontend-mode/guest'
+      fullPath: '/frontend-mode/guest'
+      preLoaderRoute: typeof FrontendModeGuestImport
       parentRoute: typeof rootRoute
     }
-    '/connect/$session': {
-      id: '/connect/$session'
-      path: '/connect/$session'
-      fullPath: '/connect/$session'
-      preLoaderRoute: typeof ConnectSessionImport
+    '/frontend-mode/private': {
+      id: '/frontend-mode/private'
+      path: '/frontend-mode/private'
+      fullPath: '/frontend-mode/private'
+      preLoaderRoute: typeof FrontendModePrivateImport
       parentRoute: typeof rootRoute
     }
-    '/mode/guest': {
-      id: '/mode/guest'
-      path: '/mode/guest'
-      fullPath: '/mode/guest'
-      preLoaderRoute: typeof ModeGuestImport
+    '/client-connect/guest/$session': {
+      id: '/client-connect/guest/$session'
+      path: '/client-connect/guest/$session'
+      fullPath: '/client-connect/guest/$session'
+      preLoaderRoute: typeof ClientConnectGuestSessionImport
       parentRoute: typeof rootRoute
     }
-    '/mode/private': {
-      id: '/mode/private'
-      path: '/mode/private'
-      fullPath: '/mode/private'
-      preLoaderRoute: typeof ModePrivateImport
+    '/client-connect/private/$privateSession': {
+      id: '/client-connect/private/$privateSession'
+      path: '/client-connect/private/$privateSession'
+      fullPath: '/client-connect/private/$privateSession'
+      preLoaderRoute: typeof ClientConnectPrivatePrivateSessionImport
       parentRoute: typeof rootRoute
     }
   }
@@ -95,68 +96,69 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
-  '/connect/$session': typeof ConnectSessionRoute
-  '/mode/guest': typeof ModeGuestRoute
-  '/mode/private': typeof ModePrivateRoute
+  '/frontend-mode/guest': typeof FrontendModeGuestRoute
+  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
+  '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
-  '/connect/$session': typeof ConnectSessionRoute
-  '/mode/guest': typeof ModeGuestRoute
-  '/mode/private': typeof ModePrivateRoute
+  '/frontend-mode/guest': typeof FrontendModeGuestRoute
+  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
+  '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/connect/$privateSession': typeof ConnectPrivateSessionRoute
-  '/connect/$session': typeof ConnectSessionRoute
-  '/mode/guest': typeof ModeGuestRoute
-  '/mode/private': typeof ModePrivateRoute
+  '/frontend-mode/guest': typeof FrontendModeGuestRoute
+  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
+  '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/connect/$privateSession'
-    | '/connect/$session'
-    | '/mode/guest'
-    | '/mode/private'
+    | '/frontend-mode/guest'
+    | '/frontend-mode/private'
+    | '/client-connect/guest/$session'
+    | '/client-connect/private/$privateSession'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/connect/$privateSession'
-    | '/connect/$session'
-    | '/mode/guest'
-    | '/mode/private'
+    | '/frontend-mode/guest'
+    | '/frontend-mode/private'
+    | '/client-connect/guest/$session'
+    | '/client-connect/private/$privateSession'
   id:
     | '__root__'
     | '/'
-    | '/connect/$privateSession'
-    | '/connect/$session'
-    | '/mode/guest'
-    | '/mode/private'
+    | '/frontend-mode/guest'
+    | '/frontend-mode/private'
+    | '/client-connect/guest/$session'
+    | '/client-connect/private/$privateSession'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ConnectPrivateSessionRoute: typeof ConnectPrivateSessionRoute
-  ConnectSessionRoute: typeof ConnectSessionRoute
-  ModeGuestRoute: typeof ModeGuestRoute
-  ModePrivateRoute: typeof ModePrivateRoute
+  FrontendModeGuestRoute: typeof FrontendModeGuestRoute
+  FrontendModePrivateRoute: typeof FrontendModePrivateRoute
+  ClientConnectGuestSessionRoute: typeof ClientConnectGuestSessionRoute
+  ClientConnectPrivatePrivateSessionRoute: typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ConnectPrivateSessionRoute: ConnectPrivateSessionRoute,
-  ConnectSessionRoute: ConnectSessionRoute,
-  ModeGuestRoute: ModeGuestRoute,
-  ModePrivateRoute: ModePrivateRoute,
+  FrontendModeGuestRoute: FrontendModeGuestRoute,
+  FrontendModePrivateRoute: FrontendModePrivateRoute,
+  ClientConnectGuestSessionRoute: ClientConnectGuestSessionRoute,
+  ClientConnectPrivatePrivateSessionRoute:
+    ClientConnectPrivatePrivateSessionRoute,
 }
 
 export const routeTree = rootRoute
@@ -170,26 +172,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/connect/$privateSession",
-        "/connect/$session",
-        "/mode/guest",
-        "/mode/private"
+        "/frontend-mode/guest",
+        "/frontend-mode/private",
+        "/client-connect/guest/$session",
+        "/client-connect/private/$privateSession"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/connect/$privateSession": {
-      "filePath": "connect/$privateSession.tsx"
+    "/frontend-mode/guest": {
+      "filePath": "frontend-mode/guest.tsx"
     },
-    "/connect/$session": {
-      "filePath": "connect/$session.tsx"
+    "/frontend-mode/private": {
+      "filePath": "frontend-mode/private.tsx"
     },
-    "/mode/guest": {
-      "filePath": "mode/guest.tsx"
+    "/client-connect/guest/$session": {
+      "filePath": "client-connect/guest/$session.tsx"
     },
-    "/mode/private": {
-      "filePath": "mode/private.tsx"
+    "/client-connect/private/$privateSession": {
+      "filePath": "client-connect/private/$privateSession.tsx"
     }
   }
 }

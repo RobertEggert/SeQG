@@ -32,7 +32,7 @@ const GuestMode = () => {
                 setSession(session);
                 setToken(token);
             });
-    }, []);
+    }, [BE_PORT, LOCAL_SERVER]);
 
     useEffect(() => {
         if (session && token) {
@@ -55,7 +55,7 @@ const GuestMode = () => {
 
     if (!session || !token) return null;
 
-    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${session}?token=${token}`;
+    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/guest/${session}?token=${token}`;
     console.log(connectUrl);
     return (
         <Box

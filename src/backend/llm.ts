@@ -17,8 +17,8 @@ interface ExplenationRequest {
     age: string;
     experience: number;
     question: string;
-    options: string[];
-    correctIndex: number;
+    option_s: string[];
+    correctAnswer_s: number;
 }
 
 interface SaveRequest {
@@ -29,8 +29,8 @@ interface SaveRequest {
 
 interface QuestionResponse {
     question: string;
-    options: [string, string];
-    correctIndex: number;
+    option_s: [string, string];
+    correctAnswer_s: number;
 }
 
 interface ExplenationResponse {
@@ -194,7 +194,8 @@ app.post(
 app.post(
     "/api/explanation/shortterm",
     async (req: Request<object, object, ExplenationRequest>, res: Response) => {
-        const { age, experience, question, options, correctIndex } = req.body;
+        const { age, experience, question, option_s, correctAnswer_s } =
+            req.body;
 
         const rawPrompt = fs.readFileSync(
             "src/backend/prompts/cs_explain_shortterm.txt",
@@ -205,8 +206,8 @@ app.post(
             .replace("{{age}}", age)
             .replace("{{experience}}", String(experience))
             .replace("{{question}}", question)
-            .replace("{{options}}", String(options))
-            .replace("{{correctIndex}}", String(correctIndex));
+            .replace("{{option_s}}", String(option_s))
+            .replace("{{correctAnswer_s}}", String(correctAnswer_s));
 
         try {
             console.log("Fetching explanation from LLM");
