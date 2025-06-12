@@ -1,18 +1,33 @@
 import type { Dispatch, SetStateAction } from "react";
-import type {
-    ExplainStateType,
-    QuestionStateType
-} from "../Modes/Guest/GuestLLMQuestions";
 
 export type LLM_API_Question_Type = {
     question: string;
     options: string[];
     correctIndex: number;
     topic: string;
+    questionType: QuestionType;
 };
+
+export type QuestionType =
+    | "single-choice-event"
+    | "multiple-choice-event"
+    | "drag-drop-event"
+    | "line-connect-event"
+    | "sorting-event"
+    | "think-event";
 
 export type LLM_API_Explanation_Type = {
     explain: string;
+};
+
+export type ExplainStateType = {
+    e_fetch: boolean;
+    e_data: LLM_API_Explanation_Type | null;
+};
+
+export type QuestionStateType = {
+    q_fetch: boolean;
+    q_data: LLM_API_Question_Type | null;
 };
 
 type FetchQuestionType = {

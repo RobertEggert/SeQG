@@ -1,23 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import AgeExpreience from "../AgeExperience";
-import {
-    type LLM_API_Explanation_Type,
-    type LLM_API_Question_Type
-} from "../../utils/LLMFetcher";
 import ExplainAnswer from "../ExplainAnswer";
 import Question from "../Question";
 import NextQuestion from "../NextQuestion";
-
-export type ExplainStateType = {
-    e_fetch: boolean;
-    e_data: LLM_API_Explanation_Type | null;
-};
-
-export type QuestionStateType = {
-    q_fetch: boolean;
-    q_data: LLM_API_Question_Type | null;
-};
+import type {
+    QuestionStateType,
+    ExplainStateType
+} from "../../utils/LLMFetcher";
 
 const GuestLLMQuestions = () => {
     const [age, setAge] = useState<string | null>(null);
