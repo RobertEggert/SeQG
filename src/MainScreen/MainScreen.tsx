@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
@@ -10,12 +10,6 @@ export type MODES = "GUEST" | "PRIVATE" | null;
 const MainScreen = () => {
     const [isPressed, setIsPressed] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.playbackRate = 1;
-        }
-    }, []);
 
     return (
         <Box

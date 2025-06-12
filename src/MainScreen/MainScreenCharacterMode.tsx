@@ -129,7 +129,7 @@ const MainScreenCharacterMode = ({
                     elevation={4}
                     sx={{
                         position: "fixed",
-                        top: 64,
+                        top: 80,
                         right: 16,
                         width: 300,
                         padding: 2,
