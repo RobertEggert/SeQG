@@ -24,15 +24,16 @@ const ExplainAnswer = ({
 }: ExplainAnswerType) => {
     useEffect(() => {
         if (explanationState.e_fetch && questionState.q_data) {
-            const { question, options, correctIndex } = questionState.q_data;
+            const { question, option_s, correctAnswer_s } =
+                questionState.q_data;
             // safe to use them here
             fetchExplanationFromLLMShortTerm({
                 setExplanationState,
                 age,
                 experience,
                 question,
-                options,
-                correctIndex
+                option_s,
+                correctAnswer_s
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

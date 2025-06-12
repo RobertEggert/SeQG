@@ -3,10 +3,10 @@ import { CircularProgress } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import Prohibited from "../../Modes/Prohibited";
-import GuestLLMPrecondition from "../../Modes/Guest/GuestLLMPrecondition";
+import Prohibited from "../../../Modes/Prohibited";
+import GuestLLMPrecondition from "../../../Modes/Guest/GuestLLMPrecondition";
 
-export const Route = createFileRoute("/connect/$session")({
+export const Route = createFileRoute("/client-connect/guest/$session")({
     component: () => <GuestSession />
 });
 
@@ -21,6 +21,7 @@ const GuestSession = () => {
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
+        console.log("TEST GUEST");
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 

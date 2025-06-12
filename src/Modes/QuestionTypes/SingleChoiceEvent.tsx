@@ -12,7 +12,8 @@ const SingleChoiceEvent = ({
     userId
 }: QuestionTypeProps) => {
     const handleAnswerClick = (answerClicked: number) => {
-        const isCorrect = answerClicked === questionState.q_data?.correctIndex;
+        const isCorrect =
+            answerClicked === questionState.q_data?.correctAnswer_s;
         if (isCorrect) {
             console.log(userId);
             if (userId)
@@ -45,7 +46,7 @@ const SingleChoiceEvent = ({
                 {questionState.q_data?.question}
             </Typography>
             <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
-                {questionState.q_data?.options.map((option, index) => (
+                {questionState.q_data?.option_s.map((option, index) => (
                     <Button
                         key={index}
                         variant="outlined"

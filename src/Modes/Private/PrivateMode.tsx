@@ -33,7 +33,7 @@ const PrivateMode = () => {
                 setPrivateSession(session);
                 setToken(token);
             });
-    }, []);
+    }, [BE_PORT, LOCAL_SERVER]);
 
     useEffect(() => {
         if (privateSession && token) {
@@ -65,7 +65,7 @@ const PrivateMode = () => {
 
     if (!privateSession || !token) return null;
 
-    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/connect/${privateSession}?token=${token}`;
+    const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
     console.log(connectUrl);
     return (
         <Box

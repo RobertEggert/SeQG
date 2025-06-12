@@ -67,6 +67,8 @@ const Question = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionState.q_fetch]);
 
+    console.log(questionState.q_data);
+
     return questionState.q_fetch ? (
         <LoadingData />
     ) : (

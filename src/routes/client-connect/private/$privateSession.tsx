@@ -3,13 +3,15 @@ import { CircularProgress } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import Prohibited from "../../Modes/Prohibited";
+import Prohibited from "../../../Modes/Prohibited";
 import { v4 as uuidv4 } from "uuid";
-import PrivateLLMPrecondition from "../../Modes/Private/PrivateLLMPrecondition";
+import PrivateLLMPrecondition from "../../../Modes/Private/PrivateLLMPrecondition";
 
-export const Route = createFileRoute("/connect/$privateSession")({
-    component: () => <PrivateSession />
-});
+export const Route = createFileRoute("/client-connect/private/$privateSession")(
+    {
+        component: () => <PrivateSession />
+    }
+);
 
 const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
     return isError ? <Prohibited /> : <PrivateLLMPrecondition />;
@@ -22,6 +24,7 @@ const PrivateSession = () => {
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
+        console.log("TEST PRIVATE");
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 

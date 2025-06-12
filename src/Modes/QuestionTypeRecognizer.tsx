@@ -5,7 +5,7 @@ import type {
     QuestionType
 } from "../utils/LLMFetcher";
 import SingleChoiceEvent from "./QuestionTypes/SingleChoiceEvent";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import LineConnectEvent from "./QuestionTypes/LineConnectEvent";
 import MultipleChoiceEvent from "./QuestionTypes/MultipleChoiceEvent";
 import SortingEvent from "./QuestionTypes/SortingEvent";
@@ -31,7 +31,7 @@ const QuestionTypeRecognizer = ({
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    if (!questionState.q_data) return <Typography>No Data found</Typography>;
+    if (!questionState.q_data) return null;
 
     const sharedProps = {
         handleNextQButtonClick,
