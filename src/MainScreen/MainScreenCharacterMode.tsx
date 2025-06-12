@@ -74,9 +74,29 @@ const MainScreenCharacterMode = ({
                         paddingTop: "7rem"
                     }}
                 >
-                    <Typography variant="h5" sx={{ color: "black", mb: 1 }}>
+                    <Typography
+                        variant="h3"
+                        onMouseEnter={() => setInfoOpen(true)}
+                        onMouseLeave={() => setInfoOpen(false)}
+                        onClick={() => setInfoOpen((prev) => !prev)}
+                        sx={{
+                            color: "#ffffff",
+                            mb: 3,
+                            fontFamily: "'Orbitron', sans-serif",
+                            fontWeight: 700,
+                            textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+                            letterSpacing: "2px",
+                            textTransform: "uppercase",
+                            cursor: "pointer",
+                            transition: "color 0.3s",
+                            "&:hover": {
+                                color: "#90caf9"
+                            }
+                        }}
+                    >
                         {mode === "GUEST" ? "Guest Mode" : "Private Mode"}
                     </Typography>
+
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
                     <ChangeModeButton
                         handleModeSwitch={handleModeSwitch}
@@ -123,7 +143,7 @@ const MainScreenCharacterMode = ({
                         Mode Definition
                     </Typography>
                     <Typography variant="body2">
-                        ToDo define Anonymous and Guest here!
+                        ToDo: Define „Guest“ & „Private“ Mode.
                     </Typography>
                 </Paper>
             )}

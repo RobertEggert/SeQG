@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
@@ -9,6 +9,13 @@ export type MODES = "GUEST" | "PRIVATE" | null;
 
 const MainScreen = () => {
     const [isPressed, setIsPressed] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5;
+        }
+    }, []);
 
     return (
         <Box
@@ -20,6 +27,7 @@ const MainScreen = () => {
             }}
         >
             <video
+                ref={videoRef}
                 autoPlay
                 loop
                 muted
