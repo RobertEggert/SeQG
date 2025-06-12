@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 export type LLM_API_Question_Type = {
     question: string;
     option_s: string[];
-    correctAnswer_s: number;
+    correctAnswer_s: number[];
     topic: string;
     questionType: QuestionType;
 };

@@ -13,7 +13,8 @@ const SingleChoiceEvent = ({
 }: QuestionTypeProps) => {
     const handleAnswerClick = (answerClicked: number) => {
         const isCorrect =
-            answerClicked === questionState.q_data?.correctAnswer_s;
+            questionState.q_data?.correctAnswer_s.includes(answerClicked);
+        // THIS IF STATEMENT HAS TO BE A EXPORTET FUNCTION --> USED MULTIPLE TIMES!
         if (isCorrect) {
             console.log(userId);
             if (userId)
@@ -40,6 +41,11 @@ const SingleChoiceEvent = ({
         }
     };
 
+    const isDisabled =
+        explanationState.e_data !== null ||
+        explanationState.e_fetch ||
+        answerCorrect === true;
+
     return (
         <>
             <Typography variant="h6">
@@ -50,11 +56,7 @@ const SingleChoiceEvent = ({
                     <Button
                         key={index}
                         variant="outlined"
-                        disabled={
-                            explanationState.e_data !== null ||
-                            explanationState.e_fetch ||
-                            answerCorrect === true
-                        }
+                        disabled={isDisabled}
                         onClick={() => handleAnswerClick(index)}
                     >
                         {option}
