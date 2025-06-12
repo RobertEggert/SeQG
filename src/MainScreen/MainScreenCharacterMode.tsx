@@ -139,11 +139,16 @@ const MainScreenCharacterMode = ({
                         borderRadius: 2
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h5" gutterBottom>
                         Mode Definition
                     </Typography>
                     <Typography variant="body2">
-                        ToDo: Define „Guest“ & „Private“ Mode.
+                        <h4>Guest Mode</h4>
+                        In the Guest Mode you are fully anonymous. Your
+                        questions are based on your self assessment.
+                        <h4>Private Mode</h4>
+                        In Private Mode your answers train the LLM to create
+                        Questions just for you.
                     </Typography>
                 </Paper>
             )}
