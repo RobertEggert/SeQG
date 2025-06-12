@@ -23,6 +23,7 @@ const ChangeModeButton = ({
                 onClick={handleModeSwitch}
                 sx={{
                     border: "1px solid #bdbdbd",
+                    backgroundColor: "white",
                     borderRadius: 5,
                     width: "20rem"
                 }}

@@ -44,9 +44,10 @@ const SwipeableBox = <SetterType,>({
             onTouchMove={touchMove}
             onTouchEnd={touchEnd}
             sx={{
+                backgroundColor: "white",
                 display: "flex",
                 flexDirection: "column",
-                gap: 5,
+                gap: 2,
                 width: "100rem",
                 alignItems: "center"
             }}

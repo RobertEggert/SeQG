@@ -9,12 +9,14 @@ type EnterModeButtonProps = {
 const EnterModeButton = ({ handleClick, mode }: EnterModeButtonProps) => {
     return (
         <Button
-            variant="outlined"
+            variant="contained"
             onClick={handleClick}
             sx={{
-                borderWidth: 1,
-                borderColor: "#bdbdbd",
-                color: "darkgrey",
+                backgroundColor: "rgba(76, 175, 80, 0.9)",
+                color: "white",
+                "&:hover": {
+                    backgroundColor: "#006400"
+                },
                 width: "25%",
                 fontWeight: "bold",
                 borderRadius: 10

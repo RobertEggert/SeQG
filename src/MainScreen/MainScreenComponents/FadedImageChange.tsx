@@ -1,6 +1,6 @@
 import { Box, Fade } from "@mui/material";
-import guestChar from "../../img/guest.png";
-import privateChar from "../../img/private.png";
+import privateChar from "../../img/woman.png";
+import guestChar from "../../img/spy.png";
 import { useState, useEffect } from "react";
 import type { MODES } from "../MainScreen";
 
@@ -33,7 +33,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                     src={currentSrc}
                     alt="character"
                     sx={{
-                        padding: 10,
+                        padding: 2,
                         width: "auto",
                         height: "auto",
                         maxHeight: "45vh",
