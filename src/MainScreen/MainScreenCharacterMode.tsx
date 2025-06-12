@@ -1,12 +1,5 @@
 import { Box, IconButton, Paper, Typography } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
-import {
-    useEffect,
-    useRef,
-    useState,
-    type Dispatch,
-    type SetStateAction
-} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import SwipeableBox from "./MainScreenComponents/SwipeableBox";
@@ -14,6 +7,13 @@ import EnterModeButton from "./MainScreenComponents/EnterModeButton";
 import ChangeModeButton from "./MainScreenComponents/ChangeModeButton";
 import FadedImageChange from "./MainScreenComponents/FadedImageChange";
 import type { MODES } from "./MainScreen";
+import {
+    useEffect,
+    useRef,
+    useState,
+    type Dispatch,
+    type SetStateAction
+} from "react";
 
 type MainScreenCharacterModeProps = {
     setMode: Dispatch<SetStateAction<MODES>>;

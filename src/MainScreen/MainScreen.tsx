@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
-import videoBackground from "../img/background.mp4"; // Pfad anpassen
+import videoBackground from "../img/background.mp4";
 
 export type MODES = "GUEST" | "PRIVATE" | null;
 
@@ -36,7 +36,6 @@ const MainScreen = () => {
                 src={videoBackground}
             />
 
-            {/* Dein Content oben drauf */}
             <Box
                 sx={{
                     position: "relative",
