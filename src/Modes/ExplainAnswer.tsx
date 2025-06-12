@@ -1,11 +1,11 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import { fetchExplanationFromLLMShortTerm } from "../utils/LLMFetcher";
+import {
+    fetchExplanationFromLLMShortTerm,
+    type ExplainStateType,
+    type QuestionStateType
+} from "../utils/LLMFetcher";
 import { Box, Typography } from "@mui/material";
 import LoadingData from "./LoadingData";
-import type {
-    ExplainStateType,
-    QuestionStateType
-} from "./Guest/GuestLLMQuestions";
 
 type ExplainAnswerType = {
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;

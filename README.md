@@ -41,3 +41,18 @@ Everytime (for now) when starting Ollamas llm you have to close the process comp
 
 Frontend <-----> Backend (client / host architecture for a session)  
 Frontend (sends age and experience) <--> LLMBackend <--> LLM (receives the prompt and sends a question)
+
+# Question types
+
+1. Single Choice
+2. Multiple Choice
+3. Drag and Drop events
+4. Draw events (only works with LLama4)
+5. Line Connect
+6. Sorting Events
+7. Image Selection (is kind of hard but possible)
+8. think event (You have a question with a not shown answer and you have 10 seconds or smth like that, where you answer for yourself and then press "Yes i knew the answer" or "No i didnt")
+
+Implemented:
+
+1. Single Choice

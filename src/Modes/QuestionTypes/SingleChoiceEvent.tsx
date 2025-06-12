@@ -1,0 +1,67 @@
+import { Typography, Box, Button } from "@mui/material";
+import type { QuestionTypeProps } from "../QuestionTypeRecognizer";
+import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
+
+const SingleChoiceEvent = ({
+    handleNextQButtonClick,
+    setExplanationState,
+    setAnswerCorrect,
+    questionState,
+    explanationState,
+    answerCorrect,
+    userId
+}: QuestionTypeProps) => {
+    const handleAnswerClick = (answerClicked: number) => {
+        const isCorrect = answerClicked === questionState.q_data?.correctIndex;
+        if (isCorrect) {
+            console.log(userId);
+            if (userId)
+                sendAnswerToLLMBackend(
+                    true,
+                    userId,
+                    questionState.q_data?.topic ?? "NO_TOPIC"
+                );
+            setAnswerCorrect(true);
+            setTimeout(() => {
+                handleNextQButtonClick();
+            }, 2000);
+            return;
+        } else {
+            if (userId)
+                sendAnswerToLLMBackend(
+                    false,
+                    userId,
+                    questionState.q_data?.topic ?? "NO_TOPIC"
+                );
+
+            setAnswerCorrect(false);
+            setExplanationState({ e_fetch: true, e_data: null });
+        }
+    };
+
+    return (
+        <>
+            <Typography variant="h6">
+                {questionState.q_data?.question}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+                {questionState.q_data?.options.map((option, index) => (
+                    <Button
+                        key={index}
+                        variant="outlined"
+                        disabled={
+                            explanationState.e_data !== null ||
+                            explanationState.e_fetch ||
+                            answerCorrect === true
+                        }
+                        onClick={() => handleAnswerClick(index)}
+                    >
+                        {option}
+                    </Button>
+                ))}
+            </Box>
+        </>
+    );
+};
+
+export default SingleChoiceEvent;

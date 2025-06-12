@@ -1,8 +1,5 @@
 import { Box, Button } from "@mui/material";
-import type {
-    ExplainStateType,
-    QuestionStateType
-} from "./Guest/GuestLLMQuestions";
+import type { QuestionStateType, ExplainStateType } from "../utils/LLMFetcher";
 
 type NextQuestionType = {
     handleNextQButtonClick: () => void;
