@@ -15,7 +15,7 @@ Here is the context:
 
 Respond strictly in this JSON format:
 {
-  "explain": "Your explanation here."
+  "explain": "Your explanation here. Mention the correct answers in quotes"
 }
 
 Do NOT return anything else. No extra formatting, comments, or text.
