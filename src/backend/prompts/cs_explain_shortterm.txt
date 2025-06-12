@@ -11,7 +11,7 @@ Here is the context:
 - Cybersecurity experience: {{experience}} out of 5
 - Question: "{{question}}"
 - Options: {{option_s}} (array of strings)
-- Correct answer index: {{correctAnswer_s}} (zero-based)
+- Correct answer array with index: {{correctAnswer_s}} (array of number zero-based)
 
 Respond strictly in this JSON format:
 {

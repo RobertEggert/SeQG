@@ -18,7 +18,7 @@ interface ExplenationRequest {
     experience: number;
     question: string;
     option_s: string[];
-    correctAnswer_s: number;
+    correctAnswer_s: number[];
 }
 
 interface SaveRequest {
