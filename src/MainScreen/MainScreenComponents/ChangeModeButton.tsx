@@ -16,15 +16,20 @@ const ChangeModeButton = ({
             unmountOnExit
             mountOnEnter
             externalFade={enteringMode !== null ? enteringMode : undefined}
-            timeout={2000}
+            timeout={1500}
             fadeTime={1000}
         >
             <IconButton
                 onClick={handleModeSwitch}
                 sx={{
                     border: "1px solid #bdbdbd",
+                    backgroundColor: "white",
+
                     borderRadius: 5,
-                    width: "20rem"
+                    width: "20rem",
+                    "&:hover": {
+                        backgroundColor: "white"
+                    }
                 }}
             >
                 <Box
