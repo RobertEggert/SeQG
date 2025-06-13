@@ -10,6 +10,7 @@ import type { QuestionTypeProps } from "../QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
+import { flexAlignColumn } from "../../styling/theme";
 
 const ThinkEvent = ({
     handleNextQButtonClick,
@@ -71,10 +72,8 @@ const ThinkEvent = ({
                 {/* THINKING */}
                 <Box
                     sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                        alignItems: "center"
+                        ...flexAlignColumn,
+                        gap: 2
                     }}
                 >
                     <Card
@@ -111,10 +110,8 @@ const ThinkEvent = ({
                 {/* ANSWER */}
                 <Box
                     sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                        alignItems: "center"
+                        ...flexAlignColumn,
+                        gap: 2
                     }}
                 >
                     <Card

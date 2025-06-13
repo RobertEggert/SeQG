@@ -5,6 +5,7 @@ import {
     type ReactNode,
     type SetStateAction
 } from "react";
+import { flexAlignColumn } from "../../styling/theme";
 
 const SwipeableBox = <SetterType,>({
     toBeSet,
@@ -44,11 +45,9 @@ const SwipeableBox = <SetterType,>({
             onTouchMove={touchMove}
             onTouchEnd={touchEnd}
             sx={{
-                display: "flex",
-                flexDirection: "column",
+                ...flexAlignColumn,
                 gap: 2,
-                width: "100rem",
-                alignItems: "center"
+                width: "100rem"
             }}
         >
             {children}

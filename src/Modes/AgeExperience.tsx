@@ -15,6 +15,7 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+import { flexAlignRow } from "../styling/theme";
 
 type AgeExprienceType = {
     age: string | null;
@@ -74,10 +75,8 @@ const AgeExpreience = ({
             {/* Age Selector */}
             <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 2,
-                    alignItems: "center"
+                    ...flexAlignRow,
+                    gap: 2
                 }}
             >
                 <Typography>What is your age?</Typography>

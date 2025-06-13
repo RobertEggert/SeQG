@@ -1,14 +1,13 @@
 import { Box, CircularProgress } from "@mui/material";
 import FadedComponent from "../utils/FadedComponent";
+import { flexAlignColumn } from "../styling/theme";
 
 const LoadingData = () => {
     return (
         <Box
             sx={{
-                display: "flex",
-                flexDirection: "column",
+                ...flexAlignColumn,
                 justifyContent: "center",
-                alignItems: "center",
                 paddingTop: 5
             }}
         >

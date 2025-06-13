@@ -1,55 +1,106 @@
-import { Box, Fade } from "@mui/material";
+import { Box, Fade, keyframes } from "@mui/material";
 import privateChar from "../../img/woman.png";
 import guestChar from "../../img/spy.png";
 import type { MODES } from "../MainScreen";
 
 type FadedImageChangeProps = {
-    enteringMode: boolean | null;
+    enteringMode: boolean;
     mode: MODES;
 };
+const rotateGuestStart = keyframes`
+  0% {
+    transform: perspective(60rem) rotateY(0deg) translateZ(0rem) rotateY(0deg);
+    filter: grayscale(80%);
+  }
+  100% {
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    filter: grayscale(0%);
+  }
+`;
+
+const rotateGuestEnd = keyframes`
+  0% {
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    filter: grayscale(0%);
+  }
+  100% {
+    transform: perspective(60rem) rotateY(360deg) translateZ(0rem) rotateY(-360deg);
+    filter: grayscale(80%);
+  }
+`;
+
+const rotatePrivateStart = keyframes`
+  0% {
+    transform: perspective(60rem) rotateY(0deg) translateZ(0rem) rotateY(0deg) translateX(-18.75rem) translateY(0rem);
+    filter: grayscale(0%);
+  }
+  100% {
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateX(-18.75rem) translateY(-6.25rem);
+    filter: grayscale(80%);
+  }
+`;
+
+const rotatePrivateEnd = keyframes`
+  0% {
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateX(-18.75rem) translateY(-6.25rem);
+    filter: grayscale(80%);
+  }
+  100% {
+    transform: perspective(60rem) rotateY(360deg) translateZ(0rem) rotateY(-360deg) translateX(-18.75rem);
+    filter: grayscale(0%);
+  }
+`;
 
 const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
     return (
         <Box
             sx={{
                 position: "relative",
+                width: "100%",
+                height: "45vh",
                 display: "flex",
+                justifyContent: "center",
                 alignItems: "center",
-                height: "auto",
-                left: "-4rem",
-                maxHeight: "45vh",
-                transition: "transform 0.5s ease",
-                transform: enteringMode ? "translateX(17%)" : "translateX(0)"
+                overflow: "visible",
+                transform: enteringMode
+                    ? mode === "PRIVATE"
+                        ? "translateX(23%)"
+                        : "translateX(17%)"
+                    : "translateX(0%)",
+                transition: "transform 1s ease-in-out"
             }}
         >
-            <Fade in={!enteringMode} timeout={300}>
+            {/* GUEST CHAR */}
+            <Fade in={!enteringMode || mode === "GUEST"} timeout={500}>
                 <Box
                     component="img"
-                    src={mode === "GUEST" ? privateChar : guestChar}
+                    src={guestChar}
                     sx={{
-                        position: "absolute",
-                        right: mode === "GUEST" ? -20 : -110,
-                        top: 20,
-                        height: "35vh",
-                        opacity: 0.3,
-                        filter: "grayscale(100%)",
-                        transform: "scale(0.8)",
-                        transition:
-                            "opacity 0.3s ease, transform 0.3s ease, right 0.3s ease"
+                        height: "45vh",
+                        padding: 2,
+                        zIndex: mode === "PRIVATE" ? 2 : 1,
+                        animation:
+                            mode === "PRIVATE"
+                                ? `${rotateGuestStart} 2s ease-in-out`
+                                : `${rotateGuestEnd} 2s ease-in-out`,
+                        animationFillMode: "forwards"
                     }}
                 />
             </Fade>
-
-            <Fade in timeout={300}>
+            {/* PRIVATE CHAR */}
+            <Fade in={!enteringMode || mode === "PRIVATE"} timeout={500}>
                 <Box
                     component="img"
-                    src={mode === "GUEST" ? guestChar : privateChar}
+                    src={privateChar}
                     sx={{
-                        padding: 7,
-                        maxHeight: "45vh",
-                        objectFit: "cover",
-                        zIndex: 1,
-                        position: "relative"
+                        height: "45vh",
+                        padding: 2,
+                        zIndex: mode === "GUEST" ? 2 : 1,
+                        animation:
+                            mode === "GUEST"
+                                ? `${rotatePrivateStart} 2s ease-in-out`
+                                : `${rotatePrivateEnd} 2s ease-in-out`,
+                        animationFillMode: "forwards"
                     }}
                 />
             </Fade>

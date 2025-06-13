@@ -1,10 +1,11 @@
 import { IconButton, Box, Typography } from "@mui/material";
 import FadedComponent from "../../utils/FadedComponent";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+import { flexAlignColumn } from "../../styling/theme";
 
 type ChangeModeButtonProps = {
     handleModeSwitch: () => void;
-    enteringMode: boolean | null;
+    enteringMode: boolean;
 };
 
 const ChangeModeButton = ({
@@ -15,7 +16,7 @@ const ChangeModeButton = ({
         <FadedComponent
             unmountOnExit
             mountOnEnter
-            externalFade={enteringMode !== null ? enteringMode : undefined}
+            externalFade={!enteringMode ? undefined : enteringMode}
             timeout={1500}
             fadeTime={1000}
         >
@@ -34,9 +35,7 @@ const ChangeModeButton = ({
             >
                 <Box
                     sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        ...flexAlignColumn,
                         paddingRight: 2
                     }}
                 >

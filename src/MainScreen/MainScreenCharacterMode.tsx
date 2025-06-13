@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,7 @@ import FadedImageChange from "./MainScreenComponents/FadedImageChange";
 import type { MODES } from "./MainScreen";
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import InfoPopup from "./MainScreenComponents/InfoPopup";
+import { flexAlignColumn } from "../styling/theme";
 
 type MainScreenCharacterModeProps = {
     setMode: Dispatch<SetStateAction<MODES>>;
@@ -20,7 +21,7 @@ const MainScreenCharacterMode = ({
     mode
 }: MainScreenCharacterModeProps) => {
     const navigate = useNavigate();
-    const [enteringMode, setEnteringMode] = useState<boolean | null>(null);
+    const [enteringMode, setEnteringMode] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
     const infoRef = useRef<HTMLDivElement>(null);
 
@@ -42,38 +43,46 @@ const MainScreenCharacterMode = ({
         >
             <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    ...flexAlignColumn,
                     paddingTop: "5rem",
                     gap: 3
                 }}
             >
-                <Typography
-                    variant="h3"
+                <Button
                     onClick={() => setInfoOpen(!infoOpen)}
+                    onBlur={() => setInfoOpen(!infoOpen)}
+                    disableRipple
                     sx={{
-                        color: "white",
-                        paddingBottom: 3,
-                        fontFamily: "'Orbitron', sans-serif",
-                        fontWeight: 700,
-                        textShadow: "2 2 6 rgba(0,0,0,0.6)",
-                        letterSpacing: 2,
-                        cursor: "pointer",
-                        transition: "color 0.3s",
                         "&:hover": {
-                            color: "#90caf9"
+                            color: "rgba(0,0,0,0.0)",
+                            backgroundColor: "rgba(0,0,0,0.0)"
                         }
                     }}
                 >
-                    {mode + " MODE"}
-                </Typography>
+                    <Typography
+                        variant="h3"
+                        sx={{
+                            position: "relative",
+                            color: "white",
+                            paddingBottom: 3,
+                            fontFamily: "'Orbitron', sans-serif",
+                            fontWeight: 700,
+                            textShadow: "2 2 6 rgba(0,0,0,0.6)",
+                            letterSpacing: 2,
+                            cursor: "pointer",
+                            transition: "color 0.3s",
+                            "&:hover": {
+                                color: "#90caf9"
+                            }
+                        }}
+                    >
+                        {mode + " MODE"}
+                    </Typography>
+                </Button>
                 <Box
                     sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 5,
-                        alignItems: "center"
+                        ...flexAlignColumn,
+                        gap: 5
                     }}
                 >
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
@@ -86,15 +95,15 @@ const MainScreenCharacterMode = ({
 
             <EnterModeButton handleClick={handleClick} mode={mode} />
             <IconButton
-                onClick={() => setInfoOpen((prev) => !prev)}
+                onClick={() => setInfoOpen(!infoOpen)}
+                onBlur={() => setInfoOpen(!infoOpen)}
                 sx={{
                     position: "fixed",
                     top: 16,
                     right: 16,
                     color: "white",
                     zIndex: 1000,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.7)" }
+                    backgroundColor: "rgba(0,0,0,0.5)"
                 }}
                 aria-label="Info"
             >
