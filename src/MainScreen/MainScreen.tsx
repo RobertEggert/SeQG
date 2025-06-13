@@ -1,15 +1,14 @@
 import { Box } from "@mui/material";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
-import videoBackground from "../img/background.mp4";
+import Background from "./MainScreenComponents/Background";
 
 export type MODES = "GUEST" | "PRIVATE" | null;
 
 const MainScreen = () => {
     const [isPressed, setIsPressed] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
 
     return (
         <Box
@@ -20,27 +19,9 @@ const MainScreen = () => {
                 overflow: "hidden"
             }}
         >
-            <video
-                ref={videoRef}
-                autoPlay
-                loop
-                muted
-                playsInline
-                style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    top: 0,
-                    left: 0,
-                    zIndex: 0
-                }}
-                src={videoBackground}
-            />
-
+            <Background />
             <Box
                 sx={{
-                    position: "relative",
                     zIndex: 1,
                     display: "flex",
                     alignItems: "center",
