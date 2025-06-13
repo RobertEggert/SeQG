@@ -20,7 +20,7 @@ const MainScreenCharacterMode = ({
     mode
 }: MainScreenCharacterModeProps) => {
     const navigate = useNavigate();
-    const [enteringMode, setEnteringMode] = useState<boolean>(false);
+    const [enteringMode, setEnteringMode] = useState<boolean | null>(null);
     const [infoOpen, setInfoOpen] = useState(false);
     const infoRef = useRef<HTMLDivElement>(null);
 
@@ -36,61 +36,55 @@ const MainScreenCharacterMode = ({
     };
 
     return (
-        <>
-            <SwipeableBox<MODES>
-                toBeSet={mode === "GUEST" ? "PRIVATE" : "GUEST"}
-                setter={setMode}
+        <SwipeableBox<MODES>
+            toBeSet={mode === "GUEST" ? "PRIVATE" : "GUEST"}
+            setter={setMode}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    paddingTop: "5rem",
+                    gap: 3
+                }}
             >
+                <Typography
+                    variant="h3"
+                    onClick={() => setInfoOpen(!infoOpen)}
+                    sx={{
+                        color: "white",
+                        paddingBottom: 3,
+                        fontFamily: "'Orbitron', sans-serif",
+                        fontWeight: 700,
+                        textShadow: "2 2 6 rgba(0,0,0,0.6)",
+                        letterSpacing: 2,
+                        cursor: "pointer",
+                        transition: "color 0.3s",
+                        "&:hover": {
+                            color: "#90caf9"
+                        }
+                    }}
+                >
+                    {mode + " MODE"}
+                </Typography>
                 <Box
                     sx={{
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center",
-                        paddingTop: "5rem",
-                        gap: 3
+                        gap: 5,
+                        alignItems: "center"
                     }}
                 >
-                    <Typography
-                        variant="h3"
-                        onClick={() => setInfoOpen(!infoOpen)}
-                        sx={{
-                            color: "white",
-                            paddingBottom: 3,
-                            fontFamily: "'Orbitron', sans-serif",
-                            fontWeight: 700,
-                            textShadow: "2 2 6 rgba(0,0,0,0.6)",
-                            letterSpacing: 2,
-                            cursor: "pointer",
-                            transition: "color 0.3s",
-                            "&:hover": {
-                                color: "#90caf9"
-                            }
-                        }}
-                    >
-                        {mode + " MODE"}
-                    </Typography>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 5,
-                            alignItems: "center"
-                        }}
-                    >
-                        <FadedImageChange
-                            enteringMode={enteringMode}
-                            mode={mode}
-                        />
-                        <ChangeModeButton
-                            handleModeSwitch={handleModeSwitch}
-                            enteringMode={enteringMode}
-                        />
-                    </Box>
+                    <FadedImageChange enteringMode={enteringMode} mode={mode} />
+                    <ChangeModeButton
+                        handleModeSwitch={handleModeSwitch}
+                        enteringMode={enteringMode}
+                    />
                 </Box>
+            </Box>
 
-                <EnterModeButton handleClick={handleClick} mode={mode} />
-            </SwipeableBox>
-
+            <EnterModeButton handleClick={handleClick} mode={mode} />
             <IconButton
                 onClick={() => setInfoOpen((prev) => !prev)}
                 sx={{
@@ -108,7 +102,7 @@ const MainScreenCharacterMode = ({
             </IconButton>
 
             {infoOpen && <InfoPopup ref={infoRef} />}
-        </>
+        </SwipeableBox>
     );
 };
 

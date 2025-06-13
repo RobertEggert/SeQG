@@ -4,7 +4,7 @@ import guestChar from "../../img/spy.png";
 import type { MODES } from "../MainScreen";
 
 type FadedImageChangeProps = {
-    enteringMode: boolean;
+    enteringMode: boolean | null;
     mode: MODES;
 };
 
