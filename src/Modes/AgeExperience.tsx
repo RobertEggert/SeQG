@@ -102,10 +102,8 @@ const AgeExpreience = ({
             {/* Experience Selector */}
             <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 2,
-                    alignItems: "center"
+                    ...flexAlignRow,
+                    gap: 2
                 }}
             >
                 <Typography>What is your Cybersecurity Experience:</Typography>

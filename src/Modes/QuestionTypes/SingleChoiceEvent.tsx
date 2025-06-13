@@ -51,7 +51,7 @@ const SingleChoiceEvent = ({
             <Typography variant="h6">
                 {questionState.q_data?.question}
             </Typography>
-            <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
                 {questionState.q_data?.option_s.map((option, index) => (
                     <Button
                         key={index}

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import GuestLLMQuestions from "./GuestLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
-import { colorModes } from "../../styling/theme";
+import { colorModes, flexAlignColumn } from "../../styling/theme";
 
 type STATUS =
     | "pending"
@@ -70,9 +70,7 @@ const GuestMode = () => {
             <Paper
                 elevation={3}
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    ...flexAlignColumn,
                     marginTop: 10,
                     padding: 10,
                     width: "70%",

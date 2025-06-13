@@ -2,6 +2,7 @@ import { Box, Fade, keyframes } from "@mui/material";
 import privateChar from "../../img/woman.png";
 import guestChar from "../../img/spy.png";
 import type { MODES } from "../MainScreen";
+import { flexAllCenter } from "../../styling/theme";
 
 type FadedImageChangeProps = {
     enteringMode: boolean;
@@ -55,12 +56,10 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
     return (
         <Box
             sx={{
+                ...flexAllCenter,
                 position: "relative",
                 width: "100%",
                 height: "45vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
                 overflow: "visible",
                 transform: enteringMode
                     ? mode === "PRIVATE"

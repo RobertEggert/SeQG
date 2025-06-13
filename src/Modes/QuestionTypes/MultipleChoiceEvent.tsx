@@ -56,10 +56,10 @@ const MultipleChoiceEvent = ({
 
     return (
         <>
-            <Typography variant="h6" sx={{ mb: 2 }}>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 {questionState.q_data?.question}
             </Typography>
-            <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+            <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
                     const isSelected = selectedIndices.includes(index);
                     return (

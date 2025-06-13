@@ -42,7 +42,7 @@ const ExplainAnswer = ({
     return explanationState.e_fetch ? (
         <LoadingData />
     ) : (
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ marginTop: 4 }}>
             <Typography>{explanationState.e_data?.explain}</Typography>
         </Box>
     );

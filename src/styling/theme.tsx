@@ -20,3 +20,9 @@ export const flexAlignRow = {
     flexDirection: "row",
     alignItems: "center"
 };
+
+export const flexAllCenter = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+};
