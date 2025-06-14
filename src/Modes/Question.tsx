@@ -56,12 +56,6 @@ const Question = ({
     userId
 }: QuestionType) => {
     useEffect(() => {
-        if (age && experience) {
-            setQuestionState({ q_fetch: true, q_data: null });
-        }
-    }, [age, experience, setQuestionState]);
-
-    useEffect(() => {
         if (questionState.q_fetch) {
             fetchQuestionFromLLM({ setQuestionState, age, experience });
         }

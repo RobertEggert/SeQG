@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, Fade } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
@@ -21,6 +21,7 @@ const PrivateMode = () => {
     const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
+    const [blink, setBlink] = useState(true);
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -63,6 +64,27 @@ const PrivateMode = () => {
         }
     }, [BE_PORT, LOCAL_SERVER, privateSession, token]);
 
+    useEffect(() => {
+        if (status === "pending") {
+            let visible = true;
+
+            const toggleBlink = () => {
+                setBlink(visible);
+                visible = !visible;
+
+                const nextDelay = visible ? 1000 : 7000;
+
+                setTimeout(toggleBlink, nextDelay);
+            };
+
+            toggleBlink();
+
+            return () => setBlink(true);
+        } else {
+            setBlink(false);
+        }
+    }, [status]);
+
     if (!privateSession || !token) return null;
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
@@ -95,8 +117,61 @@ const PrivateMode = () => {
                         {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
-                                <Typography>Scan this QR Code:</Typography>
+                                <Fade in={blink} timeout={500}>
+                                    <Box sx={{ marginBottom: 4 }}>
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            sx={{
+                                                fontStyle: "italic",
+                                                color: "text.secondary"
+                                            }}
+                                        >
+                                            Welcome to the private mode!
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            align="center"
+                                            sx={{ color: "text.secondary" }}
+                                        >
+                                            Scan this QR code to log in!
+                                        </Typography>
+                                    </Box>
+                                </Fade>
+
                                 <QRCodeSVG value={connectUrl} size={200} />
+
+                                <Typography
+                                    sx={{
+                                        position: "absolute",
+                                        bottom: 30,
+                                        left: "50%",
+                                        transform: "translateX(-50%)",
+                                        color: "text.secondary",
+                                        fontSize: 16,
+                                        userSelect: "none"
+                                    }}
+                                >
+                                    In this mode, you will get personalised
+                                    content based on your profile and
+                                    performance
+                                    <br />
+                                    <br />
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        position: "absolute",
+                                        bottom: 10,
+                                        left: "50%",
+                                        transform: "translateX(-50%)",
+                                        color: "text.secondary",
+                                        fontSize: 16,
+                                        userSelect: "none"
+                                    }}
+                                >
+                                    You can close the session whenever you like
+                                    by clossing the tab or logging out{" "}
+                                </Typography>
                             </>
                         )}
                     </>

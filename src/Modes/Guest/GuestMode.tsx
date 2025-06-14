@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, Fade } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
@@ -11,7 +11,7 @@ type STATUS =
     | "connected"
     | "disconnected"
     | "already_connected"
-    // in progress
+    //in progress
     | "invalid_token"
     | "invalid_role";
 
@@ -19,7 +19,9 @@ const GuestMode = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("pending"); // only for client
+    const [status, setStatus] = useState<STATUS>("pending");
+
+    const [blink, setBlink] = useState(true);
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -53,10 +55,32 @@ const GuestMode = () => {
         }
     }, [BE_PORT, LOCAL_SERVER, session, token]);
 
+    useEffect(() => {
+        if (status === "pending") {
+            let visible = true;
+
+            const toggleBlink = () => {
+                setBlink(visible);
+                visible = !visible;
+
+                const nextDelay = visible ? 1000 : 5000;
+
+                setTimeout(toggleBlink, nextDelay);
+            };
+
+            toggleBlink();
+
+            return () => setBlink(true);
+        } else {
+            setBlink(false);
+        }
+    }, [status]);
+
     if (!session || !token) return null;
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/guest/${session}?token=${token}`;
     console.log(connectUrl);
+
     return (
         <Box
             sx={{
@@ -78,6 +102,7 @@ const GuestMode = () => {
                 }}
             >
                 <Typography fontSize={40}>Guest Mode</Typography>
+
                 {status === "connected" ? (
                     <GuestLLMQuestions />
                 ) : (
@@ -85,8 +110,50 @@ const GuestMode = () => {
                         {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
+                                <Fade in={blink} timeout={500}>
+                                    <Box sx={{ marginBottom: 4 }}>
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            sx={{
+                                                fontStyle: "italic",
+                                                color: "text.secondary"
+                                            }}
+                                        >
+                                            Welcome to the guest mode!
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            align="center"
+                                            sx={{ color: "text.secondary" }}
+                                        >
+                                            Scanning this QR code, you start a
+                                            session (no personal information is
+                                            saved)
+                                        </Typography>
+                                    </Box>
+                                </Fade>
+
                                 <Typography>Scan this QR Code:</Typography>
                                 <QRCodeSVG value={connectUrl} size={200} />
+
+                                <Typography
+                                    sx={{
+                                        position: "absolute",
+                                        bottom: 20,
+                                        left: "50%",
+                                        transform: "translateX(-50%)",
+                                        color: "text.secondary",
+                                        fontSize: 16,
+                                        userSelect: "none"
+                                    }}
+                                >
+                                    In this mode, your experience will be based
+                                    on previous users <br />
+                                    <br />
+                                    You can close the session whenever you like
+                                    by clossing the tab
+                                </Typography>
                             </>
                         )}
                     </>

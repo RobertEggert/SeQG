@@ -1,8 +1,17 @@
 import { Box, CircularProgress } from "@mui/material";
 import FadedComponent from "../utils/FadedComponent";
 import { flexAlignColumn } from "../styling/theme";
+const LOADING_MESSAGES = [
+    "Fetching question from the LLM",
+    "Waiting for response",
+    "AI is generating",
+    "Wait until question is loaded"
+];
 
 const LoadingData = () => {
+    const randomMessage =
+        LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
+
     return (
         <Box
             sx={{
@@ -18,7 +27,7 @@ const LoadingData = () => {
                     textAlign: "center"
                 }}
             >
-                Fetching Question
+                {randomMessage}
             </FadedComponent>
         </Box>
     );
