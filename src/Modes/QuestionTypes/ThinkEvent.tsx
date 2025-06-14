@@ -6,7 +6,7 @@ import {
     CardContent,
     CircularProgress
 } from "@mui/material";
-import type { QuestionTypeProps } from "../QuestionTypeRecognizer";
+import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";

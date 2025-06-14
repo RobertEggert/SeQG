@@ -4,10 +4,10 @@ import {
     fetchQuestionFromLLM,
     type ExplainStateType,
     type QuestionStateType
-} from "../utils/LLMFetcher";
+} from "../../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
-import { flexAlignColumn } from "../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
 
 type QuestionType = {
     handleNextQButtonClick: () => void;
@@ -55,12 +55,6 @@ const Question = ({
     experience,
     userId
 }: QuestionType) => {
-    useEffect(() => {
-        if (age && experience) {
-            setQuestionState({ q_fetch: true, q_data: null });
-        }
-    }, [age, experience, setQuestionState]);
-
     useEffect(() => {
         if (questionState.q_fetch) {
             fetchQuestionFromLLM({ setQuestionState, age, experience });

@@ -5,13 +5,14 @@ import { io } from "socket.io-client";
 import GuestLLMQuestions from "./GuestLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes, flexAlignColumn } from "../../styling/theme";
+import FadedComponent from "../../utils/FadedComponent";
 
 type STATUS =
     | "pending"
     | "connected"
     | "disconnected"
     | "already_connected"
-    // in progress
+    //in progress
     | "invalid_token"
     | "invalid_role";
 
@@ -19,7 +20,7 @@ const GuestMode = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("pending"); // only for client
+    const [status, setStatus] = useState<STATUS>("pending");
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -57,6 +58,7 @@ const GuestMode = () => {
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/guest/${session}?token=${token}`;
     console.log(connectUrl);
+
     return (
         <Box
             sx={{
@@ -77,7 +79,6 @@ const GuestMode = () => {
                     height: "70%"
                 }}
             >
-                <Typography fontSize={40}>Guest Mode</Typography>
                 {status === "connected" ? (
                     <GuestLLMQuestions />
                 ) : (
@@ -85,8 +86,49 @@ const GuestMode = () => {
                         {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
-                                <Typography>Scan this QR Code:</Typography>
+                                <FadedComponent timeout={3000}>
+                                    <Box sx={{ marginBottom: 4 }}>
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            sx={{
+                                                fontStyle: "italic",
+                                                color: "text.secondary"
+                                            }}
+                                        >
+                                            Welcome to the guest mode!
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            align="center"
+                                            sx={{ color: "text.secondary" }}
+                                        >
+                                            By scanning this QR code, you will
+                                            start a session (no personal
+                                            information is saved)
+                                        </Typography>
+                                    </Box>
+                                </FadedComponent>
+
+                                <Typography>
+                                    Scan this Guest QR Code:
+                                </Typography>
                                 <QRCodeSVG value={connectUrl} size={200} />
+
+                                <Typography
+                                    align="center"
+                                    sx={{
+                                        paddingTop: "23rem",
+                                        color: "text.secondary",
+                                        fontSize: 16,
+                                        userSelect: "none"
+                                    }}
+                                >
+                                    In this mode, your experience will be based
+                                    on previous users. <br />
+                                    You can close the session whenever you like
+                                    by clossing the tab.
+                                </Typography>
                             </>
                         )}
                     </>

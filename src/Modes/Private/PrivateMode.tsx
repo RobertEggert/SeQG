@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes, flexAlignColumn } from "../../styling/theme";
 import PrivateLLMQuestions from "./PrivateLLMQuestions";
+import FadedComponent from "../../utils/FadedComponent";
 
 type STATUS =
     | "pending"
@@ -87,7 +88,6 @@ const PrivateMode = () => {
                     height: "70%"
                 }}
             >
-                <Typography fontSize={40}>Private Mode</Typography>
                 {status === "connected" ? (
                     <PrivateLLMQuestions userId={userId} />
                 ) : (
@@ -95,8 +95,45 @@ const PrivateMode = () => {
                         {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
-                                <Typography>Scan this QR Code:</Typography>
+                                <FadedComponent timeout={3000}>
+                                    <Box sx={{ marginBottom: 4 }}>
+                                        <Typography
+                                            variant="h5"
+                                            align="center"
+                                            sx={{
+                                                fontStyle: "italic",
+                                                color: "text.secondary"
+                                            }}
+                                        >
+                                            Welcome to the private mode!
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            align="center"
+                                            sx={{ color: "text.secondary" }}
+                                        >
+                                            Scan this QR code to log in!
+                                        </Typography>
+                                    </Box>
+                                </FadedComponent>
+
                                 <QRCodeSVG value={connectUrl} size={200} />
+
+                                <Typography
+                                    align="center"
+                                    sx={{
+                                        paddingTop: "22rem",
+                                        color: "text.secondary",
+                                        fontSize: 16,
+                                        userSelect: "none"
+                                    }}
+                                >
+                                    In this mode, you will get personalised
+                                    content based on your profile and
+                                    performance. <br />
+                                    You can close the session whenever you like
+                                    by closing the tab or logging out.
+                                </Typography>
                             </>
                         )}
                     </>

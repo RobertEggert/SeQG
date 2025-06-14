@@ -1,19 +1,20 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import AgeExpreience from "../AgeExperience";
-import ExplainAnswer from "../ExplainAnswer";
-import Question from "../Question";
+import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
+import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import {
     type QuestionStateType,
     type ExplainStateType,
     fetchUserData
 } from "../../utils/LLMFetcher";
+import AgeExperience from "../AgeExperience/AgeExperience";
 
 const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+    const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
 
     const [questionState, setQuestionState] = useState<QuestionStateType>({
         q_fetch: false,
@@ -31,31 +32,35 @@ const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
     };
 
     useEffect(() => {
+        const getUserData = async (userId: string) => {
+            const userData = await fetchUserData(userId);
+            if (userData.age && userData.experience) {
+                setAge(userData.age);
+                setExperience(userData.experience);
+                setIsProfileSubmitted(true);
+                setQuestionState({ q_fetch: true, q_data: null }); // Auto-submit if data exists
+            }
+        };
+
         if (age === null && experience === null) {
             getUserData(userId);
         }
-    }, [userId]);
-
-    const getUserData = async (userId: string) => {
-        const userData = await fetchUserData(userId);
-        if (userData.age !== null && userData.experience !== null) {
-            setAge(userData.age);
-            setExperience(userData.experience);
-        }
-    };
+    }, [userId, age, experience]);
 
     return (
         <>
             <Box sx={{ p: 3 }}>
                 {/* Ask about age and experience */}
-                {(!age || !experience) && (
+                {!isProfileSubmitted && (
                     <>
                         <Typography color="green">✅ Connected</Typography>
-                        <AgeExpreience
-                            age={age}
-                            experience={experience}
+                        <AgeExperience
+                            setIsProfileSubmitted={setIsProfileSubmitted}
+                            setQuestionState={setQuestionState}
                             setAge={setAge}
                             setExperience={setExperience}
+                            age={age}
+                            experience={experience}
                         />
                     </>
                 )}

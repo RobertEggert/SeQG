@@ -1,5 +1,5 @@
 import { Typography, Box, Button } from "@mui/material";
-import type { QuestionTypeProps } from "../QuestionTypeRecognizer";
+import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useState } from "react";
 

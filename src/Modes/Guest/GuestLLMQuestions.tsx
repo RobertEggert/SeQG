@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import AgeExpreience from "../AgeExperience";
-import ExplainAnswer from "../ExplainAnswer";
-import Question from "../Question";
+import AgeExperience from "../AgeExperience/AgeExperience";
+import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
+import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import type {
     QuestionStateType,
@@ -12,6 +12,7 @@ import type {
 const GuestLLMQuestions = () => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
+    const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
 
     const [questionState, setQuestionState] = useState<QuestionStateType>({
@@ -33,19 +34,21 @@ const GuestLLMQuestions = () => {
         <>
             <Box sx={{ p: 3 }}>
                 {/* Ask about age and experience */}
-                {(!age || !experience) && (
+                {!isProfileSubmitted && (
                     <>
                         <Typography color="green">✅ Connected</Typography>
-                        <AgeExpreience
-                            age={age}
-                            experience={experience}
+                        <AgeExperience
+                            setIsProfileSubmitted={setIsProfileSubmitted}
+                            setQuestionState={setQuestionState}
                             setAge={setAge}
                             setExperience={setExperience}
+                            age={age}
+                            experience={experience}
                         />
                     </>
                 )}
 
-                {/* Question */}
+                {/* Rest of your existing components... */}
                 <Question
                     handleNextQButtonClick={handleNextQButtonClick}
                     setAnswerCorrect={setAnswerCorrect}
@@ -57,7 +60,7 @@ const GuestLLMQuestions = () => {
                     age={age}
                     experience={experience}
                 />
-                {/* Explanation if wrongfully answered */}
+
                 <ExplainAnswer
                     setExplanationState={setExplanationState}
                     questionState={questionState}
@@ -67,7 +70,6 @@ const GuestLLMQuestions = () => {
                 />
             </Box>
 
-            {/* Refetching Question */}
             <NextQuestion
                 handleNextQButtonClick={handleNextQButtonClick}
                 questionState={questionState}

@@ -1,6 +1,12 @@
 import { Box, CircularProgress } from "@mui/material";
-import FadedComponent from "../utils/FadedComponent";
-import { flexAlignColumn } from "../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
+import FadedTextChanger from "../../utils/FadedTextChanger";
+const LOADING_MESSAGES = [
+    "Fetching question from the LLM",
+    "Waiting for response",
+    "AI is generating",
+    "Wait until question is loaded"
+];
 
 const LoadingData = () => {
     return (
@@ -12,14 +18,7 @@ const LoadingData = () => {
             }}
         >
             <CircularProgress size={60} color="secondary" thickness={2} />
-            <FadedComponent
-                sxBox={{
-                    width: "100%",
-                    textAlign: "center"
-                }}
-            >
-                Fetching Question
-            </FadedComponent>
+            <FadedTextChanger textArray={LOADING_MESSAGES} />
         </Box>
     );
 };
