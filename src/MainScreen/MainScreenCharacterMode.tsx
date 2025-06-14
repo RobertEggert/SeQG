@@ -53,9 +53,7 @@ const MainScreenCharacterMode = ({
                     onBlur={() => setInfoOpen(!infoOpen)}
                     disableRipple
                     sx={{
-                        "&:hover": {
-                            visibility: "hidden"
-                        }
+                        backgroundColor: "transparent"
                     }}
                 >
                     <Typography

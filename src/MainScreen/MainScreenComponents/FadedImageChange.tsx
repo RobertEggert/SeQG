@@ -34,10 +34,12 @@ const rotatePrivateStart = keyframes`
   0% {
     transform: perspective(60rem) rotateY(0deg) translateZ(0rem) rotateY(0deg) translateX(-18.75rem) translateY(0rem);
     filter: grayscale(0%);
+    opacity: 1;
   }
   100% {
     transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateX(-18.75rem) translateY(-6.25rem);
     filter: grayscale(80%);
+    opacity: 0.4;
   }
 `;
 
@@ -45,10 +47,12 @@ const rotatePrivateEnd = keyframes`
   0% {
     transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateX(-18.75rem) translateY(-6.25rem);
     filter: grayscale(80%);
+    opacity: 0.4;
   }
   100% {
     transform: perspective(60rem) rotateY(360deg) translateZ(0rem) rotateY(-360deg) translateX(-18.75rem);
     filter: grayscale(0%);
+    opacity: 1;
   }
 `;
 

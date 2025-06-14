@@ -7,7 +7,7 @@ import {
 } from "../../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
-import { flexAlignColumn } from "../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
 
 type QuestionType = {
     handleNextQButtonClick: () => void;
