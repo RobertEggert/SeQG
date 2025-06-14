@@ -4,7 +4,7 @@ import {
     fetchQuestionFromLLM,
     type ExplainStateType,
     type QuestionStateType
-} from "../utils/LLMFetcher";
+} from "../../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
 import { flexAlignColumn } from "../styling/theme";

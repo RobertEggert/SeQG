@@ -3,14 +3,14 @@ import type {
     QuestionStateType,
     ExplainStateType,
     QuestionType
-} from "../utils/LLMFetcher";
-import SingleChoiceEvent from "./QuestionTypes/SingleChoiceEvent";
+} from "../../utils/LLMFetcher";
+import SingleChoiceEvent from "../QuestionTypes/SingleChoiceEvent";
 import { Box } from "@mui/material";
-import LineConnectEvent from "./QuestionTypes/LineConnectEvent";
-import MultipleChoiceEvent from "./QuestionTypes/MultipleChoiceEvent";
-import SortingEvent from "./QuestionTypes/SortingEvent";
-import ThinkEvent from "./QuestionTypes/ThinkEvent";
-import DragAndDropEvent from "./QuestionTypes/DragAndDropEvent";
+import LineConnectEvent from "../QuestionTypes/LineConnectEvent";
+import MultipleChoiceEvent from "../QuestionTypes/MultipleChoiceEvent";
+import SortingEvent from "../QuestionTypes/SortingEvent";
+import ThinkEvent from "../QuestionTypes/ThinkEvent";
+import DragAndDropEvent from "../QuestionTypes/DragAndDropEvent";
 
 export type QuestionTypeProps = {
     handleNextQButtonClick: () => void;

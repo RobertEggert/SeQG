@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
-import FadedComponent from "../utils/FadedComponent";
-import { flexAlignColumn } from "../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
+import FadedTextChanger from "../../utils/FadedTextChanger";
 const LOADING_MESSAGES = [
     "Fetching question from the LLM",
     "Waiting for response",
@@ -9,9 +9,6 @@ const LOADING_MESSAGES = [
 ];
 
 const LoadingData = () => {
-    const randomMessage =
-        LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
-
     return (
         <Box
             sx={{
@@ -21,14 +18,7 @@ const LoadingData = () => {
             }}
         >
             <CircularProgress size={60} color="secondary" thickness={2} />
-            <FadedComponent
-                sxBox={{
-                    width: "100%",
-                    textAlign: "center"
-                }}
-            >
-                {randomMessage}
-            </FadedComponent>
+            <FadedTextChanger textArray={LOADING_MESSAGES} />
         </Box>
     );
 };

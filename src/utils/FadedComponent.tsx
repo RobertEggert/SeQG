@@ -26,7 +26,7 @@ const FadedComponent = ({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setShowFade((prev) => !prev);
+            setShowFade(!showFade);
         }, fadeTime ?? 1300); // toggle every second
 
         return () => clearInterval(interval);

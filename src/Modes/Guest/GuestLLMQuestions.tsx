@@ -1,17 +1,8 @@
-import {
-    Box,
-    Typography,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import AgeExpreience from "../AgeExperience";
-import ExplainAnswer from "../ExplainAnswer";
-import Question from "../Question";
+import AgeExperience from "../AgeExperience/AgeExperience";
+import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
+import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import type {
     QuestionStateType,
@@ -23,7 +14,6 @@ const GuestLLMQuestions = () => {
     const [experience, setExperience] = useState<number | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
-    const [openDialog, setOpenDialog] = useState(false);
 
     const [questionState, setQuestionState] = useState<QuestionStateType>({
         q_fetch: false,
@@ -40,74 +30,23 @@ const GuestLLMQuestions = () => {
         setExplanationState({ e_fetch: false, e_data: null });
     };
 
-    const handleContinueClick = () => {
-        if (age && experience) {
-            setOpenDialog(true);
-        }
-    };
-
-    const handleDialogConfirm = () => {
-        setIsProfileSubmitted(true);
-        setQuestionState({ q_fetch: true, q_data: null });
-        setOpenDialog(false);
-    };
-
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-    };
-
     return (
         <>
             <Box sx={{ p: 3 }}>
                 {/* Ask about age and experience */}
-                {(!age || !experience || !isProfileSubmitted) && (
+                {!isProfileSubmitted && (
                     <>
                         <Typography color="green">✅ Connected</Typography>
-                        <AgeExpreience
-                            age={age}
-                            experience={experience}
+                        <AgeExperience
+                            setIsProfileSubmitted={setIsProfileSubmitted}
+                            setQuestionState={setQuestionState}
                             setAge={setAge}
                             setExperience={setExperience}
+                            age={age}
+                            experience={experience}
                         />
-
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            disabled={!age || !experience}
-                            onClick={handleContinueClick}
-                            style={{ marginTop: "16px" }}
-                        >
-                            Continue
-                        </Button>
                     </>
                 )}
-
-                {/* Confirmation Dialog */}
-                <Dialog
-                    open={openDialog}
-                    onClose={handleDialogClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Age and Experience Consent"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            By submitting your age and experience, you allow the
-                            LLM to process it so that we can offer you a more
-                            personalised experience.
-                            <br />
-                            Do you allow to use them?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleDialogClose}>NO</Button>
-                        <Button onClick={handleDialogConfirm} autoFocus>
-                            YES
-                        </Button>
-                    </DialogActions>
-                </Dialog>
 
                 {/* Rest of your existing components... */}
                 <Question

@@ -3,7 +3,7 @@ import {
     fetchExplanationFromLLMShortTerm,
     type ExplainStateType,
     type QuestionStateType
-} from "../utils/LLMFetcher";
+} from "../../utils/LLMFetcher";
 import { Box, Typography } from "@mui/material";
 import LoadingData from "./LoadingData";
 

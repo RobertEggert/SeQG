@@ -1,10 +1,11 @@
-import { Box, Paper, Typography, Fade } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes, flexAlignColumn } from "../../styling/theme";
 import PrivateLLMQuestions from "./PrivateLLMQuestions";
+import FadedComponent from "../../utils/FadedComponent";
 
 type STATUS =
     | "pending"
@@ -21,7 +22,6 @@ const PrivateMode = () => {
     const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
-    const [blink, setBlink] = useState(true);
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -64,27 +64,6 @@ const PrivateMode = () => {
         }
     }, [BE_PORT, LOCAL_SERVER, privateSession, token]);
 
-    useEffect(() => {
-        if (status === "pending") {
-            let visible = true;
-
-            const toggleBlink = () => {
-                setBlink(visible);
-                visible = !visible;
-
-                const nextDelay = visible ? 1000 : 7000;
-
-                setTimeout(toggleBlink, nextDelay);
-            };
-
-            toggleBlink();
-
-            return () => setBlink(true);
-        } else {
-            setBlink(false);
-        }
-    }, [status]);
-
     if (!privateSession || !token) return null;
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
@@ -109,7 +88,6 @@ const PrivateMode = () => {
                     height: "70%"
                 }}
             >
-                <Typography fontSize={40}>Private Mode</Typography>
                 {status === "connected" ? (
                     <PrivateLLMQuestions userId={userId} />
                 ) : (
@@ -117,7 +95,7 @@ const PrivateMode = () => {
                         {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
-                                <Fade in={blink} timeout={500}>
+                                <FadedComponent timeout={3000}>
                                     <Box sx={{ marginBottom: 4 }}>
                                         <Typography
                                             variant="h5"
@@ -137,16 +115,14 @@ const PrivateMode = () => {
                                             Scan this QR code to log in!
                                         </Typography>
                                     </Box>
-                                </Fade>
+                                </FadedComponent>
 
                                 <QRCodeSVG value={connectUrl} size={200} />
 
                                 <Typography
+                                    align="center"
                                     sx={{
-                                        position: "absolute",
-                                        bottom: 30,
-                                        left: "50%",
-                                        transform: "translateX(-50%)",
+                                        paddingTop: "22rem",
                                         color: "text.secondary",
                                         fontSize: 16,
                                         userSelect: "none"
@@ -154,23 +130,9 @@ const PrivateMode = () => {
                                 >
                                     In this mode, you will get personalised
                                     content based on your profile and
-                                    performance
-                                    <br />
-                                    <br />
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        position: "absolute",
-                                        bottom: 10,
-                                        left: "50%",
-                                        transform: "translateX(-50%)",
-                                        color: "text.secondary",
-                                        fontSize: 16,
-                                        userSelect: "none"
-                                    }}
-                                >
+                                    performance. <br />
                                     You can close the session whenever you like
-                                    by clossing the tab or logging out{" "}
+                                    by closing the tab or logging out.
                                 </Typography>
                             </>
                         )}

@@ -15,13 +15,17 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { flexAlignRow } from "../styling/theme";
+import { flexAlignRow } from "../../styling/theme";
+import ConfirmDialog from "./ConfirmDialog";
+import type { QuestionStateType } from "../../utils/LLMFetcher";
 
 type AgeExprienceType = {
+    setIsProfileSubmitted: Dispatch<SetStateAction<boolean>>;
+    setQuestionState: Dispatch<SetStateAction<QuestionStateType>>;
+    setAge: React.Dispatch<React.SetStateAction<string | null>>;
+    setExperience: React.Dispatch<React.SetStateAction<number | null>>;
     age: string | null;
     experience: number | null;
-    setAge: Dispatch<SetStateAction<string | null>>;
-    setExperience: Dispatch<SetStateAction<number | null>>;
 };
 
 const customIcons: {
@@ -53,11 +57,13 @@ const IconContainer = ({ value, ...other }: IconContainerProps) => {
     return <span {...other}>{customIcons[value].icon}</span>;
 };
 
-const AgeExpreience = ({
-    age,
-    experience,
+const AgeExperience = ({
+    setIsProfileSubmitted,
+    setQuestionState,
     setAge,
-    setExperience
+    setExperience,
+    age,
+    experience
 }: AgeExprienceType) => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
@@ -85,7 +91,7 @@ const AgeExpreience = ({
                     <Select
                         labelId="age-select-label"
                         id="age-select"
-                        value={age !== null ? age : ""}
+                        value={age ?? ""}
                         label="Age"
                         onChange={(e) =>
                             handleChange(e as SelectChangeEvent<string>)
@@ -118,8 +124,15 @@ const AgeExpreience = ({
                     highlightSelectedOnly
                 />
             </Box>
+            {/* Confirmation Dialog */}
+            <ConfirmDialog
+                setIsProfileSubmitted={setIsProfileSubmitted}
+                setQuestionState={setQuestionState}
+                age={age}
+                experience={experience}
+            />
         </>
     );
 };
 
-export default AgeExpreience;
+export default AgeExperience;
