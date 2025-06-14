@@ -54,8 +54,7 @@ const MainScreenCharacterMode = ({
                     disableRipple
                     sx={{
                         "&:hover": {
-                            color: "rgba(0,0,0,0.0)",
-                            backgroundColor: "rgba(0,0,0,0.0)"
+                            visibility: "hidden"
                         }
                     }}
                 >

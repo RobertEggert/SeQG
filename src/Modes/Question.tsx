@@ -7,6 +7,7 @@ import {
 } from "../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
+import { flexAlignColumn } from "../styling/theme";
 
 type QuestionType = {
     handleNextQButtonClick: () => void;
@@ -29,12 +30,12 @@ const IsCorrectComponent = ({
     return (
         <>
             {answerCorrect === true && (
-                <Typography sx={{ mt: 2 }} color="success">
+                <Typography sx={{ marginTop: 2 }} color="success">
                     ✅ Correct!
                 </Typography>
             )}
             {answerCorrect === false && (
-                <Typography sx={{ mt: 2 }} color="error">
+                <Typography sx={{ marginTop: 2 }} color="error">
                     ❌ Incorrect.
                 </Typography>
             )}
@@ -74,10 +75,8 @@ const Question = ({
     ) : (
         <Box
             sx={{
-                display: "flex",
-                flexDirection: "column",
-                mt: 4,
-                alignItems: "center"
+                ...flexAlignColumn,
+                marginTop: 4
             }}
         >
             <QuestionTypeRecognizer

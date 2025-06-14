@@ -4,6 +4,7 @@ import { useState } from "react";
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
 import Background from "./MainScreenComponents/Background";
+import { flexAllCenter } from "../styling/theme";
 
 export type MODES = "GUEST" | "PRIVATE" | null;
 
@@ -22,10 +23,8 @@ const MainScreen = () => {
             <Background />
             <Box
                 sx={{
+                    ...flexAllCenter,
                     zIndex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                     gap: 4,
                     width: "100%",
                     height: "100%"

@@ -22,7 +22,7 @@ const NextQuestion = ({
         <Box
             sx={{
                 display: "flex",
-                mt: 4,
+                marginTop: 4,
                 right: "12%",
                 bottom: "10%",
                 position: "fixed"
