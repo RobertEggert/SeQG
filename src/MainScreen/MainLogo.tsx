@@ -1,4 +1,4 @@
-import { Paper, Button, Box, Fade } from "@mui/material";
+import { Paper, Button, Box } from "@mui/material";
 import logoStart from "../img/logoandtext.jpg";
 import logoEnd from "../img/logo.png";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
@@ -62,36 +62,37 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                     height: "100%"
                 }}
             >
-                <Fade in={!isPressed} timeout={600}>
-                    <Box
-                        sx={{
-                            zIndex: 1,
-                            borderRadius: 3,
-                            position: "absolute",
-                            backgroundImage: `url(${logoStart})`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            width: "100%",
-                            height: "100%",
-                            backgroundSize: "cover"
-                        }}
-                    />
-                </Fade>
-                <Fade in={isPressed} timeout={600}>
-                    <Box
-                        sx={{
-                            zIndex: 1,
-                            borderRadius: 3,
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            backgroundImage: `url(${logoEnd})`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            backgroundSize: "contain"
-                        }}
-                    />
-                </Fade>
+                <Box
+                    sx={{
+                        zIndex: 1,
+                        borderRadius: 3,
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: `url(${logoStart})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        opacity: isPressed ? 0 : 1,
+                        transition: "opacity 0.7s ease"
+                    }}
+                />
+                <Box
+                    sx={{
+                        zIndex: 1,
+                        borderRadius: 3,
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: `url(${logoEnd})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "contain",
+                        opacity: isPressed ? 1 : 0,
+                        transition: "opacity 0.7s ease"
+                    }}
+                />
+
                 {!isPressed && (
                     <FadedComponent
                         sxBox={{

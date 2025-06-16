@@ -12,14 +12,12 @@ const MainScreen = () => {
     const [isPressed, setIsPressed] = useState(false);
 
     return (
-        <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
+        <Box sx={{ overflow: "hidden", height: "100vh" }}>
             <Background />
             <Box
                 sx={{
                     ...flexAlignColumn,
-                    paddingTop: 2,
-                    width: "100%",
-                    height: "100%"
+                    paddingTop: 2
                 }}
             >
                 <MainLogo isPressed={isPressed} setIsPressed={setIsPressed} />
