@@ -2,6 +2,7 @@ import { Typography, Box, Button } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useState } from "react";
+import AnswerHighlighter from "./AnswerHighlighter";
 
 const MultipleChoiceEvent = ({
     handleNextQButtonClick,
@@ -16,6 +17,7 @@ const MultipleChoiceEvent = ({
     const correctAnswers = questionState.q_data?.correctAnswer_s ?? [];
 
     const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+    const [showFeedback, setShowFeedback] = useState(false);
 
     const toggleSelection = (index: number) => {
         setSelectedIndices((prev) =>
@@ -26,6 +28,8 @@ const MultipleChoiceEvent = ({
     };
 
     const handleSubmit = () => {
+        setShowFeedback(true);
+
         const isCorrect = selectedIndices.every((i) =>
             correctAnswers.includes(i)
         );
@@ -62,16 +66,24 @@ const MultipleChoiceEvent = ({
             <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
                     const isSelected = selectedIndices.includes(index);
+                    const isCorrect = correctAnswers.includes(index);
                     return (
-                        <Button
+                        <AnswerHighlighter
                             key={index}
-                            variant={isSelected ? "contained" : "outlined"}
-                            color={isSelected ? "primary" : "inherit"}
-                            onClick={() => toggleSelection(index)}
-                            disabled={isDisabled}
+                            isSelected={isSelected}
+                            isCorrect={isCorrect}
+                            showFeedback={showFeedback}
                         >
-                            {option}
-                        </Button>
+                            <Button
+                                variant={isSelected ? "contained" : "outlined"}
+                                color={isSelected ? "primary" : "inherit"}
+                                onClick={() => toggleSelection(index)}
+                                disabled={isDisabled}
+                                fullWidth
+                            >
+                                {option}
+                            </Button>
+                        </AnswerHighlighter>
                     );
                 })}
             </Box>

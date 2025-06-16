@@ -1,6 +1,8 @@
 import { Typography, Box, Button } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
+import AnswerHighlighter from "./AnswerHighlighter";
+import { useState } from "react";
 
 const SingleChoiceEvent = ({
     handleNextQButtonClick,
@@ -11,7 +13,12 @@ const SingleChoiceEvent = ({
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [showFeedback, setShowFeedback] = useState(false);
+
     const handleAnswerClick = (answerClicked: number) => {
+        setSelectedIndex(answerClicked);
+        setShowFeedback(true);
         const isCorrect =
             questionState.q_data?.correctAnswer_s.includes(answerClicked);
         // THIS IF STATEMENT HAS TO BE A EXPORTET FUNCTION --> USED MULTIPLE TIMES!
@@ -52,16 +59,43 @@ const SingleChoiceEvent = ({
                 {questionState.q_data?.question}
             </Typography>
             <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
-                {questionState.q_data?.option_s.map((option, index) => (
-                    <Button
-                        key={index}
-                        variant="outlined"
-                        disabled={isDisabled}
-                        onClick={() => handleAnswerClick(index)}
-                    >
-                        {option}
-                    </Button>
-                ))}
+                {questionState.q_data?.option_s.map((option, index) => {
+                    let isSelected = selectedIndex === index;
+                    let isCorrect = false;
+
+                    if (showFeedback) {
+                        const isCorrectIndex =
+                            questionState.q_data?.correctAnswer_s.includes(
+                                index
+                            ) ?? false;
+                        const isSelectedIndex = selectedIndex === index;
+
+                        isCorrect = isCorrectIndex;
+                        isSelected = isSelectedIndex;
+
+                        if (isSelectedIndex && !isCorrectIndex) {
+                            isCorrect = false;
+                        }
+                    }
+
+                    return (
+                        <AnswerHighlighter
+                            key={index}
+                            isSelected={isSelected}
+                            isCorrect={isCorrect}
+                            showFeedback={showFeedback}
+                        >
+                            <Button
+                                variant="outlined"
+                                disabled={isDisabled}
+                                onClick={() => handleAnswerClick(index)}
+                                fullWidth
+                            >
+                                {option}
+                            </Button>
+                        </AnswerHighlighter>
+                    );
+                })}
             </Box>
         </>
     );
