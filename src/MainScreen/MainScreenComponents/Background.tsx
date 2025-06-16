@@ -9,7 +9,8 @@ const Background = () => {
             autoPlay
             loop
             style={{
-                position: "absolute",
+                position: "fixed",
+                zIndex: 0,
                 width: "100%",
                 height: "100%",
                 objectFit: "cover"

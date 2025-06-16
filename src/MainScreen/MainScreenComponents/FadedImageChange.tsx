@@ -12,10 +12,12 @@ const rotateGuestStart = keyframes`
   0% {
     transform: perspective(60rem) rotateY(0deg) translateZ(0rem) rotateY(0deg);
     filter: grayscale(80%);
+    opacity: 1;
   }
   100% {
     transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
     filter: grayscale(0%);
+    opacity: 0.6;
   }
 `;
 
@@ -23,10 +25,12 @@ const rotateGuestEnd = keyframes`
   0% {
     transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
     filter: grayscale(0%);
+    opacity: 0.6;
   }
   100% {
     transform: perspective(60rem) rotateY(360deg) translateZ(0rem) rotateY(-360deg);
     filter: grayscale(80%);
+    opacity: 1;
   }
 `;
 
@@ -61,16 +65,13 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
         <Box
             sx={{
                 ...flexAllCenter,
-                position: "relative",
-                width: "100%",
-                height: "45vh",
-                overflow: "visible",
                 transform: enteringMode
                     ? mode === "PRIVATE"
                         ? "translateX(23%)"
                         : "translateX(17%)"
                     : "translateX(0%)",
-                transition: "transform 1s ease-in-out"
+                transition: "transform 1s ease-in-out",
+                paddingBottom: 4
             }}
         >
             {/* GUEST CHAR */}
@@ -79,8 +80,8 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                     component="img"
                     src={guestChar}
                     sx={{
-                        height: "45vh",
                         padding: 2,
+                        height: "50vh",
                         zIndex: mode === "PRIVATE" ? 2 : 1,
                         animation:
                             mode === "PRIVATE"
@@ -96,8 +97,8 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                     component="img"
                     src={privateChar}
                     sx={{
-                        height: "45vh",
                         padding: 2,
+                        height: "50vh",
                         zIndex: mode === "GUEST" ? 2 : 1,
                         animation:
                             mode === "GUEST"

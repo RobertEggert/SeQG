@@ -4,7 +4,7 @@ import { useState } from "react";
 import MainLogo from "./MainLogo";
 import MainScreenCharacterModeControl from "./MainScreenModeControl";
 import Background from "./MainScreenComponents/Background";
-import { flexAllCenter } from "../styling/theme";
+import { flexAlignColumn } from "../styling/theme";
 
 export type MODES = "GUEST" | "PRIVATE" | null;
 
@@ -12,20 +12,12 @@ const MainScreen = () => {
     const [isPressed, setIsPressed] = useState(false);
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                width: "100vw",
-                height: "100vh",
-                overflow: "hidden"
-            }}
-        >
+        <Box sx={{ overflow: "hidden", height: "100%", width: "100%" }}>
             <Background />
             <Box
                 sx={{
-                    ...flexAllCenter,
-                    zIndex: 1,
-                    gap: 4,
+                    ...flexAlignColumn,
+                    paddingTop: 2,
                     width: "100%",
                     height: "100%"
                 }}

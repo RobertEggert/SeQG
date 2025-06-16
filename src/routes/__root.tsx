@@ -3,8 +3,8 @@ import {
     Outlet,
     useRouterState
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import MainScreen from "../MainScreen/MainScreen";
+import { Box } from "@mui/material";
 
 export const Route = createRootRoute({
     component: () => <RootRouteComponent />
@@ -15,10 +15,9 @@ const RootRouteComponent = () => {
     const isRoot = location.pathname === "/";
 
     return (
-        <>
+        <Box>
             {isRoot && <MainScreen />}
             <Outlet />
-            <TanStackRouterDevtools />
-        </>
+        </Box>
     );
 };
