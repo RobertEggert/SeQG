@@ -3,6 +3,8 @@ import logoStart from "../img/logoandtext.png";
 import logoEnd from "../img/logo.png";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 import FadedComponent from "../utils/FadedComponent";
+import SecurityTipps from "./MainScreenComponents/SecurityTipps";
+import { flexAlignColumn } from "../styling/theme";
 import { flexAlignColumn } from "../styling/theme";
 
 type MainLogoProps = {
@@ -93,24 +95,30 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                     />
                 </Fade>
 
-                {!isPressed && (
-                    <FadedComponent
-                        sxBox={{
-                            position: "absolute",
-                            bottom: 10,
-                            textAlign: "center"
-                        }}
-                        sxText={{
-                            zIndex: 1,
-                            color: "grey",
-                            fontSize: 20
-                        }}
-                    >
-                        Press to start
-                    </FadedComponent>
-                )}
-            </Button>
-        </Paper>
+                    {!isPressed && (
+                        <Box sx={{ ...flexAlignColumn }}>
+                            <SecurityTipps />
+                            <FadedComponent
+                                sxBox={{
+                                    position: "absolute",
+                                    bottom: 32,
+                                    width: "100%",
+                                    textAlign: "center"
+                                }}
+                                sxText={{
+                                    zIndex: 3,
+                                    color: "grey",
+                                    fontSize: 20,
+                                    position: "relative"
+                                }}
+                            >
+                                Press to start
+                            </FadedComponent>
+                        </Box>
+                    )}
+                </Button>
+            </Paper>
+        </Box>
     );
 };
 

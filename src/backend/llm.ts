@@ -33,6 +33,11 @@ interface QuestionResponse {
     correctAnswer_s: number;
 }
 
+interface SecurityTippsResponse {
+    title: string;
+    subtitle: string;
+}
+
 interface ExplenationResponse {
     explain: string;
 }
@@ -208,6 +213,32 @@ app.post("/api/explanation/shortterm", async (req: Request<object, object, Exple
             error: "Failed to fetch explanation from LLM"
         });
     }
+});
+
+app.get("/api/security/tipps", async (_, res: Response) => {
+    const prompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_tipps.txt"), "utf-8");
+    console.log("FETCH TIP");
+    const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            model: LLM_MODEL,
+            prompt,
+            stream: false
+        })
+    });
+    const data = (await ollamaRes.json()) as { response: string };
+    console.log("RECEIVED TIP");
+
+    const rawOutput: string = data.response;
+    console.log(rawOutput);
+
+    const jsonStart = rawOutput.indexOf("{");
+    const jsonEnd = rawOutput.lastIndexOf("}");
+    const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
+
+    const parsed: SecurityTippsResponse = JSON.parse(jsonString);
+    res.json(parsed);
 });
 //#endregion FETCHING
 

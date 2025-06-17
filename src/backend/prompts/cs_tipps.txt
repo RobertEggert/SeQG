@@ -1,0 +1,14 @@
+You are tasked with generating a single cybersecurity awareness tip for users.
+
+Use ONLY the following format and nothing else. Do not include any explanation, greeting, comment, or additional text. Output ONLY one JSON object, like this:
+
+{
+  "title": "Your custom title here",
+  "subtitle": "Your custom subtitle here"
+}
+
+Requirements:
+- Do NOT reuse the provided examples.
+- Create a new tip that follows the same tone and format.
+- Your entire response must be a valid JSON object.
+- There must be NOTHING before or after the JSON — the first character must be `{`, and the last character must be `}`.
