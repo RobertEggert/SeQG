@@ -14,8 +14,6 @@ const ChangeModeButton = ({
 }: ChangeModeButtonProps) => {
     return (
         <FadedComponent
-            unmountOnExit
-            mountOnEnter
             externalFade={!enteringMode ? undefined : enteringMode}
             timeout={1500}
             fadeTime={1000}
@@ -25,7 +23,7 @@ const ChangeModeButton = ({
                 sx={{
                     border: "1px solid #bdbdbd",
                     backgroundColor: "white",
-
+                    marginTop: "15%",
                     borderRadius: 5,
                     width: "20rem",
                     "&:hover": {

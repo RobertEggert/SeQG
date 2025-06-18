@@ -43,9 +43,7 @@ const MainScreenCharacterMode = ({
         >
             <Box
                 sx={{
-                    ...flexAlignColumn,
-                    paddingTop: "5rem",
-                    gap: 3
+                    ...flexAlignColumn
                 }}
             >
                 <Button
@@ -79,7 +77,8 @@ const MainScreenCharacterMode = ({
                 <Box
                     sx={{
                         ...flexAlignColumn,
-                        gap: 5
+                        width: "100%",
+                        height: "100%"
                     }}
                 >
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
