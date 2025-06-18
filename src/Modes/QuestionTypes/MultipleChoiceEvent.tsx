@@ -1,8 +1,8 @@
 import { Typography, Box, Button } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
-import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
+import submitAnswer from "../LLMInteraction/SubmitAnswer";
 
 const MultipleChoiceEvent = ({
     handleNextQButtonClick,
@@ -16,41 +16,35 @@ const MultipleChoiceEvent = ({
     const options = questionState.q_data?.option_s ?? [];
     const correctAnswers = questionState.q_data?.correctAnswer_s ?? [];
 
-    const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
-    const [showFeedback, setShowFeedback] = useState(false);
+    const [selectedAnswer_s, setSelectedAnswers] = useState<number[]>([]);
+    const [isFeedback, setIsFeedback] = useState(false);
 
-    const toggleSelection = (index: number) => {
-        setSelectedIndices((prev) =>
-            prev.includes(index)
-                ? prev.filter((i) => i !== index)
-                : [...prev, index]
-        );
+    const handleSelection = (index: number) => {
+        if (selectedAnswer_s.includes(index)) {
+            const removedIndex = selectedAnswer_s.filter(
+                (selected) => selected !== index
+            );
+            setSelectedAnswers(removedIndex);
+        } else {
+            setSelectedAnswers([...selectedAnswer_s, index]);
+        }
     };
 
     const handleSubmit = () => {
-        setShowFeedback(true);
+        setIsFeedback(true);
 
-        const isCorrect = selectedIndices.every((i) =>
-            correctAnswers.includes(i)
+        const isCorrect =
+            selectedAnswer_s.length === correctAnswers.length &&
+            selectedAnswer_s.every((i) => correctAnswers.includes(i));
+
+        submitAnswer(
+            userId,
+            isCorrect,
+            questionState,
+            setAnswerCorrect,
+            setExplanationState,
+            handleNextQButtonClick
         );
-
-        if (userId) {
-            sendAnswerToLLMBackend(
-                isCorrect,
-                userId,
-                questionState.q_data?.topic ?? "NO_TOPIC"
-            );
-        }
-
-        setAnswerCorrect(isCorrect);
-
-        if (isCorrect) {
-            setTimeout(() => {
-                handleNextQButtonClick();
-            }, 2000);
-        } else {
-            setExplanationState({ e_fetch: true, e_data: null });
-        }
     };
 
     const isDisabled =
@@ -65,32 +59,25 @@ const MultipleChoiceEvent = ({
             </Typography>
             <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
-                    const isSelected = selectedIndices.includes(index);
+                    const isSelected = selectedAnswer_s.includes(index);
                     const isCorrect = correctAnswers.includes(index);
                     return (
                         <AnswerHighlighter
-                            key={index}
-                            isSelected={isSelected}
+                            index={index}
+                            option={option}
+                            isDisabled={isDisabled}
+                            isFeedback={isFeedback}
                             isCorrect={isCorrect}
-                            showFeedback={showFeedback}
-                        >
-                            <Button
-                                variant={isSelected ? "contained" : "outlined"}
-                                color={isSelected ? "primary" : "inherit"}
-                                onClick={() => toggleSelection(index)}
-                                disabled={isDisabled}
-                                fullWidth
-                            >
-                                {option}
-                            </Button>
-                        </AnswerHighlighter>
+                            isSelected={isSelected}
+                            handleSelection={handleSelection}
+                        />
                     );
                 })}
             </Box>
             <Button
                 variant="contained"
                 onClick={handleSubmit}
-                disabled={selectedIndices.length === 0 || isDisabled}
+                disabled={isDisabled}
             >
                 Submit Answer
             </Button>

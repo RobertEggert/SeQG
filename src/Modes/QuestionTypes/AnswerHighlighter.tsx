@@ -1,40 +1,55 @@
-import React from "react";
-import { Box } from "@mui/material";
+import { Button } from "@mui/material";
 
-type Props = {
-    children: React.ReactNode;
-    isSelected: boolean;
+type AnswerHighlighterProps = {
+    index: number;
+    option: string;
+    isDisabled: boolean;
+    isFeedback: boolean;
     isCorrect: boolean;
-    showFeedback: boolean;
+    isSelected: boolean;
+    handleSelection: (index: number) => void;
 };
 
 const AnswerHighlighter = ({
-    children,
-    isSelected,
+    index,
+    option,
+    isDisabled,
+    isFeedback,
     isCorrect,
-    showFeedback
-}: Props) => {
-    let borderColor = "transparent";
-
-    if (showFeedback) {
+    isSelected,
+    handleSelection
+}: AnswerHighlighterProps) => {
+    const handleColor = () => {
+        if (!isFeedback) return undefined;
         if (isCorrect) {
-            borderColor = "green";
-        } else if (isSelected) {
-            borderColor = "red";
+            return "rgba(60, 179, 113, 0.4)";
         }
-    }
+        if (!isCorrect && isSelected) {
+            return "rgba(255, 0, 0, 0.4)";
+        }
+        return undefined;
+    };
 
+    const handleContained = () => {
+        if (!isFeedback) return isSelected ? "contained" : "outlined";
+        return undefined;
+    };
     return (
-        <Box
+        <Button
+            key={index}
+            variant={handleContained()}
+            color={isSelected ? "primary" : "inherit"}
+            disabled={isDisabled}
+            onClick={() => handleSelection(index)}
             sx={{
-                border: `2px solid ${borderColor}`,
-                borderRadius: "8px",
-                padding: 2,
-                marginBottom: 1
+                backgroundColor: handleColor(),
+                outline: isSelected && isFeedback ? 2 : undefined,
+                outlineColor: "black",
+                margin: 2
             }}
         >
-            {children}
-        </Box>
+            {option}
+        </Button>
     );
 };
 

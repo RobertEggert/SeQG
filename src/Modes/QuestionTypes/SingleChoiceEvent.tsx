@@ -1,8 +1,8 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
-import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
-import AnswerHighlighter from "./AnswerHighlighter";
 import { useState } from "react";
+import AnswerHighlighter from "./AnswerHighlighter";
+import submitAnswer from "../LLMInteraction/SubmitAnswer";
 
 const SingleChoiceEvent = ({
     handleNextQButtonClick,
@@ -13,39 +13,28 @@ const SingleChoiceEvent = ({
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [showFeedback, setShowFeedback] = useState(false);
+    const [selectedAnswer_s, setSelectedAnswers] = useState<number[]>([]);
+    const [isFeedback, setIsFeedback] = useState(false);
+    const correctAnswer_s = questionState.q_data?.correctAnswer_s ?? [];
 
-    const handleAnswerClick = (answerClicked: number) => {
-        setSelectedIndex(answerClicked);
-        setShowFeedback(true);
-        const isCorrect =
-            questionState.q_data?.correctAnswer_s.includes(answerClicked);
-        // THIS IF STATEMENT HAS TO BE A EXPORTET FUNCTION --> USED MULTIPLE TIMES!
-        if (isCorrect) {
-            console.log(userId);
-            if (userId)
-                sendAnswerToLLMBackend(
-                    true,
-                    userId,
-                    questionState.q_data?.topic ?? "NO_TOPIC"
-                );
-            setAnswerCorrect(true);
-            setTimeout(() => {
-                handleNextQButtonClick();
-            }, 2000);
-            return;
-        } else {
-            if (userId)
-                sendAnswerToLLMBackend(
-                    false,
-                    userId,
-                    questionState.q_data?.topic ?? "NO_TOPIC"
-                );
+    const handleSelection = (index: number) => {
+        setSelectedAnswers([index]);
+        setIsFeedback(true);
+        handleSubmit([index]);
+    };
 
-            setAnswerCorrect(false);
-            setExplanationState({ e_fetch: true, e_data: null });
-        }
+    const handleSubmit = (submittedAnswer_s: number[]) => {
+        const isCorrect = submittedAnswer_s.every((i) =>
+            correctAnswer_s.includes(i)
+        );
+        submitAnswer(
+            userId,
+            isCorrect,
+            questionState,
+            setAnswerCorrect,
+            setExplanationState,
+            handleNextQButtonClick
+        );
     };
 
     const isDisabled =
@@ -60,40 +49,18 @@ const SingleChoiceEvent = ({
             </Typography>
             <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
                 {questionState.q_data?.option_s.map((option, index) => {
-                    let isSelected = selectedIndex === index;
-                    let isCorrect = false;
-
-                    if (showFeedback) {
-                        const isCorrectIndex =
-                            questionState.q_data?.correctAnswer_s.includes(
-                                index
-                            ) ?? false;
-                        const isSelectedIndex = selectedIndex === index;
-
-                        isCorrect = isCorrectIndex;
-                        isSelected = isSelectedIndex;
-
-                        if (isSelectedIndex && !isCorrectIndex) {
-                            isCorrect = false;
-                        }
-                    }
-
+                    const isCorrect = correctAnswer_s.includes(index);
+                    const isSelected = selectedAnswer_s.includes(index);
                     return (
                         <AnswerHighlighter
-                            key={index}
-                            isSelected={isSelected}
+                            index={index}
+                            option={option}
+                            isDisabled={isDisabled}
+                            isFeedback={isFeedback}
                             isCorrect={isCorrect}
-                            showFeedback={showFeedback}
-                        >
-                            <Button
-                                variant="outlined"
-                                disabled={isDisabled}
-                                onClick={() => handleAnswerClick(index)}
-                                fullWidth
-                            >
-                                {option}
-                            </Button>
-                        </AnswerHighlighter>
+                            isSelected={isSelected}
+                            handleSelection={handleSelection}
+                        />
                     );
                 })}
             </Box>
