@@ -15,7 +15,7 @@ const RootRouteComponent = () => {
     const isRoot = location.pathname === "/";
 
     return (
-        <Box>
+        <Box sx={{ overflow: "hidden" }}>
             {isRoot && <MainScreen />}
             <Outlet />
         </Box>
