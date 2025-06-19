@@ -3,11 +3,7 @@ import { useEffect, useState } from "react";
 import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
-import {
-    type QuestionStateType,
-    type ExplainStateType,
-    fetchUserData
-} from "../../utils/LLMFetcher";
+import { type QuestionStateType, type ExplainStateType, fetchUserData } from "../../utils/LLMFetcher";
 import AgeExperience from "../AgeExperience/AgeExperience";
 
 const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
@@ -61,6 +57,7 @@ const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
                             setExperience={setExperience}
                             age={age}
                             experience={experience}
+                            isPriv={true}
                         />
                     </>
                 )}

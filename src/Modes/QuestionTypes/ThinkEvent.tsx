@@ -1,11 +1,4 @@
-import {
-    Typography,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CircularProgress
-} from "@mui/material";
+import { Typography, Box, Button, Card, CardContent, CircularProgress } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useEffect, useState } from "react";
@@ -40,11 +33,7 @@ const ThinkEvent = ({
 
     const handleUserResponse = (knewAnswer: boolean) => {
         if (userId) {
-            sendAnswerToLLMBackend(
-                knewAnswer,
-                userId,
-                questionState.q_data?.topic ?? "NO_TOPIC"
-            );
+            sendAnswerToLLMBackend(knewAnswer, userId, questionState.q_data?.topic ?? "NO_TOPIC");
         }
 
         setAnswerCorrect(knewAnswer);
@@ -58,10 +47,7 @@ const ThinkEvent = ({
         setExplanationState({ e_fetch: true, e_data: null });
     };
 
-    const isDisabled =
-        explanationState.e_data !== null ||
-        explanationState.e_fetch ||
-        answerCorrect === true;
+    const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
         <Box sx={{ textAlign: "center", marginTop: 4 }}>
@@ -85,21 +71,13 @@ const ThinkEvent = ({
                         }}
                     >
                         <CardContent>
-                            <Typography variant="body1">
-                                Take your time to think…
-                            </Typography>
+                            <Typography variant="body1">Take your time to think…</Typography>
                             <CircularProgress
                                 variant="determinate"
-                                value={
-                                    ((TOTAL_TIME - timeLeft) / TOTAL_TIME) * 100
-                                }
+                                value={((TOTAL_TIME - timeLeft) / TOTAL_TIME) * 100}
                                 sx={{ marginTop: 2 }}
                             />
-                            <Typography
-                                variant="caption"
-                                display="block"
-                                sx={{ marginTop: 1 }}
-                            >
+                            <Typography variant="caption" display="block" sx={{ marginTop: 1 }}>
                                 Revealing answer in {timeLeft} second
                                 {timeLeft !== 1 ? "s" : ""}
                             </Typography>
@@ -125,12 +103,7 @@ const ThinkEvent = ({
                         <CardContent>
                             <Typography variant="subtitle1">Answer:</Typography>
                             <Typography variant="body1">
-                                {
-                                    questionState.q_data?.option_s[
-                                        questionState.q_data
-                                            ?.correctAnswer_s?.[0] ?? 0
-                                    ]
-                                }
+                                {questionState.q_data?.option_s[questionState.q_data?.correctAnswer_s?.[0] ?? 0]}
                             </Typography>
                         </CardContent>
                     </Card>

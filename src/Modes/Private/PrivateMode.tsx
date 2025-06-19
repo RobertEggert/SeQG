@@ -107,11 +107,7 @@ const PrivateMode = () => {
                                         >
                                             Welcome to the private mode!
                                         </Typography>
-                                        <Typography
-                                            variant="body1"
-                                            align="center"
-                                            sx={{ color: "text.secondary" }}
-                                        >
+                                        <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
                                             Scan this QR code to log in!
                                         </Typography>
                                     </Box>
@@ -128,11 +124,9 @@ const PrivateMode = () => {
                                         userSelect: "none"
                                     }}
                                 >
-                                    In this mode, you will get personalised
-                                    content based on your profile and
+                                    In this mode, you will get personalised content based on your profile and
                                     performance. <br />
-                                    You can close the session whenever you like
-                                    by closing the tab or logging out.
+                                    You can close the session whenever you like by closing the tab or logging out.
                                 </Typography>
                             </>
                         )}

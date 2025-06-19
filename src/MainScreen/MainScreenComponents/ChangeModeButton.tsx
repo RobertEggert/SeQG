@@ -8,16 +8,9 @@ type ChangeModeButtonProps = {
     enteringMode: boolean;
 };
 
-const ChangeModeButton = ({
-    handleModeSwitch,
-    enteringMode
-}: ChangeModeButtonProps) => {
+const ChangeModeButton = ({ handleModeSwitch, enteringMode }: ChangeModeButtonProps) => {
     return (
-        <FadedComponent
-            externalFade={!enteringMode ? undefined : enteringMode}
-            timeout={1500}
-            fadeTime={1000}
-        >
+        <FadedComponent externalFade={!enteringMode ? undefined : enteringMode} timeout={1500} fadeTime={1000}>
             <IconButton
                 onClick={handleModeSwitch}
                 sx={{

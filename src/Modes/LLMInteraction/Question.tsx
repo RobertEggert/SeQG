@@ -1,10 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import {
-    fetchQuestionFromLLM,
-    type ExplainStateType,
-    type QuestionStateType
-} from "../../utils/LLMFetcher";
+import { fetchQuestionFromLLM, type ExplainStateType, type QuestionStateType } from "../../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
 import { flexAlignColumn } from "../../styling/theme";
@@ -22,11 +18,7 @@ type QuestionType = {
     userId?: string; // only when private is entered
 };
 
-const IsCorrectComponent = ({
-    answerCorrect
-}: {
-    answerCorrect: boolean | null;
-}) => {
+const IsCorrectComponent = ({ answerCorrect }: { answerCorrect: boolean | null }) => {
     return (
         <>
             {answerCorrect === true && (

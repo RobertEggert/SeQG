@@ -54,10 +54,7 @@ app.get("/connect/host", (_: Request, res: Response) => {
 
 app.get("/user-data/:userId", (req: Request, res: Response) => {
     const userId = req.params.userId;
-    const userFilePath = path.join(
-        __dirname,
-        `./memory/private-users/${userId}.json`
-    );
+    const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
 
     if (!fs.existsSync(userFilePath)) {
         res.status(404).json({ error: "User not found" });
@@ -96,18 +93,14 @@ io.on("connection", (socket: Socket) => {
             if (sessionEntry[role]) {
                 socket.emit("status", "already_connected");
                 setTimeout(() => socket.disconnect(), 100);
-                console.log(
-                    `Role ${role} already connected for session ${session}`
-                );
+                console.log(`Role ${role} already connected for session ${session}`);
                 return;
             }
 
             sessionEntry[role] = socket.id;
             activeSessions.set(session, sessionEntry);
 
-            console.log(
-                `Socket ${socket.id} registered to session ${session} as a ${role} in GUEST mode`
-            );
+            console.log(`Socket ${socket.id} registered to session ${session} as a ${role} in GUEST mode`);
 
             if (sessionEntry.host && sessionEntry.client) {
                 io.to(sessionEntry.host).emit("status", "connected");
@@ -115,9 +108,7 @@ io.on("connection", (socket: Socket) => {
             }
 
             socket.on("disconnect", () => {
-                console.log(
-                    `Socket ${socket.id} disconnected session: ${session} as a ${role}`
-                );
+                console.log(`Socket ${socket.id} disconnected session: ${session} as a ${role}`);
                 const entry = activeSessions.get(session);
                 if (entry && entry[role] === socket.id) {
                     delete entry[role];
@@ -126,8 +117,7 @@ io.on("connection", (socket: Socket) => {
                     } else {
                         activeSessions.set(session, entry);
                     }
-                    const otherRole: ROLES =
-                        role === "host" ? "client" : "host";
+                    const otherRole: ROLES = role === "host" ? "client" : "host";
                     if (entry[otherRole]) {
                         io.to(entry[otherRole]!).emit("status", "disconnected");
                     }
@@ -152,25 +142,17 @@ io.on("connection", (socket: Socket) => {
                 return;
             }
             if (role === "client") {
-                const userFilePath = path.join(
-                    __dirname,
-                    `./memory/private-users/${userId}.json`
-                );
+                const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
                 if (!fs.existsSync(userFilePath)) {
                     const topics = getTopics();
-                    const progress = Object.fromEntries(
-                        topics.map((topic) => [topic, { correct: 0, total: 0 }])
-                    );
+                    const progress = Object.fromEntries(topics.map((topic) => [topic, { correct: 0, total: 0 }]));
                     const userData = {
                         user_id: userId,
                         age: null,
                         experience: null,
                         progress
                     };
-                    fs.writeFileSync(
-                        userFilePath,
-                        JSON.stringify(userData, null, 2)
-                    );
+                    fs.writeFileSync(userFilePath, JSON.stringify(userData, null, 2));
                 } else {
                     console.log("Welcome returning user!");
                 }
@@ -181,18 +163,14 @@ io.on("connection", (socket: Socket) => {
             if (sessionEntry[role]) {
                 socket.emit("status", "already_connected");
                 setTimeout(() => socket.disconnect(), 100);
-                console.log(
-                    `Role ${role} already connected for session ${session}`
-                );
+                console.log(`Role ${role} already connected for session ${session}`);
                 return;
             }
             console.log("TEST - 3");
             sessionEntry[role] = socket.id;
             activeSessions.set(session, sessionEntry);
 
-            console.log(
-                `Socket ${socket.id} registered to session ${session} as a ${role} in PRIVATE mode`
-            );
+            console.log(`Socket ${socket.id} registered to session ${session} as a ${role} in PRIVATE mode`);
 
             if (sessionEntry.host && sessionEntry.client) {
                 io.to(sessionEntry.host).emit("status", "connected");
@@ -203,9 +181,7 @@ io.on("connection", (socket: Socket) => {
             }
 
             socket.on("disconnect", () => {
-                console.log(
-                    `Socket ${socket.id} disconnected session: ${session} as a ${role}`
-                );
+                console.log(`Socket ${socket.id} disconnected session: ${session} as a ${role}`);
                 const entry = activeSessions.get(session);
                 if (entry && entry[role] === socket.id) {
                     delete entry[role];
@@ -214,8 +190,7 @@ io.on("connection", (socket: Socket) => {
                     } else {
                         activeSessions.set(session, entry);
                     }
-                    const otherRole: ROLES =
-                        role === "host" ? "client" : "host";
+                    const otherRole: ROLES = role === "host" ? "client" : "host";
                     if (entry[otherRole]) {
                         io.to(entry[otherRole]!).emit("status", "disconnected");
                     }

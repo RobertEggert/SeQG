@@ -30,16 +30,10 @@ const NextQuestion = ({
         >
             <Button
                 variant="contained"
-                disabled={
-                    questionState.q_data === null ||
-                    explanationState.e_fetch ||
-                    answerCorrect === true
-                }
+                disabled={questionState.q_data === null || explanationState.e_fetch || answerCorrect === true}
                 onClick={handleNextQButtonClick}
             >
-                {!age || !experience
-                    ? "Tell age and experience first"
-                    : "Next question"}
+                {!age || !experience ? "Tell age and experience first" : "Next question"}
             </Button>
         </Box>
     );

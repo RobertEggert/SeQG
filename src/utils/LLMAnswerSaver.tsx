@@ -1,8 +1,4 @@
-export const sendAnswerToLLMBackend = (
-    isAnswerCorrect: boolean,
-    userId: string,
-    topic?: string
-) => {
+export const sendAnswerToLLMBackend = (isAnswerCorrect: boolean, userId: string, topic?: string) => {
     fetch("http://localhost:3002/api/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

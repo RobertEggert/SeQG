@@ -26,31 +26,17 @@ type AgeExprienceType = {
     setExperience: React.Dispatch<React.SetStateAction<number | null>>;
     age: string | null;
     experience: number | null;
+    isPriv: boolean;
 };
 
 const customIcons: {
-    [index: number]: {
-        icon: React.ReactElement;
-        label: string;
-    };
+    [lvl: number]: { icon: React.ReactElement };
 } = {
-    1: {
-        icon: <SentimentVeryDissatisfiedIcon color="error" />,
-        label: "Very Dissatisfied"
-    },
-    2: {
-        icon: <SentimentDissatisfiedIcon color="error" />,
-        label: "Dissatisfied"
-    },
-    3: { icon: <SentimentSatisfiedIcon color="warning" />, label: "Neutral" },
-    4: {
-        icon: <SentimentSatisfiedAltIcon color="success" />,
-        label: "Satisfied"
-    },
-    5: {
-        icon: <SentimentVerySatisfiedIcon color="success" />,
-        label: "Very Satisfied"
-    }
+    1: { icon: <SentimentVeryDissatisfiedIcon color="error" /> },
+    2: { icon: <SentimentDissatisfiedIcon color="error" /> },
+    3: { icon: <SentimentSatisfiedIcon color="warning" /> },
+    4: { icon: <SentimentSatisfiedAltIcon color="success" /> },
+    5: { icon: <SentimentVerySatisfiedIcon color="success" /> }
 };
 
 const IconContainer = ({ value, ...other }: IconContainerProps) => {
@@ -63,16 +49,14 @@ const AgeExperience = ({
     setAge,
     setExperience,
     age,
-    experience
+    experience,
+    isPriv
 }: AgeExprienceType) => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
     };
 
-    const handleExperienceChange = (
-        _: SyntheticEvent,
-        newValue: number | null
-    ) => {
+    const handleExperienceChange = (_: SyntheticEvent, newValue: number | null) => {
         if (newValue !== null) setExperience(newValue);
     };
 
@@ -93,9 +77,7 @@ const AgeExperience = ({
                         id="age-select"
                         value={age ?? ""}
                         label="Age"
-                        onChange={(e) =>
-                            handleChange(e as SelectChangeEvent<string>)
-                        }
+                        onChange={(e) => handleChange(e as SelectChangeEvent<string>)}
                     >
                         <MenuItem value="">Do not wish to answer</MenuItem>
                         <MenuItem value="< 18">{"< 18"}</MenuItem>
@@ -119,7 +101,6 @@ const AgeExperience = ({
                     max={5}
                     value={experience}
                     onChange={handleExperienceChange}
-                    getLabelText={(value: number) => customIcons[value].label}
                     IconContainerComponent={IconContainer}
                     highlightSelectedOnly
                 />
@@ -130,6 +111,7 @@ const AgeExperience = ({
                 setQuestionState={setQuestionState}
                 age={age}
                 experience={experience}
+                isPriv={isPriv}
             />
         </>
     );

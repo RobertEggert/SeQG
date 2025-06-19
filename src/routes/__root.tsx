@@ -1,8 +1,4 @@
-import {
-    createRootRoute,
-    Outlet,
-    useRouterState
-} from "@tanstack/react-router";
+import { createRootRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import MainScreen from "../MainScreen/MainScreen";
 import { Box } from "@mui/material";
 

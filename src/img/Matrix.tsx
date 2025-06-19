@@ -19,8 +19,7 @@ const Matrix = React.memo(() => {
         const fontSize = 14;
         const columns = Math.floor(width / fontSize);
         const drops = Array(columns).fill(1);
-        const chars =
-            "アァイイウエカキクケコサシスセソタチツテトナニヌネノ0123456789";
+        const chars = "アァイイウエカキクケコサシスセソタチツテトナニヌネノ0123456789";
 
         function draw() {
             if (!ctx) return;

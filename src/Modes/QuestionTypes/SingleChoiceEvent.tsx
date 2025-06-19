@@ -1,6 +1,8 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
-import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
+import { useState } from "react";
+import AnswerHighlighter from "./AnswerHighlighter";
+import submitAnswer from "../LLMInteraction/SubmitAnswer";
 
 const SingleChoiceEvent = ({
     handleNextQButtonClick,
@@ -11,57 +13,42 @@ const SingleChoiceEvent = ({
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    const handleAnswerClick = (answerClicked: number) => {
-        const isCorrect =
-            questionState.q_data?.correctAnswer_s.includes(answerClicked);
-        // THIS IF STATEMENT HAS TO BE A EXPORTET FUNCTION --> USED MULTIPLE TIMES!
-        if (isCorrect) {
-            console.log(userId);
-            if (userId)
-                sendAnswerToLLMBackend(
-                    true,
-                    userId,
-                    questionState.q_data?.topic ?? "NO_TOPIC"
-                );
-            setAnswerCorrect(true);
-            setTimeout(() => {
-                handleNextQButtonClick();
-            }, 2000);
-            return;
-        } else {
-            if (userId)
-                sendAnswerToLLMBackend(
-                    false,
-                    userId,
-                    questionState.q_data?.topic ?? "NO_TOPIC"
-                );
+    const [selectedAnswer_s, setSelectedAnswers] = useState<number[]>([]);
+    const [isFeedback, setIsFeedback] = useState(false);
+    const correctAnswer_s = questionState.q_data?.correctAnswer_s ?? [];
 
-            setAnswerCorrect(false);
-            setExplanationState({ e_fetch: true, e_data: null });
-        }
+    const handleSelection = (index: number) => {
+        setSelectedAnswers([index]);
+        setIsFeedback(true);
+        handleSubmit([index]);
     };
 
-    const isDisabled =
-        explanationState.e_data !== null ||
-        explanationState.e_fetch ||
-        answerCorrect === true;
+    const handleSubmit = (submittedAnswer_s: number[]) => {
+        const isCorrect = submittedAnswer_s.every((i) => correctAnswer_s.includes(i));
+        submitAnswer(userId, isCorrect, questionState, setAnswerCorrect, setExplanationState, handleNextQButtonClick);
+    };
+
+    const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
         <>
-            <Typography variant="h6">
-                {questionState.q_data?.question}
-            </Typography>
+            <Typography variant="h6">{questionState.q_data?.question}</Typography>
             <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
-                {questionState.q_data?.option_s.map((option, index) => (
-                    <Button
-                        key={index}
-                        variant="outlined"
-                        disabled={isDisabled}
-                        onClick={() => handleAnswerClick(index)}
-                    >
-                        {option}
-                    </Button>
-                ))}
+                {questionState.q_data?.option_s.map((option, index) => {
+                    const isCorrect = correctAnswer_s.includes(index);
+                    const isSelected = selectedAnswer_s.includes(index);
+                    return (
+                        <AnswerHighlighter
+                            index={index}
+                            option={option}
+                            isDisabled={isDisabled}
+                            isFeedback={isFeedback}
+                            isCorrect={isCorrect}
+                            isSelected={isSelected}
+                            handleSelection={handleSelection}
+                        />
+                    );
+                })}
             </Box>
         </>
     );

@@ -44,10 +44,7 @@ const GuestSession = () => {
     }, [BE_PORT, LOCAL_ADDRESS, session]);
 
     return isError === null ? (
-        <CircularProgress
-            size={100}
-            sx={{ display: "flex", justifyContent: "center" }}
-        />
+        <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />
     ) : (
         <DisplayCorrectBehavior isError={isError} />
     );

@@ -16,10 +16,7 @@ type MainScreenCharacterModeProps = {
     mode: MODES;
 };
 
-const MainScreenCharacterMode = ({
-    setMode,
-    mode
-}: MainScreenCharacterModeProps) => {
+const MainScreenCharacterMode = ({ setMode, mode }: MainScreenCharacterModeProps) => {
     const navigate = useNavigate();
     const [enteringMode, setEnteringMode] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
@@ -37,10 +34,7 @@ const MainScreenCharacterMode = ({
     };
 
     return (
-        <SwipeableBox<MODES>
-            toBeSet={mode === "GUEST" ? "PRIVATE" : "GUEST"}
-            setter={setMode}
-        >
+        <SwipeableBox<MODES> toBeSet={mode === "GUEST" ? "PRIVATE" : "GUEST"} setter={setMode}>
             <Box
                 sx={{
                     ...flexAlignColumn
@@ -82,10 +76,7 @@ const MainScreenCharacterMode = ({
                     }}
                 >
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
-                    <ChangeModeButton
-                        handleModeSwitch={handleModeSwitch}
-                        enteringMode={enteringMode}
-                    />
+                    <ChangeModeButton handleModeSwitch={handleModeSwitch} enteringMode={enteringMode} />
                 </Box>
             </Box>
 

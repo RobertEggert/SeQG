@@ -8,17 +8,12 @@ type FadedTextProps = {
 
 const FadedTextChanger = ({ timeout, textArray }: FadedTextProps) => {
     const [showFade, setShowFade] = useState(true);
-    const [text, setText] = useState(
-        textArray[Math.floor(Math.random() * textArray.length)]
-    );
+    const [text, setText] = useState(textArray[Math.floor(Math.random() * textArray.length)]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setShowFade(!showFade);
-            if (!showFade)
-                setText(
-                    textArray[Math.floor(Math.random() * textArray.length)]
-                );
+            if (!showFade) setText(textArray[Math.floor(Math.random() * textArray.length)]);
         }, 1300); // toggle every second
 
         return () => clearInterval(interval);
