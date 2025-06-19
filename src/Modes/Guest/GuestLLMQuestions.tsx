@@ -41,6 +41,7 @@ const GuestLLMQuestions = () => {
                             setExperience={setExperience}
                             age={age}
                             experience={experience}
+                            isPriv={false}
                         />
                     </>
                 )}

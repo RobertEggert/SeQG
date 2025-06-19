@@ -69,7 +69,7 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Box>{isPriv && <Button onClick={() => handleNavGuestmode()}>Return to Guest mode</Button>}</Box>
+                    <Box>{isPriv && <Button onClick={handleNavGuestmode}>Return to Guest mode</Button>}</Box>
                     <Box>
                         <Button onClick={handleDialogClose}>NO</Button>
                         <Button onClick={handleDialogConfirm}>YES</Button>
