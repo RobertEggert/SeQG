@@ -13,7 +13,7 @@ Here is the context:
 - Options: {{option_s}} (array of strings)
 - Correct answer array with index: {{correctAnswer_s}} (array of number zero-based)
 
-Respond strictly in this JSON format:
+Return your output strictly as a JSON object in the format below:
 {
   "explain": "Your explanation here. Mention the correct answers in quotes"
 }

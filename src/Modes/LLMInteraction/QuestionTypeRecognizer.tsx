@@ -1,9 +1,5 @@
 import type { Dispatch, ElementType, SetStateAction } from "react";
-import type {
-    QuestionStateType,
-    ExplainStateType,
-    QuestionType
-} from "../../utils/LLMFetcher";
+import type { QuestionStateType, ExplainStateType, QuestionType } from "../../utils/LLMFetcher";
 import SingleChoiceEvent from "../QuestionTypes/SingleChoiceEvent";
 import { Box } from "@mui/material";
 import LineConnectEvent from "../QuestionTypes/LineConnectEvent";
@@ -52,8 +48,7 @@ const QuestionTypeRecognizer = ({
         "think-event": ThinkEvent
     };
 
-    const QuestionTypeComponent =
-        componentForQuestionType[questionState.q_data.questionType]; // here we map the according component
+    const QuestionTypeComponent = componentForQuestionType[questionState.q_data.questionType]; // here we map the according component
 
     return QuestionTypeComponent ? (
         <QuestionTypeComponent {...sharedProps} />

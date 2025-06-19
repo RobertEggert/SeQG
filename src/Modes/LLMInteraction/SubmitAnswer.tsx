@@ -1,9 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
-import type {
-    ExplainStateType,
-    QuestionStateType
-} from "../../utils/LLMFetcher";
+import type { ExplainStateType, QuestionStateType } from "../../utils/LLMFetcher";
 
 // Currently in use of Single-Choice and Multiple-Choice
 const submitAnswer = (
@@ -15,11 +12,7 @@ const submitAnswer = (
     handleNextQButtonClick: () => void
 ) => {
     if (userId) {
-        sendAnswerToLLMBackend(
-            isCorrect,
-            userId,
-            questionState.q_data?.topic ?? "NO_TOPIC"
-        );
+        sendAnswerToLLMBackend(isCorrect, userId, questionState.q_data?.topic ?? "NO_TOPIC");
     }
 
     setAnswerCorrect(isCorrect);

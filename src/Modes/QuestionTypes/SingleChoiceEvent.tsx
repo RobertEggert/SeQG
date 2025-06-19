@@ -24,29 +24,15 @@ const SingleChoiceEvent = ({
     };
 
     const handleSubmit = (submittedAnswer_s: number[]) => {
-        const isCorrect = submittedAnswer_s.every((i) =>
-            correctAnswer_s.includes(i)
-        );
-        submitAnswer(
-            userId,
-            isCorrect,
-            questionState,
-            setAnswerCorrect,
-            setExplanationState,
-            handleNextQButtonClick
-        );
+        const isCorrect = submittedAnswer_s.every((i) => correctAnswer_s.includes(i));
+        submitAnswer(userId, isCorrect, questionState, setAnswerCorrect, setExplanationState, handleNextQButtonClick);
     };
 
-    const isDisabled =
-        explanationState.e_data !== null ||
-        explanationState.e_fetch ||
-        answerCorrect === true;
+    const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
         <>
-            <Typography variant="h6">
-                {questionState.q_data?.question}
-            </Typography>
+            <Typography variant="h6">{questionState.q_data?.question}</Typography>
             <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
                 {questionState.q_data?.option_s.map((option, index) => {
                     const isCorrect = correctAnswer_s.includes(index);

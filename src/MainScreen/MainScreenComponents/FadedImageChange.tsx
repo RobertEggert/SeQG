@@ -63,11 +63,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
         <Box
             sx={{
                 ...flexAllCenter,
-                transform: enteringMode
-                    ? isPriv
-                        ? "translateX(23%)"
-                        : "translateX(17%)"
-                    : "translateX(0%)",
+                transform: enteringMode ? (isPriv ? "translateX(23%)" : "translateX(17%)") : "translateX(0%)",
                 transition: "transform 1s ease-in-out",
                 paddingBottom: 4
             }}
@@ -80,9 +76,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                     padding: 2,
                     height: "50vh",
                     zIndex: isPriv ? 2 : 1,
-                    animation: isPriv
-                        ? `${rotateGuestStart} 2s ease-in-out`
-                        : `${rotateGuestEnd} 2s ease-in-out`,
+                    animation: isPriv ? `${rotateGuestStart} 2s ease-in-out` : `${rotateGuestEnd} 2s ease-in-out`,
                     animationFillMode: "forwards",
                     opacity: isGuest ? 1 : shadowOrGone,
                     transition: "opacity 0.5s ease-in-out"
@@ -96,9 +90,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                     padding: 2,
                     height: "50vh",
                     zIndex: isGuest ? 2 : 1,
-                    animation: isGuest
-                        ? `${rotatePrivateStart} 2s ease-in-out`
-                        : `${rotatePrivateEnd} 2s ease-in-out`,
+                    animation: isGuest ? `${rotatePrivateStart} 2s ease-in-out` : `${rotatePrivateEnd} 2s ease-in-out`,
                     animationFillMode: "forwards",
                     opacity: isPriv ? 1 : shadowOrGone,
                     transition: "opacity 1s ease-in-out"

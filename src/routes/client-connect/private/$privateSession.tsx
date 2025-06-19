@@ -7,11 +7,9 @@ import Prohibited from "../../../Modes/Prohibited";
 import { v4 as uuidv4 } from "uuid";
 import PrivateLLMPrecondition from "../../../Modes/Private/PrivateLLMPrecondition";
 
-export const Route = createFileRoute("/client-connect/private/$privateSession")(
-    {
-        component: () => <PrivateSession />
-    }
-);
+export const Route = createFileRoute("/client-connect/private/$privateSession")({
+    component: () => <PrivateSession />
+});
 
 const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
     return isError ? <Prohibited /> : <PrivateLLMPrecondition />;
@@ -57,10 +55,7 @@ const PrivateSession = () => {
     }, [BE_PORT, LOCAL_ADDRESS, privateSession]);
 
     return isError === null ? (
-        <CircularProgress
-            size={100}
-            sx={{ display: "flex", justifyContent: "center" }}
-        />
+        <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />
     ) : (
         <DisplayCorrectBehavior isError={isError} />
     );

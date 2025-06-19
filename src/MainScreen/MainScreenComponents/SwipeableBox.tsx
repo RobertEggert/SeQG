@@ -1,10 +1,5 @@
 import { Box } from "@mui/material";
-import {
-    useState,
-    type Dispatch,
-    type ReactNode,
-    type SetStateAction
-} from "react";
+import { useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { flexAlignColumn } from "../../styling/theme";
 
 const SwipeableBox = <SetterType,>({

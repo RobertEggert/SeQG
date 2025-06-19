@@ -20,27 +20,20 @@ const InfoPopup = ({ ref }: { ref: RefObject<HTMLDivElement | null> }) => {
                 borderRadius: 2
             }}
         >
-            <Typography
-                display="flex"
-                justifyContent="center"
-                variant="h5"
-                gutterBottom
-            >
+            <Typography display="flex" justifyContent="center" variant="h5" gutterBottom>
                 Mode Definition
             </Typography>
             <Typography variant="h4" paddingBottom={2}>
                 Guest Mode
                 <Typography variant="body2">
-                    In the Guest Mode you are fully anonymous. Your questions
-                    are based on your self assessment.
+                    In the Guest Mode you are fully anonymous. Your questions are based on your self assessment.
                 </Typography>
             </Typography>
 
             <Typography variant="h4" paddingBottom={2}>
                 Private Mode
                 <Typography variant="body2">
-                    In Private Mode your answers train the LLM to create
-                    Questions just for you.
+                    In Private Mode your answers train the LLM to create Questions just for you.
                 </Typography>
             </Typography>
         </Paper>

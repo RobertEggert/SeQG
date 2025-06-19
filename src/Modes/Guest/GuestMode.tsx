@@ -98,21 +98,14 @@ const GuestMode = () => {
                                         >
                                             Welcome to the guest mode!
                                         </Typography>
-                                        <Typography
-                                            variant="body1"
-                                            align="center"
-                                            sx={{ color: "text.secondary" }}
-                                        >
-                                            By scanning this QR code, you will
-                                            start a session (no personal
-                                            information is saved)
+                                        <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
+                                            By scanning this QR code, you will start a session (no personal information
+                                            is saved)
                                         </Typography>
                                     </Box>
                                 </FadedComponent>
 
-                                <Typography>
-                                    Scan this Guest QR Code:
-                                </Typography>
+                                <Typography>Scan this Guest QR Code:</Typography>
                                 <QRCodeSVG value={connectUrl} size={200} />
 
                                 <Typography
@@ -124,10 +117,8 @@ const GuestMode = () => {
                                         userSelect: "none"
                                     }}
                                 >
-                                    In this mode, your experience will be based
-                                    on previous users. <br />
-                                    You can close the session whenever you like
-                                    by clossing the tab.
+                                    In this mode, your experience will be based on previous users. <br />
+                                    You can close the session whenever you like by clossing the tab.
                                 </Typography>
                             </>
                         )}

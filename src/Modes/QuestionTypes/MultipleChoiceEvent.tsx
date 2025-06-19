@@ -21,9 +21,7 @@ const MultipleChoiceEvent = ({
 
     const handleSelection = (index: number) => {
         if (selectedAnswer_s.includes(index)) {
-            const removedIndex = selectedAnswer_s.filter(
-                (selected) => selected !== index
-            );
+            const removedIndex = selectedAnswer_s.filter((selected) => selected !== index);
             setSelectedAnswers(removedIndex);
         } else {
             setSelectedAnswers([...selectedAnswer_s, index]);
@@ -37,20 +35,10 @@ const MultipleChoiceEvent = ({
             selectedAnswer_s.length === correctAnswers.length &&
             selectedAnswer_s.every((i) => correctAnswers.includes(i));
 
-        submitAnswer(
-            userId,
-            isCorrect,
-            questionState,
-            setAnswerCorrect,
-            setExplanationState,
-            handleNextQButtonClick
-        );
+        submitAnswer(userId, isCorrect, questionState, setAnswerCorrect, setExplanationState, handleNextQButtonClick);
     };
 
-    const isDisabled =
-        explanationState.e_data !== null ||
-        explanationState.e_fetch ||
-        answerCorrect === true;
+    const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
         <>
@@ -74,11 +62,7 @@ const MultipleChoiceEvent = ({
                     );
                 })}
             </Box>
-            <Button
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={isDisabled}
-            >
+            <Button variant="contained" onClick={handleSubmit} disabled={isDisabled}>
                 Submit Answer
             </Button>
         </>

@@ -4,10 +4,7 @@ import AgeExperience from "../AgeExperience/AgeExperience";
 import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
-import type {
-    QuestionStateType,
-    ExplainStateType
-} from "../../utils/LLMFetcher";
+import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
 
 const GuestLLMQuestions = () => {
     const [age, setAge] = useState<string | null>(null);

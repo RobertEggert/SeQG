@@ -24,8 +24,7 @@ const ExplainAnswer = ({
 }: ExplainAnswerType) => {
     useEffect(() => {
         if (explanationState.e_fetch && questionState.q_data) {
-            const { question, option_s, correctAnswer_s } =
-                questionState.q_data;
+            const { question, option_s, correctAnswer_s } = questionState.q_data;
             // safe to use them here
             fetchExplanationFromLLMShortTerm({
                 setExplanationState,

@@ -50,11 +50,7 @@ type FetchUserDataType = {
     experience: number | null;
 };
 
-export const fetchQuestionFromLLM = async ({
-    setQuestionState,
-    age,
-    experience
-}: FetchQuestionType) => {
+export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }: FetchQuestionType) => {
     const response = await fetch("http://localhost:3002/api/question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,14 +70,11 @@ export const fetchExplanationFromLLMLongTerm = async ({
     age,
     experience
 }: FetchExplanationType) => {
-    const response = await fetch(
-        "http://localhost:3002/api/explanation/simpleprompt",
-        {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ age, experience })
-        }
-    );
+    const response = await fetch("http://localhost:3002/api/explanation/simpleprompt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ age, experience })
+    });
     const LLMdata: LLM_API_Explanation_Type = await response.json();
 
     if (!LLMdata?.explain) {
@@ -100,20 +93,17 @@ export const fetchExplanationFromLLMShortTerm = async ({
     option_s,
     correctAnswer_s
 }: FetchExplanationType) => {
-    const response = await fetch(
-        "http://localhost:3002/api/explanation/shortterm",
-        {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                age,
-                experience,
-                question,
-                option_s,
-                correctAnswer_s
-            })
-        }
-    );
+    const response = await fetch("http://localhost:3002/api/explanation/shortterm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            age,
+            experience,
+            question,
+            option_s,
+            correctAnswer_s
+        })
+    });
     const LLMdata: LLM_API_Explanation_Type = await response.json();
 
     if (!LLMdata?.explain) {
