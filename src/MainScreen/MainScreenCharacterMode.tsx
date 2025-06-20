@@ -29,7 +29,7 @@ const MainScreenCharacterMode = ({ setMode, mode }: MainScreenCharacterModeProps
     const handleClick = () => {
         setEnteringMode(true);
         setTimeout(() => {
-            navigate({ to: `/frontend-mode/${mode?.toLowerCase()}` });
+            navigate({ to: `/host-mode/${mode?.toLowerCase()}` });
         }, 1000);
     };
 

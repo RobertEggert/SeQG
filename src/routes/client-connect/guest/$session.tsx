@@ -1,21 +1,18 @@
 // src/routes/connect/$session.tsx
 import { CircularProgress } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import Prohibited from "../../../Modes/Prohibited";
 import GuestLLMPrecondition from "../../../Modes/Guest/GuestLLMPrecondition";
+import type { STATUS } from "../../../utils/types";
 
 export const Route = createFileRoute("/client-connect/guest/$session")({
     component: () => <GuestSession />
 });
 
-const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
-    return isError ? <Prohibited /> : <GuestLLMPrecondition />;
-};
-
 const GuestSession = () => {
-    const [isError, setIsError] = useState<boolean | null>(null);
+    const navigate = useNavigate();
+    const [status, setStatus] = useState<STATUS>("pending");
     const { session } = Route.useParams();
     const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -31,23 +28,23 @@ const GuestSession = () => {
         });
 
         socket.on("status", (msg) => {
-            if (msg === "already_connected" || msg === "invalid_role") {
-                setIsError(true);
-            } else {
-                setIsError(false);
+            if (msg !== "connected") {
+                navigate({ to: `/client-connect/prohibited` });
             }
+            setStatus("connected");
         });
 
         return () => {
             socket.disconnect();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [BE_PORT, LOCAL_ADDRESS, session]);
 
-    return isError === null ? (
-        <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />
-    ) : (
-        <DisplayCorrectBehavior isError={isError} />
-    );
+    if (status === "pending") {
+        return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
+    }
+
+    return <GuestLLMPrecondition />;
 };
 
 export default GuestSession;
