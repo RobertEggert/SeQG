@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import GuestLLMPrecondition from "../../../Modes/Guest/GuestLLMPrecondition";
+import GuestLLMConnected from "../../../Modes/Guest/GuestLLMConnected";
 import type { STATUS } from "../../../utils/types";
 
 export const Route = createFileRoute("/client-connect/guest/$session")({
@@ -44,7 +44,7 @@ const GuestSession = () => {
         return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
     }
 
-    return <GuestLLMPrecondition />;
+    return <GuestLLMConnected />;
 };
 
 export default GuestSession;

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-const GuestLLMPrecondition = () => {
+const GuestLLMConnected = () => {
     return (
         <Box>
             <h1>Client! Welcome to the Guest mode give your age and creditcardnumber!</h1>
@@ -8,4 +8,4 @@ const GuestLLMPrecondition = () => {
     );
 };
 
-export default GuestLLMPrecondition;
+export default GuestLLMConnected;

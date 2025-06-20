@@ -4,7 +4,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import PrivateLLMPrecondition from "../../../Modes/Private/PrivateLLMPrecondition";
+import PrivateLLMConnected from "../../../Modes/Private/PrivateLLMConnected";
 import type { STATUS } from "../../../utils/types";
 
 export const Route = createFileRoute("/client-connect/private/$privateSession")({
@@ -54,7 +54,7 @@ const PrivateSession = () => {
         return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
     }
 
-    return <PrivateLLMPrecondition />;
+    return <PrivateLLMConnected />;
 };
 
 export default PrivateSession;
