@@ -47,6 +47,12 @@ const getTopics = (): string[] => {
 };
 
 app.get("/connect/host", (_: Request, res: Response) => {
+    if (activeSessions.size === 1) {
+        console.log(`Role HOST already connected`);
+        res.json({ status: "already_connected" });
+        return;
+    }
+
     const session = uuidv4();
     const token = jwt.sign({ session }, JWL_SECRET, { expiresIn: "1h" });
     res.json({ session, token });
@@ -82,44 +88,61 @@ io.on("connection", (socket: Socket) => {
             };
             const session = payload.session;
 
+            const sessionEntryRegister = activeSessions.get(session) || {};
+
             if (!["host", "client"].includes(role)) {
                 socket.emit("status", "invalid_role");
                 setTimeout(() => socket.disconnect(), 100);
                 return;
             }
 
-            const sessionEntry = activeSessions.get(session) || {};
+            if (role === "client" && !sessionEntryRegister.host) {
+                socket.emit("status", "no_host");
+                console.log(`Client cannot connect without a host for session ${session}`);
+                setTimeout(() => socket.disconnect(), 100);
+                return;
+            }
 
-            if (sessionEntry[role]) {
+            if (sessionEntryRegister[role]) {
                 socket.emit("status", "already_connected");
                 setTimeout(() => socket.disconnect(), 100);
                 console.log(`Role ${role} already connected for session ${session}`);
                 return;
             }
 
-            sessionEntry[role] = socket.id;
-            activeSessions.set(session, sessionEntry);
+            sessionEntryRegister[role] = socket.id;
+            activeSessions.set(session, sessionEntryRegister);
 
             console.log(`Socket ${socket.id} registered to session ${session} as a ${role} in GUEST mode`);
 
-            if (sessionEntry.host && sessionEntry.client) {
-                io.to(sessionEntry.host).emit("status", "connected");
-                io.to(sessionEntry.client).emit("status", "connected");
+            if (sessionEntryRegister.host && sessionEntryRegister.client) {
+                io.to(sessionEntryRegister.host).emit("status", "connected");
+                io.to(sessionEntryRegister.client).emit("status", "connected");
             }
 
             socket.on("disconnect", () => {
                 console.log(`Socket ${socket.id} disconnected session: ${session} as a ${role}`);
-                const entry = activeSessions.get(session);
-                if (entry && entry[role] === socket.id) {
-                    delete entry[role];
-                    if (!entry.host && !entry.client) {
+                const sessionEntryDisconnect = activeSessions.get(session);
+
+                if (sessionEntryDisconnect) {
+                    if (sessionEntryDisconnect.host === socket.id) {
+                        if (sessionEntryDisconnect.client) {
+                            io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
+                        }
+                        delete sessionEntryDisconnect.host;
+                    }
+
+                    if (sessionEntryDisconnect.client === socket.id) {
+                        if (sessionEntryDisconnect.host) {
+                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        }
+                        delete sessionEntryDisconnect.client;
+                    }
+
+                    if (!sessionEntryDisconnect.host && !sessionEntryDisconnect.client) {
                         activeSessions.delete(session);
                     } else {
-                        activeSessions.set(session, entry);
-                    }
-                    const otherRole: ROLES = role === "host" ? "client" : "host";
-                    if (entry[otherRole]) {
-                        io.to(entry[otherRole]!).emit("status", "disconnected");
+                        activeSessions.set(session, sessionEntryDisconnect);
                     }
                 }
             });
@@ -136,11 +159,23 @@ io.on("connection", (socket: Socket) => {
             };
             const session = payload.session;
 
+            const sessionEntryRegister = activeSessions.get(session) || {};
+            // if role is something else then host or client => error
             if (!["host", "client"].includes(role)) {
                 socket.emit("status", "invalid_role");
                 setTimeout(() => socket.disconnect(), 100);
                 return;
             }
+
+            // if role is client and there is no host => error
+            if (role === "client" && !sessionEntryRegister.host) {
+                socket.emit("status", "no_host");
+                console.log(`Client cannot connect without a host for session ${session}`);
+                setTimeout(() => socket.disconnect(), 100);
+                return;
+            }
+
+            // make sure to create a user specific file if not already exists
             if (role === "client") {
                 const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
                 if (!fs.existsSync(userFilePath)) {
@@ -158,41 +193,49 @@ io.on("connection", (socket: Socket) => {
                 }
             }
 
-            const sessionEntry = activeSessions.get(session) || {};
-
-            if (sessionEntry[role]) {
+            if (sessionEntryRegister[role]) {
                 socket.emit("status", "already_connected");
                 setTimeout(() => socket.disconnect(), 100);
                 console.log(`Role ${role} already connected for session ${session}`);
                 return;
             }
             console.log("TEST - 3");
-            sessionEntry[role] = socket.id;
-            activeSessions.set(session, sessionEntry);
+            sessionEntryRegister[role] = socket.id;
+            activeSessions.set(session, sessionEntryRegister);
 
             console.log(`Socket ${socket.id} registered to session ${session} as a ${role} in PRIVATE mode`);
 
-            if (sessionEntry.host && sessionEntry.client) {
-                io.to(sessionEntry.host).emit("status", "connected");
-                io.to(sessionEntry.client).emit("status", "connected");
+            if (sessionEntryRegister.host && sessionEntryRegister.client) {
+                io.to(sessionEntryRegister.host).emit("status", "connected");
+                io.to(sessionEntryRegister.client).emit("status", "connected");
                 if (role === "client") {
-                    io.to(sessionEntry.host).emit("client-id", { userId });
+                    io.to(sessionEntryRegister.host).emit("client-id", { userId });
                 }
             }
 
             socket.on("disconnect", () => {
                 console.log(`Socket ${socket.id} disconnected session: ${session} as a ${role}`);
-                const entry = activeSessions.get(session);
-                if (entry && entry[role] === socket.id) {
-                    delete entry[role];
-                    if (!entry.host && !entry.client) {
+                const sessionEntryDisconnect = activeSessions.get(session);
+
+                if (sessionEntryDisconnect) {
+                    if (sessionEntryDisconnect.host === socket.id) {
+                        if (sessionEntryDisconnect.client) {
+                            io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
+                        }
+                        delete sessionEntryDisconnect.host;
+                    }
+
+                    if (sessionEntryDisconnect.client === socket.id) {
+                        if (sessionEntryDisconnect.host) {
+                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        }
+                        delete sessionEntryDisconnect.client;
+                    }
+
+                    if (!sessionEntryDisconnect.host && !sessionEntryDisconnect.client) {
                         activeSessions.delete(session);
                     } else {
-                        activeSessions.set(session, entry);
-                    }
-                    const otherRole: ROLES = role === "host" ? "client" : "host";
-                    if (entry[otherRole]) {
-                        io.to(entry[otherRole]!).emit("status", "disconnected");
+                        activeSessions.set(session, sessionEntryDisconnect);
                     }
                 }
             });

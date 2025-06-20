@@ -1,22 +1,19 @@
 // src/routes/connect/$session.tsx
 import { CircularProgress } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import Prohibited from "../../../Modes/Prohibited";
 import { v4 as uuidv4 } from "uuid";
-import PrivateLLMPrecondition from "../../../Modes/Private/PrivateLLMPrecondition";
+import PrivateLLMConnected from "../../../Modes/Private/PrivateLLMConnected";
+import type { STATUS } from "../../../utils/types";
 
 export const Route = createFileRoute("/client-connect/private/$privateSession")({
     component: () => <PrivateSession />
 });
 
-const DisplayCorrectBehavior = ({ isError }: { isError: boolean }) => {
-    return isError ? <Prohibited /> : <PrivateLLMPrecondition />;
-};
-
 const PrivateSession = () => {
-    const [isError, setIsError] = useState<boolean | null>(null);
+    const navigate = useNavigate();
+    const [status, setStatus] = useState<STATUS>("pending");
     const { privateSession } = Route.useParams();
     const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
@@ -41,24 +38,23 @@ const PrivateSession = () => {
         });
 
         socket.on("status", (msg) => {
-            console.log(msg);
-            if (msg === "already_connected" || msg === "invalid_role") {
-                setIsError(true);
-            } else {
-                setIsError(false);
+            if (msg !== "connected") {
+                navigate({ to: `/client-connect/prohibited` });
             }
+            setStatus("connected");
         });
 
         return () => {
             socket.disconnect();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [BE_PORT, LOCAL_ADDRESS, privateSession]);
 
-    return isError === null ? (
-        <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />
-    ) : (
-        <DisplayCorrectBehavior isError={isError} />
-    );
+    if (status === "pending") {
+        return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
+    }
+
+    return <PrivateLLMConnected />;
 };
 
 export default PrivateSession;

@@ -1,20 +1,12 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { useNavigate } from "@tanstack/react-router";
 import { colorModes, flexAlignColumn } from "../../styling/theme";
 import PrivateLLMQuestions from "./PrivateLLMQuestions";
 import FadedComponent from "../../utils/FadedComponent";
-
-type STATUS =
-    | "pending"
-    | "connected"
-    | "disconnected"
-    | "already_connected"
-    // in progress
-    | "invalid_token"
-    | "invalid_role";
+import type { STATUS } from "../../utils/types";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -22,18 +14,36 @@ const PrivateMode = () => {
     const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
+    const hasFetchedRef = useRef(false);
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
     const VITE_PORT = import.meta.env.VITE_VITE_PORT || 5173;
 
     useEffect(() => {
-        fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`)
-            .then((res) => res.json())
-            .then(({ session, token }) => {
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
+
+        const fetchHostData = async () => {
+            try {
+                const res = await fetch(`http://${LOCAL_SERVER}:${BE_PORT}/connect/host`);
+                const data = await res.json();
+
+                if (data.status === "already_connected") {
+                    console.warn("Host already connected.");
+                    navigate({ to: "/host-mode/prohibited" });
+                }
+
+                const { session, token } = data;
                 setPrivateSession(session);
                 setToken(token);
-            });
+            } catch (error) {
+                console.error("Failed to connect to host:", error);
+            }
+        };
+
+        fetchHostData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [BE_PORT, LOCAL_SERVER]);
 
     useEffect(() => {
@@ -48,20 +58,20 @@ const PrivateMode = () => {
             });
 
             socket.on("status", (msg) => {
-                console.log("Status:", msg);
                 if (msg === "connected") setStatus("connected");
-                else if (msg === "disconnected") setStatus("disconnected");
+                else if (msg === "disconnected") navigate({ to: "/" });
             });
 
             socket.on("client-id", ({ userId }) => {
-                setUserId(userId);
                 // You can store this in state, context, etc.
+                setUserId(userId);
             });
 
             return () => {
                 socket.disconnect();
             };
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [BE_PORT, LOCAL_SERVER, privateSession, token]);
 
     if (!privateSession || !token) return null;
@@ -92,7 +102,6 @@ const PrivateMode = () => {
                     <PrivateLLMQuestions userId={userId} />
                 ) : (
                     <>
-                        {status === "disconnected" && navigate({ to: "/" })}
                         {status === "pending" && (
                             <>
                                 <FadedComponent timeout={3000}>

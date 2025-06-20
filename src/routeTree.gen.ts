@@ -12,8 +12,10 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-import { Route as FrontendModePrivateImport } from './routes/frontend-mode/private'
-import { Route as FrontendModeGuestImport } from './routes/frontend-mode/guest'
+import { Route as HostModeProhibitedImport } from './routes/host-mode/prohibited'
+import { Route as HostModePrivateImport } from './routes/host-mode/private'
+import { Route as HostModeGuestImport } from './routes/host-mode/guest'
+import { Route as ClientConnectProhibitedImport } from './routes/client-connect/prohibited'
 import { Route as ClientConnectPrivatePrivateSessionImport } from './routes/client-connect/private/$privateSession'
 import { Route as ClientConnectGuestSessionImport } from './routes/client-connect/guest/$session'
 
@@ -25,15 +27,27 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const FrontendModePrivateRoute = FrontendModePrivateImport.update({
-  id: '/frontend-mode/private',
-  path: '/frontend-mode/private',
+const HostModeProhibitedRoute = HostModeProhibitedImport.update({
+  id: '/host-mode/prohibited',
+  path: '/host-mode/prohibited',
   getParentRoute: () => rootRoute,
 } as any)
 
-const FrontendModeGuestRoute = FrontendModeGuestImport.update({
-  id: '/frontend-mode/guest',
-  path: '/frontend-mode/guest',
+const HostModePrivateRoute = HostModePrivateImport.update({
+  id: '/host-mode/private',
+  path: '/host-mode/private',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HostModeGuestRoute = HostModeGuestImport.update({
+  id: '/host-mode/guest',
+  path: '/host-mode/guest',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientConnectProhibitedRoute = ClientConnectProhibitedImport.update({
+  id: '/client-connect/prohibited',
+  path: '/client-connect/prohibited',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -61,18 +75,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/frontend-mode/guest': {
-      id: '/frontend-mode/guest'
-      path: '/frontend-mode/guest'
-      fullPath: '/frontend-mode/guest'
-      preLoaderRoute: typeof FrontendModeGuestImport
+    '/client-connect/prohibited': {
+      id: '/client-connect/prohibited'
+      path: '/client-connect/prohibited'
+      fullPath: '/client-connect/prohibited'
+      preLoaderRoute: typeof ClientConnectProhibitedImport
       parentRoute: typeof rootRoute
     }
-    '/frontend-mode/private': {
-      id: '/frontend-mode/private'
-      path: '/frontend-mode/private'
-      fullPath: '/frontend-mode/private'
-      preLoaderRoute: typeof FrontendModePrivateImport
+    '/host-mode/guest': {
+      id: '/host-mode/guest'
+      path: '/host-mode/guest'
+      fullPath: '/host-mode/guest'
+      preLoaderRoute: typeof HostModeGuestImport
+      parentRoute: typeof rootRoute
+    }
+    '/host-mode/private': {
+      id: '/host-mode/private'
+      path: '/host-mode/private'
+      fullPath: '/host-mode/private'
+      preLoaderRoute: typeof HostModePrivateImport
+      parentRoute: typeof rootRoute
+    }
+    '/host-mode/prohibited': {
+      id: '/host-mode/prohibited'
+      path: '/host-mode/prohibited'
+      fullPath: '/host-mode/prohibited'
+      preLoaderRoute: typeof HostModeProhibitedImport
       parentRoute: typeof rootRoute
     }
     '/client-connect/guest/$session': {
@@ -96,16 +124,20 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/frontend-mode/guest': typeof FrontendModeGuestRoute
-  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/prohibited': typeof ClientConnectProhibitedRoute
+  '/host-mode/guest': typeof HostModeGuestRoute
+  '/host-mode/private': typeof HostModePrivateRoute
+  '/host-mode/prohibited': typeof HostModeProhibitedRoute
   '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
   '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/frontend-mode/guest': typeof FrontendModeGuestRoute
-  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/prohibited': typeof ClientConnectProhibitedRoute
+  '/host-mode/guest': typeof HostModeGuestRoute
+  '/host-mode/private': typeof HostModePrivateRoute
+  '/host-mode/prohibited': typeof HostModeProhibitedRoute
   '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
   '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
@@ -113,8 +145,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/frontend-mode/guest': typeof FrontendModeGuestRoute
-  '/frontend-mode/private': typeof FrontendModePrivateRoute
+  '/client-connect/prohibited': typeof ClientConnectProhibitedRoute
+  '/host-mode/guest': typeof HostModeGuestRoute
+  '/host-mode/private': typeof HostModePrivateRoute
+  '/host-mode/prohibited': typeof HostModeProhibitedRoute
   '/client-connect/guest/$session': typeof ClientConnectGuestSessionRoute
   '/client-connect/private/$privateSession': typeof ClientConnectPrivatePrivateSessionRoute
 }
@@ -123,22 +157,28 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/frontend-mode/guest'
-    | '/frontend-mode/private'
+    | '/client-connect/prohibited'
+    | '/host-mode/guest'
+    | '/host-mode/private'
+    | '/host-mode/prohibited'
     | '/client-connect/guest/$session'
     | '/client-connect/private/$privateSession'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/frontend-mode/guest'
-    | '/frontend-mode/private'
+    | '/client-connect/prohibited'
+    | '/host-mode/guest'
+    | '/host-mode/private'
+    | '/host-mode/prohibited'
     | '/client-connect/guest/$session'
     | '/client-connect/private/$privateSession'
   id:
     | '__root__'
     | '/'
-    | '/frontend-mode/guest'
-    | '/frontend-mode/private'
+    | '/client-connect/prohibited'
+    | '/host-mode/guest'
+    | '/host-mode/private'
+    | '/host-mode/prohibited'
     | '/client-connect/guest/$session'
     | '/client-connect/private/$privateSession'
   fileRoutesById: FileRoutesById
@@ -146,16 +186,20 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FrontendModeGuestRoute: typeof FrontendModeGuestRoute
-  FrontendModePrivateRoute: typeof FrontendModePrivateRoute
+  ClientConnectProhibitedRoute: typeof ClientConnectProhibitedRoute
+  HostModeGuestRoute: typeof HostModeGuestRoute
+  HostModePrivateRoute: typeof HostModePrivateRoute
+  HostModeProhibitedRoute: typeof HostModeProhibitedRoute
   ClientConnectGuestSessionRoute: typeof ClientConnectGuestSessionRoute
   ClientConnectPrivatePrivateSessionRoute: typeof ClientConnectPrivatePrivateSessionRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FrontendModeGuestRoute: FrontendModeGuestRoute,
-  FrontendModePrivateRoute: FrontendModePrivateRoute,
+  ClientConnectProhibitedRoute: ClientConnectProhibitedRoute,
+  HostModeGuestRoute: HostModeGuestRoute,
+  HostModePrivateRoute: HostModePrivateRoute,
+  HostModeProhibitedRoute: HostModeProhibitedRoute,
   ClientConnectGuestSessionRoute: ClientConnectGuestSessionRoute,
   ClientConnectPrivatePrivateSessionRoute:
     ClientConnectPrivatePrivateSessionRoute,
@@ -172,8 +216,10 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/frontend-mode/guest",
-        "/frontend-mode/private",
+        "/client-connect/prohibited",
+        "/host-mode/guest",
+        "/host-mode/private",
+        "/host-mode/prohibited",
         "/client-connect/guest/$session",
         "/client-connect/private/$privateSession"
       ]
@@ -181,11 +227,17 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/frontend-mode/guest": {
-      "filePath": "frontend-mode/guest.tsx"
+    "/client-connect/prohibited": {
+      "filePath": "client-connect/prohibited.tsx"
     },
-    "/frontend-mode/private": {
-      "filePath": "frontend-mode/private.tsx"
+    "/host-mode/guest": {
+      "filePath": "host-mode/guest.tsx"
+    },
+    "/host-mode/private": {
+      "filePath": "host-mode/private.tsx"
+    },
+    "/host-mode/prohibited": {
+      "filePath": "host-mode/prohibited.tsx"
     },
     "/client-connect/guest/$session": {
       "filePath": "client-connect/guest/$session.tsx"

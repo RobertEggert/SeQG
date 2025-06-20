@@ -17,7 +17,7 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
 
     const handleNavGuestmode = () => {
         handleDialogClose();
-        navigate({ to: "/frontend-mode/guest" });
+        navigate({ to: "/host-mode/guest" });
     };
 
     const handleDialogConfirm = () => {
