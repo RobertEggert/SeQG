@@ -183,6 +183,7 @@ io.on("connection", (socket: Socket) => {
                     const progress = Object.fromEntries(topics.map((topic) => [topic, { correct: 0, total: 0 }]));
                     const userData = {
                         user_id: userId,
+                        time: Date.now(),
                         age: null,
                         experience: null,
                         progress

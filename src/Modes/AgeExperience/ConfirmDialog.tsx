@@ -62,8 +62,8 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
                         Do you allow to use them?
                         {isPriv && (
                             <p>
-                                You are currently in the private Mode, which saves your age and experience server side.
-                                Do you wish to instead go to Guest mode?
+                                You are currently in the private Mode, which saves your age and experience for one month
+                                server side. Do you wish to instead go to Guest mode?
                             </p>
                         )}
                     </DialogContentText>
