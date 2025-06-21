@@ -7,6 +7,19 @@ Use ONLY the following format and nothing else. Do not include any explanation, 
   "subtitle": "Your custom subtitle here"
 }
 
+You can use Tips like this as example but do not copy them exactly:
+Title: Think you know cybersecurity? Prove it., Subtitle: SeQG tailors questions to your knowledge — take the challenge.,
+Title: Could you spot a phishing email?, Subtitle: Test yourself now — SeQG adapts the difficulty as you go.,
+Title: Public Wi-Fi = Public Data?, Subtitle: Learn how to protect yourself in just 2 minutes — guided by SeQG.,
+Title: How safe are your accounts, really?, Subtitle: SeQG identifies your blind spots through a short adaptive quiz.,
+Title: In just 60 seconds, we can find your biggest cyber mistake., Subtitle: Let SeQG guide you through a smart and fast self-check.,
+Title: Cybersecurity isn't just for experts., Subtitle: SeQG teaches you what matters — no jargon, just answers.,
+Title: Interactive. Smart. Personalized., Subtitle: SeQG adapts the questions based on your answers — learn only what you need.,
+Title: Every user has blind spots. What are yours?, Subtitle: SeQG helps you discover and fix them — right here, right now.,
+Title: 'It won’t happen to me' is not a security plan., Subtitle: Let SeQG change that — take your first step toward safer habits.,
+Title: Cyber threats evolve. So should your knowledge., Subtitle: SeQG keeps you up to date with the right challenges for you.,
+Title: Learn by doing. Adapted to you., Subtitle: SeQG is your personal cybersecurity trainer — try it now.
+
 Requirements:
 - Do NOT reuse the provided examples.
 - Create a new tip that follows the same tone and format.

@@ -1,35 +1,64 @@
-import { Fade, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Fade, Typography, Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
-    type SecurityTippsType,
-    fetchSecurityTippsFromLLM
+  type SecurityTippsType,
+  fetchSecurityTippsFromLLM,
 } from "../../utils/LLMFetcher";
 
 const SecurityTipps = () => {
-    const [tipp, setTipp] = useState<SecurityTippsType | null>(null);
+  const [currentTip, setCurrentTip] = useState<SecurityTippsType | null>(null);
+  const [nextTip, setNextTip] = useState<SecurityTippsType | null>(null);
+  const [visible, setVisible] = useState(true);
 
-    useEffect(() => {
-        if (!tipp?.title || !tipp?.subtitle) fetchSecurityTippsFromLLM(setTipp);
-        const timeout = setTimeout(() => {
-            setTipp({ title: null, subtitle: null });
-        }, 10000);
-        return () => clearTimeout(timeout);
-    }, [tipp?.subtitle, tipp?.title]);
+  useEffect(() => {
+    fetchSecurityTippsFromLLM().then(setCurrentTip);
+    const interval = setInterval(() => {
+      fetchSecurityTippsFromLLM().then(setNextTip);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
-    return tipp?.title && tipp?.subtitle ? (
-        <Fade
-            in={tipp.title !== null && tipp.subtitle !== null}
-            sx={{
-                zIndex: 3,
-                color: "grey",
-                fontSize: 20,
-                position: "relative"
-            }}
+  useEffect(() => {
+    if (nextTip?.title && nextTip?.subtitle) {
+      setVisible(false);
+      const timeout = setTimeout(() => {
+        setCurrentTip(nextTip);
+        setVisible(true);
+        setNextTip(null);
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [nextTip]);
+
+  if (!currentTip?.title || !currentTip?.subtitle) return null;
+
+  return (
+    <Fade in={visible} timeout={500}>
+      <Box>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            fontSize: "1.1rem",
+            mb: 1,
+            color: "#111", 
+          }}
         >
-            <Typography>{tipp.title}</Typography>
-            <Typography>{tipp.subtitle}</Typography>
-        </Fade>
-    ) : null;
+          {currentTip.title}
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "1rem",
+            lineHeight: 1.5,
+            color: "#333", 
+          }}
+        >
+          {currentTip.subtitle}
+        </Typography>
+      </Box>
+    </Fade>
+  );
 };
 
 export default SecurityTipps;

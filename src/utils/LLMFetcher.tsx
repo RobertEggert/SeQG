@@ -118,19 +118,22 @@ export const fetchExplanationFromLLMShortTerm = async ({
     setExplanationState({ e_fetch: false, e_data: LLMdata });
 };
 
-export const fetchSecurityTippsFromLLM = async (
-    setTipp: Dispatch<SetStateAction<SecurityTippsType | null>>
-) => {
-    const response = await fetch("http://localhost:3002/api/security/tipps");
-    const LLMdata: SecurityTippsType = await response.json();
-
-    if (!LLMdata.title || !LLMdata.subtitle) {
+export const fetchSecurityTippsFromLLM = async (): Promise<SecurityTippsType | null> => {
+    try {
+      const response = await fetch("http://localhost:3002/api/security/tipps");
+      const LLMdata: SecurityTippsType = await response.json();
+  
+      if (!LLMdata.title || !LLMdata.subtitle) {
         console.error("Invalid response from server:", LLMdata);
-        return setTipp({ title: null, subtitle: null });
+        return null;
+      }
+  
+      return LLMdata;
+    } catch (error) {
+      console.error("Error fetching tip from LLM:", error);
+      return null;
     }
-
-    return setTipp(LLMdata);
-};
+  };  
 
 export const fetchUserData = async (userId: string) => {
     const response = await fetch(`http://localhost:3001/user-data/${userId}`);

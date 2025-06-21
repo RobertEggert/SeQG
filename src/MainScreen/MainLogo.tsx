@@ -1,4 +1,4 @@
-import { Paper, Button, Box, Fade } from "@mui/material";
+import { Paper, Button, Box, Fade, Typography } from "@mui/material";
 import logoStart from "../img/logoandtext.png";
 import logoEnd from "../img/logo.png";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
@@ -8,8 +8,8 @@ import { flexAlignColumn } from "../styling/theme";
 import { flexAlignColumn } from "../styling/theme";
 
 type MainLogoProps = {
-    isPressed: boolean;
-    setIsPressed: Dispatch<SetStateAction<boolean>>;
+  isPressed: boolean;
+  setIsPressed: Dispatch<SetStateAction<boolean>>;
 };
 
 const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
@@ -31,8 +31,8 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
             }, TIME_UNTIL_TIMEOUT);
         };
 
-        document.addEventListener("touchstart", resetTime);
-        resetTime();
+    document.addEventListener("touchstart", resetTime);
+    resetTime();
 
         return () => {
             document.removeEventListener("touchstart", resetTime);
@@ -95,31 +95,64 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                     />
                 </Fade>
 
-                    {!isPressed && (
-                        <Box sx={{ ...flexAlignColumn }}>
-                            <SecurityTipps />
-                            <FadedComponent
-                                sxBox={{
-                                    position: "absolute",
-                                    bottom: 32,
-                                    width: "100%",
-                                    textAlign: "center"
-                                }}
-                                sxText={{
-                                    zIndex: 3,
-                                    color: "grey",
-                                    fontSize: 20,
-                                    position: "relative"
-                                }}
-                            >
-                                Press to start
-                            </FadedComponent>
-                        </Box>
-                    )}
-                </Button>
-            </Paper>
-        </Box>
-    );
+          {!isPressed && (
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: "80px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "80%",
+                maxWidth: "800px",
+                backgroundColor: "rgba(200, 200, 200, 0.95)",
+                borderRadius: 3,
+                px: 3,
+                py: 2,
+                boxShadow: 4,
+                textAlign: "left",
+                zIndex: 3,
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#333",
+                  textTransform: "uppercase",
+                  mb: 1,
+                }}
+              >
+                Security Tips & News:
+              </Typography>
+
+              <SecurityTipps />
+            </Box>
+          )}
+
+          {!isPressed && (
+            <FadedComponent
+              sxBox={{
+                position: "absolute",
+                bottom: 16,
+                width: "100%",
+                textAlign: "center",
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                py: 1,
+              }}
+              sxText={{
+                zIndex: 4,
+                color: "#333",
+                fontSize: 20,
+                fontWeight: 600,
+              }}
+            >
+              Press to start
+            </FadedComponent>
+          )}
+        </Button>
+      </Paper>
+    </Box>
+  );
 };
 
 export default MainLogo;
