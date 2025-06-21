@@ -1,14 +1,10 @@
 import { Typography, Box, Collapse, Fade } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-    type SecurityTipsType,
-    fetchSecurityTipsFromLLM
-} from "../../utils/LLMFetcher";
+import { type SecurityTipsType, fetchSecurityTipsFromLLM } from "../../utils/LLMFetcher";
 import { fallbackTips } from "../../utils/LLMFetcher";
 
 const SecurityTips = () => {
-    const initialTip =
-        fallbackTips[Math.floor(Math.random() * fallbackTips.length)];
+    const initialTip = fallbackTips[Math.floor(Math.random() * fallbackTips.length)];
 
     const [currentTip, setCurrentTip] = useState<SecurityTipsType>(initialTip);
     const [nextTip, setNextTip] = useState<SecurityTipsType | null>(null);

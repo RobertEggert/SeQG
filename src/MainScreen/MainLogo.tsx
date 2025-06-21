@@ -3,9 +3,8 @@ import logoStart from "../img/logoandtext.png";
 import logoEnd from "../img/logo.png";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 import FadedComponent from "../utils/FadedComponent";
-import SecurityTipps from "./MainScreenComponents/SecurityTipps";
 import { flexAlignColumn } from "../styling/theme";
-import { flexAlignColumn } from "../styling/theme";
+import SecurityTips from "./MainScreenComponents/SecurityTips";
 
 type MainLogoProps = {
     isPressed: boolean;
@@ -31,8 +30,8 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
             }, TIME_UNTIL_TIMEOUT);
         };
 
-    document.addEventListener("touchstart", resetTime);
-    resetTime();
+        document.addEventListener("touchstart", resetTime);
+        resetTime();
 
         return () => {
             document.removeEventListener("touchstart", resetTime);
@@ -95,59 +94,58 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                     />
                 </Fade>
 
-                    {!isPressed && (
-                        <Box
+                {!isPressed && (
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            backgroundColor: "rgba(200, 200, 200, 0.95)",
+                            borderRadius: 3,
+                            boxShadow: 4,
+                            textAlign: "center",
+                            zIndex: 3,
+                            padding: 2,
+                            width: "100%",
+                            minHeight: 100,
+                            maxHeight: 130,
+                            maxWidth: 1000,
+                            bottom: 80
+                        }}
+                    >
+                        <Typography
                             sx={{
-                                position: "absolute",
-                                backgroundColor: "rgba(200, 200, 200, 0.95)",
-                                borderRadius: 3,
-                                boxShadow: 4,
-                                textAlign: "center",
-                                zIndex: 3,
-                                padding: 2,
-                                width: "100%",
-                                minHeight: 100,
-                                maxHeight: 130,
-                                maxWidth: 1000,
-                                bottom: 80
+                                fontWeight: "bold",
+                                color: "grey.800"
                             }}
                         >
-                            <Typography
-                                sx={{
-                                    fontWeight: "bold",
-                                    color: "grey.800"
-                                }}
-                            >
-                                Security Tips & News
-                            </Typography>
-                            <Divider />
-                            <SecurityTips />
-                        </Box>
-                    )}
+                            Security Tips & News
+                        </Typography>
+                        <Divider />
+                        <SecurityTips />
+                    </Box>
+                )}
 
-                    {!isPressed && (
-                        <FadedComponent
-                            sxBox={{
-                                position: "absolute",
-                                bottom: 16,
-                                width: "100%",
-                                textAlign: "center",
-                                backgroundColor: "rgba(255, 255, 255, 0.6)",
-                                paddingBottom: 1
-                            }}
-                            sxText={{
-                                zIndex: 4,
-                                color: "#333",
-                                fontSize: 20,
-                                fontWeight: 600
-                            }}
-                        >
-                            Press to start
-                        </FadedComponent>
-                    )}
-                </Button>
-            </Paper>
-        </Box>
+                {!isPressed && (
+                    <FadedComponent
+                        sxBox={{
+                            position: "absolute",
+                            bottom: 16,
+                            width: "100%",
+                            textAlign: "center",
+                            backgroundColor: "rgba(255, 255, 255, 0.6)",
+                            paddingBottom: 1
+                        }}
+                        sxText={{
+                            zIndex: 4,
+                            color: "#333",
+                            fontSize: 20,
+                            fontWeight: 600
+                        }}
+                    >
+                        Press to start
+                    </FadedComponent>
+                )}
+            </Button>
+        </Paper>
     );
 };
 
