@@ -111,6 +111,7 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                 boxShadow: 4,
                 textAlign: "left",
                 zIndex: 3,
+                minHeight: "90px"
               }}
             >
               <Typography
