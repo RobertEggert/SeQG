@@ -30,7 +30,7 @@ export type QuestionStateType = {
     q_data: LLM_API_Question_Type | null;
 };
 
-export type SecurityTippsType = {
+export type SecurityTipsType = {
     title: string | null;
     subtitle: string | null;
 };
@@ -118,54 +118,69 @@ export const fetchExplanationFromLLMShortTerm = async ({
     setExplanationState({ e_fetch: false, e_data: LLMdata });
 };
 
-export const fallbackTips: SecurityTippsType[] = [
+export const fallbackTips: SecurityTipsType[] = [
     {
-      title: "Your cybersecurity posture is only as strong as your weakest link.",
-      subtitle: "SeQG identifies areas of improvement and provides actionable advice to boost your security.",
+        title: "Your cybersecurity posture is only as strong as your weakest link.",
+        subtitle:
+            "SeQG identifies areas of improvement and provides actionable advice to boost your security."
     },
     {
-      title: "Cybersecurity is everyone's responsibility.",
-      subtitle: "Take control of your digital safety with simple steps from SeQG.",
+        title: "Cybersecurity is everyone's responsibility.",
+        subtitle:
+            "Take control of your digital safety with simple steps from SeQG."
     },
     {
-      title: "Think before you click.",
-      subtitle: "Phishing attempts can look real — SeQG teaches you how to spot them instantly.",
+        title: "Think before you click.",
+        subtitle:
+            "Phishing attempts can look real — SeQG teaches you how to spot them instantly."
     },
     {
-      title: "Public Wi-Fi = Public Data?",
-      subtitle: "Learn how to stay private on shared networks, even when on the go.",
+        title: "Public Wi-Fi = Public Data?",
+        subtitle:
+            "Learn how to stay private on shared networks, even when on the go."
     },
     {
-      title: "Still using your pet’s name as a password?",
-      subtitle: "SeQG helps you generate secure login habits in seconds.",
+        title: "Still using your pet’s name as a password?",
+        subtitle: "SeQG helps you generate secure login habits in seconds."
     },
     {
-      title: "Staying vigilant is a habit.",
-      subtitle: "SeQG helps you build consistent cybersecurity practices in just a few minutes, every day.",
-    },
+        title: "Staying vigilant is a habit.",
+        subtitle:
+            "SeQG helps you build consistent cybersecurity practices in just a few minutes, every day."
+    }
 ];
 
 let fallbackIndex = 0;
 
-export const fetchSecurityTippsFromLLM = async (): Promise<SecurityTippsType | null> => {
-    try {
-      const response = await fetch("http://localhost:3002/api/security/tipps");
-      const LLMdata: SecurityTippsType = await response.json();
-  
-      if (!LLMdata.title || !LLMdata.subtitle) {
-        console.error("Invalid response from server:", LLMdata);
-        return null;
-      }
-  
-      return LLMdata;
-    } catch (error) {
-        console.warn("LLM offline or error. Serving fallback tips.", error);
+export const fetchSecurityTipsFromLLM =
+    async (): Promise<SecurityTipsType | null> => {
+        try {
+            const response = await fetch(
+                "http://localhost:3002/api/security/tipps"
+            );
+            const LLMdata: SecurityTipsType = await response.json();
 
-        const tip = fallbackTips[fallbackIndex];
-        fallbackIndex = (fallbackIndex + 1) % fallbackTips.length;
-        return tip;
-    }
-};
+            if (!LLMdata.title || !LLMdata.subtitle) {
+                console.error("Invalid response from server:", LLMdata);
+                return null;
+            }
+            fallbackIndex = 0; // reset fallback index on successful fetch
+
+            return LLMdata;
+        } catch (error) {
+            if (fallbackIndex % fallbackTips.length === 0) {
+                console.warn(
+                    "LLM offline or error. Serving fallback tips.",
+                    error
+                );
+                fallbackIndex = 0; // prevents from overflowing if the LLM is offline for a long time
+            }
+
+            const tip = fallbackTips[fallbackIndex];
+            fallbackIndex++;
+            return tip;
+        }
+    };
 
 export const fetchUserData = async (userId: string) => {
     const response = await fetch(`http://localhost:3001/user-data/${userId}`);

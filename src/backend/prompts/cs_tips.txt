@@ -21,7 +21,7 @@ Title: Cyber threats evolve. So should your knowledge., Subtitle: SeQG keeps you
 Title: Learn by doing. Adapted to you., Subtitle: SeQG is your personal cybersecurity trainer — try it now.
 
 Requirements:
-- Do NOT reuse the provided examples.
+- Do NOT reuse the exact provided examples but learn from them.
 - Create a new tip that follows the same tone and format.
 - Your entire response must be a valid JSON object.
 - There must be NOTHING before or after the JSON — the first character must be `{`, and the last character must be `}`.

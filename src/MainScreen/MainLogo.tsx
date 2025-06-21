@@ -1,4 +1,4 @@
-import { Paper, Button, Box, Fade, Typography } from "@mui/material";
+import { Paper, Button, Box, Fade, Typography, Divider } from "@mui/material";
 import logoStart from "../img/logoandtext.png";
 import logoEnd from "../img/logo.png";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
@@ -8,8 +8,8 @@ import { flexAlignColumn } from "../styling/theme";
 import { flexAlignColumn } from "../styling/theme";
 
 type MainLogoProps = {
-  isPressed: boolean;
-  setIsPressed: Dispatch<SetStateAction<boolean>>;
+    isPressed: boolean;
+    setIsPressed: Dispatch<SetStateAction<boolean>>;
 };
 
 const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
@@ -95,65 +95,60 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                     />
                 </Fade>
 
-          {!isPressed && (
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: "80px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "80%",
-                maxWidth: "800px",
-                backgroundColor: "rgba(200, 200, 200, 0.95)",
-                borderRadius: 3,
-                px: 3,
-                py: 2,
-                boxShadow: 4,
-                textAlign: "left",
-                zIndex: 3,
-                minHeight: "90px"
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontWeight: "bold",
-                  color: "#333",
-                  textTransform: "uppercase",
-                  mb: 1,
-                }}
-              >
-                Security Tips & News:
-              </Typography>
+                    {!isPressed && (
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                backgroundColor: "rgba(200, 200, 200, 0.95)",
+                                borderRadius: 3,
+                                boxShadow: 4,
+                                textAlign: "center",
+                                zIndex: 3,
+                                padding: 2,
+                                width: "100%",
+                                minHeight: 100,
+                                maxHeight: 130,
+                                maxWidth: 1000,
+                                bottom: 80
+                            }}
+                        >
+                            <Typography
+                                sx={{
+                                    fontWeight: "bold",
+                                    color: "grey.800"
+                                }}
+                            >
+                                Security Tips & News
+                            </Typography>
+                            <Divider />
+                            <SecurityTips />
+                        </Box>
+                    )}
 
-              <SecurityTipps />
-            </Box>
-          )}
-
-          {!isPressed && (
-            <FadedComponent
-              sxBox={{
-                position: "absolute",
-                bottom: 16,
-                width: "100%",
-                textAlign: "center",
-                backgroundColor: "rgba(255, 255, 255, 0.6)",
-                py: 1,
-              }}
-              sxText={{
-                zIndex: 4,
-                color: "#333",
-                fontSize: 20,
-                fontWeight: 600,
-              }}
-            >
-              Press to start
-            </FadedComponent>
-          )}
-        </Button>
-      </Paper>
-    </Box>
-  );
+                    {!isPressed && (
+                        <FadedComponent
+                            sxBox={{
+                                position: "absolute",
+                                bottom: 16,
+                                width: "100%",
+                                textAlign: "center",
+                                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                                paddingBottom: 1
+                            }}
+                            sxText={{
+                                zIndex: 4,
+                                color: "#333",
+                                fontSize: 20,
+                                fontWeight: 600
+                            }}
+                        >
+                            Press to start
+                        </FadedComponent>
+                    )}
+                </Button>
+            </Paper>
+        </Box>
+    );
 };
 
 export default MainLogo;

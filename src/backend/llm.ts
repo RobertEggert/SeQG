@@ -33,7 +33,7 @@ interface QuestionResponse {
     correctAnswer_s: number;
 }
 
-interface SecurityTippsResponse {
+interface SecurityTipsResponse {
     title: string;
     subtitle: string;
 }
@@ -215,8 +215,8 @@ app.post("/api/explanation/shortterm", async (req: Request<object, object, Exple
     }
 });
 
-app.get("/api/security/tipps", async (_, res: Response) => {
-    const prompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_tipps.txt"), "utf-8");
+app.get("/api/security/tips", async (_, res: Response) => {
+    const prompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_tips.txt"), "utf-8");
     console.log("FETCH TIP");
     const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
         method: "POST",
@@ -237,7 +237,7 @@ app.get("/api/security/tipps", async (_, res: Response) => {
     const jsonEnd = rawOutput.lastIndexOf("}");
     const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
 
-    const parsed: SecurityTippsResponse = JSON.parse(jsonString);
+    const parsed: SecurityTipsResponse = JSON.parse(jsonString);
     res.json(parsed);
 });
 //#endregion FETCHING
