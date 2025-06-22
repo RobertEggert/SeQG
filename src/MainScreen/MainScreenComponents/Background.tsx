@@ -8,6 +8,8 @@ const Background = () => {
             ref={videoRef}
             autoPlay
             loop
+            muted
+            playsInline
             style={{
                 position: "fixed",
                 zIndex: 0,
