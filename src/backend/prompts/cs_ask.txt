@@ -77,5 +77,3 @@ Return 2 to 4 items in option_s, in random order.
 correctAnswer_s must be the correct sorted index sequence (e.g. [1, 0, 3, 2]).
 
 Any!!! deviation from the above mentioned things will be rejected.
-
-i am testing right now please only send "multiple-choice-event" question

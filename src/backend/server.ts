@@ -78,6 +78,35 @@ app.get("/user-data/:userId", (req: Request, res: Response) => {
     }
 });
 
+app.post("/disconnect/client", (req: Request<object, object, { session: string }>, res: Response) => {
+    const { session } = req.body;
+
+    const sessionDisconnect = activeSessions.get(session);
+
+    if (sessionDisconnect) {
+        // Client Wants to disconnect - all disconnect
+        if (sessionDisconnect.host) {
+            io.to(sessionDisconnect.host).emit("status", "disconnected");
+        }
+        if (sessionDisconnect.client) {
+            io.to(sessionDisconnect.client).emit("status", "disconnected");
+        }
+        delete sessionDisconnect.client;
+        delete sessionDisconnect.host;
+
+        if (!sessionDisconnect.host && !sessionDisconnect.client) {
+            activeSessions.delete(session);
+        } else {
+            activeSessions.set(session, sessionDisconnect);
+        }
+    }
+    if (sessionDisconnect && Object.keys(sessionDisconnect).length === 0) {
+        res.json({ status: "disconnected" });
+        return;
+    }
+    res.json({ status: "error in func" });
+});
+
 io.on("connection", (socket: Socket) => {
     console.log("Someone tries connecting:", socket.id);
 
@@ -125,20 +154,28 @@ io.on("connection", (socket: Socket) => {
                 const sessionEntryDisconnect = activeSessions.get(session);
 
                 if (sessionEntryDisconnect) {
-                    if (sessionEntryDisconnect.host === socket.id) {
+                    const isHost = role === "host";
+                    const isClient = role === "client";
+
+                    if (isHost) {
+                        // Host disconnects — disconnect both sides
+                        if (sessionEntryDisconnect.host) {
+                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        }
                         if (sessionEntryDisconnect.client) {
                             io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
                         }
                         delete sessionEntryDisconnect.host;
-                    }
-
-                    if (sessionEntryDisconnect.client === socket.id) {
-                        if (sessionEntryDisconnect.host) {
-                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        delete sessionEntryDisconnect.client;
+                    } else if (isClient) {
+                        // Client disconnects — only disconnect client
+                        if (sessionEntryDisconnect.client) {
+                            io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
                         }
                         delete sessionEntryDisconnect.client;
                     }
 
+                    // Clean up the session if both sides are gone
                     if (!sessionEntryDisconnect.host && !sessionEntryDisconnect.client) {
                         activeSessions.delete(session);
                     } else {
@@ -219,20 +256,28 @@ io.on("connection", (socket: Socket) => {
                 const sessionEntryDisconnect = activeSessions.get(session);
 
                 if (sessionEntryDisconnect) {
-                    if (sessionEntryDisconnect.host === socket.id) {
+                    const isHost = role === "host";
+                    const isClient = role === "client";
+
+                    if (isHost) {
+                        // Host disconnects — disconnect both sides
+                        if (sessionEntryDisconnect.host) {
+                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        }
                         if (sessionEntryDisconnect.client) {
                             io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
                         }
                         delete sessionEntryDisconnect.host;
-                    }
-
-                    if (sessionEntryDisconnect.client === socket.id) {
-                        if (sessionEntryDisconnect.host) {
-                            io.to(sessionEntryDisconnect.host).emit("status", "disconnected");
+                        delete sessionEntryDisconnect.client;
+                    } else if (isClient) {
+                        // Client disconnects — only disconnect client
+                        if (sessionEntryDisconnect.client) {
+                            io.to(sessionEntryDisconnect.client).emit("status", "disconnected");
                         }
                         delete sessionEntryDisconnect.client;
                     }
 
+                    // Clean up the session if both sides are gone
                     if (!sessionEntryDisconnect.host && !sessionEntryDisconnect.client) {
                         activeSessions.delete(session);
                     } else {

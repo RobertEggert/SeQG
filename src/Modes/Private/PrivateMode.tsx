@@ -16,7 +16,7 @@ const PrivateMode = () => {
     const [status, setStatus] = useState<STATUS>("pending"); // only for client
     const hasFetchedRef = useRef(false);
 
-    const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
     const VITE_PORT = import.meta.env.VITE_VITE_PORT || 5173;
 
@@ -99,7 +99,7 @@ const PrivateMode = () => {
                 }}
             >
                 {status === "connected" ? (
-                    <PrivateLLMQuestions userId={userId} />
+                    <PrivateLLMQuestions userId={userId} session={privateSession} />
                 ) : (
                     <>
                         {status === "pending" && (

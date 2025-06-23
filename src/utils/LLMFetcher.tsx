@@ -55,8 +55,12 @@ type FetchUserDataType = {
     experience: number | null;
 };
 
+const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
+const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
+const LLM_PORT = import.meta.env.VITE_LLM_PORT || 3001;
+
 export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }: FetchQuestionType) => {
-    const response = await fetch("http://localhost:3002/api/question", {
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/question`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ age, experience })
@@ -75,7 +79,7 @@ export const fetchExplanationFromLLMLongTerm = async ({
     age,
     experience
 }: FetchExplanationType) => {
-    const response = await fetch("http://localhost:3002/api/explanation/simpleprompt", {
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/explanation/simpleprompt`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ age, experience })
@@ -98,7 +102,7 @@ export const fetchExplanationFromLLMShortTerm = async ({
     option_s,
     correctAnswer_s
 }: FetchExplanationType) => {
-    const response = await fetch("http://localhost:3002/api/explanation/shortterm", {
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/explanation/shortterm`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -149,7 +153,7 @@ let fallbackIndex = 0;
 
 export const fetchSecurityTipsFromLLM = async (): Promise<SecurityTipsType | null> => {
     try {
-        const response = await fetch("http://localhost:3002/api/security/tipps");
+        const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/security/tips`);
         const LLMdata: SecurityTipsType = await response.json();
 
         if (!LLMdata.title || !LLMdata.subtitle) {
@@ -172,7 +176,7 @@ export const fetchSecurityTipsFromLLM = async (): Promise<SecurityTipsType | nul
 };
 
 export const fetchUserData = async (userId: string) => {
-    const response = await fetch(`http://localhost:3001/user-data/${userId}`);
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/user-data/${userId}`);
     const userData: FetchUserDataType = await response.json();
     return userData;
 };

@@ -23,3 +23,11 @@ export const flexAllCenter = {
     alignItems: "center",
     justifyContent: "center"
 };
+
+export const flexColumnCenterOfScreen = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh" // full viewport height
+};
