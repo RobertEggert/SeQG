@@ -3,8 +3,8 @@ import { CircularProgress } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
-import GuestLLMConnected from "../../../Modes/Guest/GuestLLMConnected";
 import type { STATUS } from "../../../utils/types";
+import WelcomeToModeScreen from "../../../Modes/WelcomeToModeScreen";
 
 export const Route = createFileRoute("/client-connect/guest/$session")({
     component: () => <GuestSession />
@@ -14,7 +14,7 @@ const GuestSession = () => {
     const navigate = useNavigate();
     const [status, setStatus] = useState<STATUS>("pending");
     const { session } = Route.useParams();
-    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const GuestSession = () => {
         return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
     }
 
-    return <GuestLLMConnected />;
+    return <WelcomeToModeScreen session={session} mode="Guest" />;
 };
 
 export default GuestSession;

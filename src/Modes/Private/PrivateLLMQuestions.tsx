@@ -5,8 +5,9 @@ import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import { type QuestionStateType, type ExplainStateType, fetchUserData } from "../../utils/LLMFetcher";
 import AgeExperience from "../AgeExperience/AgeExperience";
+import EndSessionButton from "../EndSessionButton";
 
-const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
+const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: string }) => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
@@ -84,6 +85,9 @@ const PrivateLLMQuestions = ({ userId }: { userId: string }) => {
                     experience={experience}
                 />
             </Box>
+
+            {/* Grading or Ending Session - TODO */}
+            <EndSessionButton session={session} />
 
             {/* Refetching Question */}
             <NextQuestion

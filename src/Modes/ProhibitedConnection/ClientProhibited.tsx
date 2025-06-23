@@ -1,9 +1,18 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { flexColumnCenterOfScreen } from "../../styling/theme";
 
 const ClientProhibited = () => {
     return (
-        <Box>
-            <h1>Joining session prohibited! No host, client already connected or role was invalid</h1>
+        <Box
+            sx={{
+                ...flexColumnCenterOfScreen,
+                padding: 2, // optional padding for small devices
+                textAlign: "center" // center text inside Typography
+            }}
+        >
+            <Typography fontSize={40}>
+                Joining session prohibited! No host, client already connected or role was invalid
+            </Typography>
         </Box>
     );
 };

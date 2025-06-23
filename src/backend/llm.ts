@@ -231,7 +231,6 @@ app.get("/api/security/tips", async (_, res: Response) => {
     console.log("RECEIVED TIP");
 
     const rawOutput: string = data.response;
-    console.log(rawOutput);
 
     const jsonStart = rawOutput.indexOf("{");
     const jsonEnd = rawOutput.lastIndexOf("}");

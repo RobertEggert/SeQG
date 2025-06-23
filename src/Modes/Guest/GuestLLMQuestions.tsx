@@ -5,8 +5,9 @@ import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
+import EndSessionButton from "../EndSessionButton";
 
-const GuestLLMQuestions = () => {
+const GuestLLMQuestions = ({ session }: { session: string }) => {
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
@@ -46,7 +47,7 @@ const GuestLLMQuestions = () => {
                     </>
                 )}
 
-                {/* Rest of your existing components... */}
+                {/* Question */}
                 <Question
                     handleNextQButtonClick={handleNextQButtonClick}
                     setAnswerCorrect={setAnswerCorrect}
@@ -58,7 +59,7 @@ const GuestLLMQuestions = () => {
                     age={age}
                     experience={experience}
                 />
-
+                {/* Explanation if wrongfully answered */}
                 <ExplainAnswer
                     setExplanationState={setExplanationState}
                     questionState={questionState}
@@ -68,6 +69,10 @@ const GuestLLMQuestions = () => {
                 />
             </Box>
 
+            {/* Grading or Ending Session - TODO */}
+            <EndSessionButton session={session} />
+
+            {/* Refetching Question */}
             <NextQuestion
                 handleNextQButtonClick={handleNextQButtonClick}
                 questionState={questionState}

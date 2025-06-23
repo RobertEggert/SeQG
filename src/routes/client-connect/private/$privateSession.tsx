@@ -4,8 +4,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import PrivateLLMConnected from "../../../Modes/Private/PrivateLLMConnected";
 import type { STATUS } from "../../../utils/types";
+import WelcomeToModeScreen from "../../../Modes/WelcomeToModeScreen";
 
 export const Route = createFileRoute("/client-connect/private/$privateSession")({
     component: () => <PrivateSession />
@@ -15,7 +15,7 @@ const PrivateSession = () => {
     const navigate = useNavigate();
     const [status, setStatus] = useState<STATUS>("pending");
     const { privateSession } = Route.useParams();
-    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "192.168.2.80";
+    const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const PrivateSession = () => {
         return <CircularProgress size={100} sx={{ display: "flex", justifyContent: "center" }} />;
     }
 
-    return <PrivateLLMConnected />;
+    return <WelcomeToModeScreen session={privateSession} mode="Private" />;
 };
 
 export default PrivateSession;
