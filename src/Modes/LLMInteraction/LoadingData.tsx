@@ -1,14 +1,21 @@
 import { Box, CircularProgress } from "@mui/material";
 import { flexAlignColumn } from "../../styling/theme";
 import FadedTextChanger from "../../utils/FadedTextChanger";
-const LOADING_MESSAGES = [
+const LOADING_MESSAGES_QUESTION = [
     "Fetching question from the LLM",
     "Waiting for response",
     "AI is generating",
     "Wait until question is loaded"
 ];
 
-const LoadingData = () => {
+const LOADING_MESSAGES_EXPLAIN = [
+    "Fetching explanation from the LLM",
+    "Waiting for response",
+    "AI is generating",
+    "Wait until explanation is loaded"
+];
+
+const LoadingData = ({ isQuestion }: { isQuestion: boolean }) => {
     return (
         <Box
             sx={{
@@ -18,7 +25,7 @@ const LoadingData = () => {
             }}
         >
             <CircularProgress size={60} color="secondary" thickness={2} />
-            <FadedTextChanger textArray={LOADING_MESSAGES} />
+            <FadedTextChanger textArray={isQuestion ? LOADING_MESSAGES_QUESTION : LOADING_MESSAGES_EXPLAIN} />
         </Box>
     );
 };

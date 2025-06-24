@@ -1,5 +1,5 @@
 import { Typography, Box, Button } from "@mui/material";
-import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
+import type { QuestionTypeProps } from "./QuestionTypeRecognizer";
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
 import submitAnswer from "../LLMInteraction/SubmitAnswer";
@@ -62,7 +62,7 @@ const MultipleChoiceEvent = ({
                     );
                 })}
             </Box>
-            <Button variant="contained" onClick={handleSubmit} disabled={isDisabled}>
+            <Button variant="contained" onClick={handleSubmit} disabled={isDisabled || selectedAnswer_s.length === 0}>
                 Submit Answer
             </Button>
         </>
