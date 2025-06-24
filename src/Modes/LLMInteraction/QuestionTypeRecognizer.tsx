@@ -7,6 +7,7 @@ import MultipleChoiceEvent from "../QuestionTypes/MultipleChoiceEvent";
 import SortingEvent from "../QuestionTypes/SortingEvent";
 import ThinkEvent from "../QuestionTypes/ThinkEvent";
 import DragAndDropEvent from "../QuestionTypes/DragAndDropEvent";
+import QuestionTypeOverlay from "../QuestionTypes/QuestionTypeOverlay";
 
 export type QuestionTypeProps = {
     handleNextQButtonClick: () => void;
@@ -51,7 +52,9 @@ const QuestionTypeRecognizer = ({
     const QuestionTypeComponent = componentForQuestionType[questionState.q_data.questionType]; // here we map the according component
 
     return QuestionTypeComponent ? (
-        <QuestionTypeComponent {...sharedProps} />
+        <QuestionTypeOverlay questionType={questionState.q_data.questionType}>
+            <QuestionTypeComponent {...sharedProps} />
+        </QuestionTypeOverlay>
     ) : (
         <Box>New question type?: {questionState.q_data?.questionType}</Box>
     );

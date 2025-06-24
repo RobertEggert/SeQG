@@ -32,7 +32,9 @@ const SingleChoiceEvent = ({
 
     return (
         <>
-            <Typography variant="h6">{questionState.q_data?.question}</Typography>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+                {questionState.q_data?.question}
+            </Typography>
             <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
                 {questionState.q_data?.option_s.map((option, index) => {
                     const isCorrect = correctAnswer_s.includes(index);

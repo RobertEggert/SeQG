@@ -57,12 +57,12 @@ const Question = ({
     console.log(questionState.q_data);
 
     return questionState.q_fetch ? (
-        <LoadingData />
+        <LoadingData isQuestion={true} />
     ) : (
         <Box
             sx={{
                 ...flexAlignColumn,
-                marginTop: 4
+                marginTop: 2
             }}
         >
             <QuestionTypeRecognizer

@@ -50,7 +50,7 @@ const ThinkEvent = ({
     const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
-        <Box sx={{ textAlign: "center", marginTop: 4 }}>
+        <Box sx={{ textAlign: "center" }}>
             <Typography variant="h6" gutterBottom>
                 {questionState.q_data?.question}
             </Typography>
