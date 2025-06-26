@@ -22,7 +22,7 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
 
     const handleDialogConfirm = () => {
         setIsProfileSubmitted(true);
-        setQuestionState({ q_fetch: true, q_data: null });
+        setQuestionState({ q_fetch: true, q_data: [] });
         setOpenDialog(false);
     };
 

@@ -27,7 +27,7 @@ export type ExplainStateType = {
 
 export type QuestionStateType = {
     q_fetch: boolean;
-    q_data: LLM_API_Question_Type | null;
+    q_data: LLM_API_Question_Type[];
 };
 
 export type SecurityTipsType = {
@@ -69,9 +69,17 @@ export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }
 
     if (!LLMdata?.option_s || !Array.isArray(LLMdata.option_s)) {
         console.error("Invalid response from server:", LLMdata);
-        return;
+        return [];
     }
-    setQuestionState({ q_fetch: false, q_data: LLMdata });
+
+    setQuestionState((prev) => {
+        const newData = prev.q_data ? [...prev.q_data, LLMdata] : [LLMdata];
+
+        return {
+            q_fetch: false,
+            q_data: newData
+        };
+    });
 };
 
 export const fetchExplanationFromLLMLongTerm = async ({

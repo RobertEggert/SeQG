@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import AgeExperience from "../AgeExperience/AgeExperience";
 import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
@@ -12,28 +12,33 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
     const [experience, setExperience] = useState<number | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
-
     const [questionState, setQuestionState] = useState<QuestionStateType>({
         q_fetch: false,
-        q_data: null
+        q_data: []
     });
     const [explanationState, setExplanationState] = useState<ExplainStateType>({
         e_fetch: false,
         e_data: null
     });
 
-    const handleNextQButtonClick = () => {
-        setAnswerCorrect(null);
-        setQuestionState({ q_fetch: true, q_data: null });
+    const questionsFetchedRef = useRef(0);
+
+    const handleNextQuestion = () => {
+        //  queue for 3 questions max
+        if (questionsFetchedRef.current <= 3) {
+            questionsFetchedRef.current -= 1;
+            setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
+            setAnswerCorrect(null);
+        }
         setExplanationState({ e_fetch: false, e_data: null });
     };
 
     return (
         <>
             <Box sx={{ p: 3 }}>
-                {/* Ask about age and experience */}
                 {!isProfileSubmitted && (
                     <>
+                        {/* Ask about age and experience */}
                         <Typography color="green">✅ Connected</Typography>
                         <AgeExperience
                             setIsProfileSubmitted={setIsProfileSubmitted}
@@ -48,25 +53,30 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                 )}
 
                 {/* Question */}
-                <Question
-                    handleNextQButtonClick={handleNextQButtonClick}
-                    setAnswerCorrect={setAnswerCorrect}
-                    answerCorrect={answerCorrect}
-                    setQuestionState={setQuestionState}
-                    setExplanationState={setExplanationState}
-                    questionState={questionState}
-                    explanationState={explanationState}
-                    age={age}
-                    experience={experience}
-                />
-                {/* Explanation if wrongfully answered */}
-                <ExplainAnswer
-                    setExplanationState={setExplanationState}
-                    questionState={questionState}
-                    explanationState={explanationState}
-                    age={age}
-                    experience={experience}
-                />
+                {isProfileSubmitted && (
+                    <>
+                        <Question
+                            handleNextQuestion={handleNextQuestion}
+                            setAnswerCorrect={setAnswerCorrect}
+                            answerCorrect={answerCorrect}
+                            setQuestionState={setQuestionState}
+                            setExplanationState={setExplanationState}
+                            questionState={questionState}
+                            explanationState={explanationState}
+                            questionsFetchedRef={questionsFetchedRef}
+                            age={age}
+                            experience={experience}
+                        />
+                        {/* Explanation if wrongfully answered */}
+                        <ExplainAnswer
+                            setExplanationState={setExplanationState}
+                            questionState={questionState}
+                            explanationState={explanationState}
+                            age={age}
+                            experience={experience}
+                        />
+                    </>
+                )}
             </Box>
 
             {/* Grading or Ending Session - TODO */}
@@ -74,7 +84,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
 
             {/* Refetching Question */}
             <NextQuestion
-                handleNextQButtonClick={handleNextQButtonClick}
+                handleNextQuestion={handleNextQuestion}
                 questionState={questionState}
                 explanationState={explanationState}
                 answerCorrect={answerCorrect}

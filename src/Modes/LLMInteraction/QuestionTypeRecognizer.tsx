@@ -1,5 +1,5 @@
 import type { Dispatch, ElementType, SetStateAction } from "react";
-import type { QuestionStateType, ExplainStateType, QuestionType } from "../../utils/LLMFetcher";
+import type { ExplainStateType, QuestionType, LLM_API_Question_Type } from "../../utils/LLMFetcher";
 import SingleChoiceEvent from "../QuestionTypes/SingleChoiceEvent";
 import { Box } from "@mui/material";
 import LineConnectEvent from "../QuestionTypes/LineConnectEvent";
@@ -10,31 +10,31 @@ import DragAndDropEvent from "../QuestionTypes/DragAndDropEvent";
 import QuestionTypeOverlay from "../QuestionTypes/QuestionTypeOverlay";
 
 export type QuestionTypeProps = {
-    handleNextQButtonClick: () => void;
+    handleNextQuestion: () => void;
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;
     setAnswerCorrect: Dispatch<SetStateAction<boolean | null>>;
-    questionState: QuestionStateType;
+    questionData: LLM_API_Question_Type;
     explanationState: ExplainStateType;
     answerCorrect: boolean | null;
     userId: string | undefined;
 };
 
 const QuestionTypeRecognizer = ({
-    handleNextQButtonClick,
+    handleNextQuestion,
     setExplanationState,
     setAnswerCorrect,
-    questionState,
+    questionData,
     explanationState,
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    if (!questionState.q_data) return null;
+    if (!questionData) return null;
 
     const sharedProps = {
-        handleNextQButtonClick,
+        handleNextQuestion,
         setExplanationState,
         setAnswerCorrect,
-        questionState,
+        questionData, // we ensure that the first element is always used
         explanationState,
         answerCorrect,
         userId
@@ -49,14 +49,14 @@ const QuestionTypeRecognizer = ({
         "think-event": ThinkEvent
     };
 
-    const QuestionTypeComponent = componentForQuestionType[questionState.q_data.questionType]; // here we map the according component
+    const QuestionTypeComponent = componentForQuestionType[questionData.questionType]; // here we map the according component
 
     return QuestionTypeComponent ? (
-        <QuestionTypeOverlay questionType={questionState.q_data.questionType}>
+        <QuestionTypeOverlay questionType={questionData.questionType}>
             <QuestionTypeComponent {...sharedProps} />
         </QuestionTypeOverlay>
     ) : (
-        <Box>New question type?: {questionState.q_data?.questionType}</Box>
+        <Box>New question type?: {questionData.questionType}</Box>
     );
 };
 

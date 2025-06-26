@@ -79,7 +79,7 @@ const AgeExperience = ({
                         label="Age"
                         onChange={(e) => handleChange(e as SelectChangeEvent<string>)}
                     >
-                        <MenuItem value="">Do not wish to answer</MenuItem>
+                        <MenuItem value="Do not wish to answer">Do not wish to answer</MenuItem>
                         <MenuItem value="< 18">{"< 18"}</MenuItem>
                         <MenuItem value="18 <= 27">{"18 <= 27"}</MenuItem>
                         <MenuItem value="30 +">{"30 +"}</MenuItem>

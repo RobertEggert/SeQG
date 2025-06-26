@@ -1,20 +1,20 @@
 import { Typography, Box, Button } from "@mui/material";
-import type { QuestionTypeProps } from "./QuestionTypeRecognizer";
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
-import submitAnswer from "../LLMInteraction/SubmitAnswer";
+import submitAnswer from "../LLMInteraction/AnswerHandeling";
+import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 
 const MultipleChoiceEvent = ({
-    handleNextQButtonClick,
+    handleNextQuestion,
     setExplanationState,
     setAnswerCorrect,
-    questionState,
+    questionData,
     explanationState,
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    const options = questionState.q_data?.option_s ?? [];
-    const correctAnswers = questionState.q_data?.correctAnswer_s ?? [];
+    const options = questionData?.option_s ?? [];
+    const correctAnswers = questionData?.correctAnswer_s ?? [];
 
     const [selectedAnswer_s, setSelectedAnswers] = useState<number[]>([]);
     const [isFeedback, setIsFeedback] = useState(false);
@@ -35,7 +35,7 @@ const MultipleChoiceEvent = ({
             selectedAnswer_s.length === correctAnswers.length &&
             selectedAnswer_s.every((i) => correctAnswers.includes(i));
 
-        submitAnswer(userId, isCorrect, questionState, setAnswerCorrect, setExplanationState, handleNextQButtonClick);
+        submitAnswer(userId, isCorrect, questionData, setAnswerCorrect, setExplanationState, handleNextQuestion);
     };
 
     const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
@@ -43,7 +43,7 @@ const MultipleChoiceEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionState.q_data?.question}
+                {questionData?.question}
             </Typography>
             <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
