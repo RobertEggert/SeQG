@@ -1,15 +1,15 @@
 import { Typography, Box, Button, Card, CardContent, CircularProgress } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
-import { sendAnswerToLLMBackend } from "../../utils/LLMAnswerSaver";
 import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { flexAlignColumn } from "../../styling/theme";
+import submitAnswer from "../LLMInteraction/AnswerHandeling";
 
 const ThinkEvent = ({
-    handleNextQButtonClick,
+    handleNextQuestion,
     setExplanationState,
     setAnswerCorrect,
-    questionState,
+    questionData,
     explanationState,
     answerCorrect,
     userId
@@ -31,20 +31,8 @@ const ThinkEvent = ({
         return () => clearTimeout(timer);
     }, [timeLeft]);
 
-    const handleUserResponse = (knewAnswer: boolean) => {
-        if (userId) {
-            sendAnswerToLLMBackend(knewAnswer, userId, questionState.q_data?.topic ?? "NO_TOPIC");
-        }
-
-        setAnswerCorrect(knewAnswer);
-
-        if (knewAnswer) {
-            setTimeout(() => {
-                handleNextQButtonClick();
-            }, 2000);
-            return;
-        }
-        setExplanationState({ e_fetch: true, e_data: null });
+    const handleSubmit = (isCorrect: boolean) => {
+        submitAnswer(userId, isCorrect, questionData, setAnswerCorrect, setExplanationState, handleNextQuestion);
     };
 
     const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
@@ -52,7 +40,7 @@ const ThinkEvent = ({
     return (
         <Box sx={{ textAlign: "center" }}>
             <Typography variant="h6" gutterBottom>
-                {questionState.q_data?.question}
+                {questionData?.question}
             </Typography>
             <ReactCardFlip isFlipped={showAnswer} flipDirection="horizontal">
                 {/* THINKING */}
@@ -103,7 +91,7 @@ const ThinkEvent = ({
                         <CardContent>
                             <Typography variant="subtitle1">Answer:</Typography>
                             <Typography variant="body1">
-                                {questionState.q_data?.option_s[questionState.q_data?.correctAnswer_s?.[0] ?? 0]}
+                                {questionData?.option_s[questionData.correctAnswer_s[0] ?? 0]}
                             </Typography>
                         </CardContent>
                     </Card>
@@ -122,7 +110,7 @@ const ThinkEvent = ({
                                 disabled={isDisabled}
                                 variant="contained"
                                 color="success"
-                                onClick={() => handleUserResponse(true)}
+                                onClick={() => handleSubmit(true)}
                             >
                                 Yes
                             </Button>
@@ -130,7 +118,7 @@ const ThinkEvent = ({
                                 disabled={isDisabled}
                                 variant="contained"
                                 color="error"
-                                onClick={() => handleUserResponse(false)}
+                                onClick={() => handleSubmit(false)}
                             >
                                 No
                             </Button>

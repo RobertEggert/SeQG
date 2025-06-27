@@ -15,7 +15,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
 
     const [questionState, setQuestionState] = useState<QuestionStateType>({
         q_fetch: false,
-        q_data: null
+        q_data: []
     });
     const [explanationState, setExplanationState] = useState<ExplainStateType>({
         e_fetch: false,
@@ -23,8 +23,14 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
     });
 
     const handleNextQButtonClick = () => {
-        setAnswerCorrect(null);
-        setQuestionState({ q_fetch: true, q_data: null });
+        //  queue for 3 questions max
+        if (questionState.q_data) {
+            setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
+            setAnswerCorrect(null);
+        }
+        if (!questionState.q_fetch && !questionState.q_data) {
+            setQuestionState({ q_fetch: true, q_data: [] });
+        }
         setExplanationState({ e_fetch: false, e_data: null });
     };
 
@@ -35,7 +41,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                 setAge(userData.age);
                 setExperience(userData.experience);
                 setIsProfileSubmitted(true);
-                setQuestionState({ q_fetch: true, q_data: null }); // Auto-submit if data exists
+                setQuestionState({ q_fetch: true, q_data: [] }); // Auto-submit if data exists
             }
         };
 

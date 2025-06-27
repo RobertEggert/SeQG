@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import type { QuestionStateType, ExplainStateType } from "../utils/LLMFetcher";
 
 type NextQuestionType = {
-    handleNextQButtonClick: () => void;
+    handleNextQuestion: () => void;
     questionState: QuestionStateType;
     explanationState: ExplainStateType;
     answerCorrect: boolean | null;
@@ -11,13 +11,14 @@ type NextQuestionType = {
 };
 
 const NextQuestion = ({
-    handleNextQButtonClick,
+    handleNextQuestion,
     questionState,
     explanationState,
     answerCorrect,
     age,
     experience
 }: NextQuestionType) => {
+    const isDisabled = questionState.q_data.length === 0 || explanationState.e_fetch || answerCorrect === true;
     return (
         <Box
             sx={{
@@ -28,12 +29,8 @@ const NextQuestion = ({
                 position: "fixed"
             }}
         >
-            <Button
-                variant="contained"
-                disabled={questionState.q_data === null || explanationState.e_fetch || answerCorrect === true}
-                onClick={handleNextQButtonClick}
-            >
-                {!age || !experience ? "Tell age and experience first" : "Next question"}
+            <Button variant="contained" disabled={isDisabled} onClick={handleNextQuestion}>
+                {!age || !experience ? "Tell your age and experience first" : "Next question"}
             </Button>
         </Box>
     );
