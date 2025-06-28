@@ -37,9 +37,7 @@ const ChangeModeButton = ({ handleModeSwitch, enteringMode, mode }: ChangeModeBu
                         backgroundColor: "white"
                     },
                     "&:disabled": {
-                        backgroundColor: "darkgrey",
-
-                        outline: "not-allowed"
+                        backgroundColor: "darkgrey"
                     }
                 }}
             >
