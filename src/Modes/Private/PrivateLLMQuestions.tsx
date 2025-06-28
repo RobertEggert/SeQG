@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
@@ -12,7 +12,6 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
-
     const [questionState, setQuestionState] = useState<QuestionStateType>({
         q_fetch: false,
         q_data: []
@@ -22,14 +21,14 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
         e_data: null
     });
 
-    const handleNextQButtonClick = () => {
+    const questionsFetchedRef = useRef(0);
+
+    const handleNextQuestion = () => {
         //  queue for 3 questions max
-        if (questionState.q_data) {
+        if (questionsFetchedRef.current <= 3) {
+            questionsFetchedRef.current -= 1;
             setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
             setAnswerCorrect(null);
-        }
-        if (!questionState.q_fetch && !questionState.q_data) {
-            setQuestionState({ q_fetch: true, q_data: [] });
         }
         setExplanationState({ e_fetch: false, e_data: null });
     };
@@ -71,13 +70,14 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
 
                 {/* Question */}
                 <Question
-                    handleNextQButtonClick={handleNextQButtonClick}
+                    handleNextQuestion={handleNextQuestion}
                     setAnswerCorrect={setAnswerCorrect}
                     answerCorrect={answerCorrect}
                     setQuestionState={setQuestionState}
                     setExplanationState={setExplanationState}
                     questionState={questionState}
                     explanationState={explanationState}
+                    questionsFetchedRef={questionsFetchedRef}
                     age={age}
                     experience={experience}
                     userId={userId}
@@ -97,7 +97,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
 
             {/* Refetching Question */}
             <NextQuestion
-                handleNextQButtonClick={handleNextQButtonClick}
+                handleNextQuestion={handleNextQuestion}
                 questionState={questionState}
                 explanationState={explanationState}
                 answerCorrect={answerCorrect}

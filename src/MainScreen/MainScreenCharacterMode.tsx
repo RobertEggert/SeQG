@@ -76,7 +76,7 @@ const MainScreenCharacterMode = ({ setMode, mode }: MainScreenCharacterModeProps
                     }}
                 >
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
-                    <ChangeModeButton handleModeSwitch={handleModeSwitch} enteringMode={enteringMode} />
+                    <ChangeModeButton handleModeSwitch={handleModeSwitch} enteringMode={enteringMode} mode={mode} />
                 </Box>
             </Box>
 
