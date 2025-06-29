@@ -26,6 +26,7 @@ Return your output strictly as a JSON object in the format below:
 {
     "question": "The Question based on everything told",
     "option_s": ["option"] or ["option1", "option2"] or ["option1", "option2", "option3"] or ["option 1", "option 2", "option 3", "option 4"],
+    "dropZones": ["Category 1", "Category 2"],
     "correctAnswer_s": [index or indice/s of the correct answer/s, depending on questionType],
     "topic": "{{topic}}",
     "questionType": "The type of question you wanted to ask given above in the definition of questionType"
@@ -46,7 +47,7 @@ Use only if you want the user to see one correct answer only.
 You must return exactly 1 item in option_s.
 The item in option_s must be the correct answer.
 correctAnswer_s must be [0].
-Never include more than 1 option in option_s.
+Never include more than 1 option in option_s => the length of option_s array MUST BE 1.
 
 - "single-choice-event":
 Use when the user must select exactly 1 correct answer out of 2 options.
@@ -62,9 +63,18 @@ correctAnswer_s must list at least one, and can include multiple, indices.
 Correct answers must appear at random indices.
 
 - "drag-drop-event":
-Use when users drag items to target zones.
-You must return 2 to 4 items in option_s.
-correctAnswer_s must contain matching target indices (e.g. [2, 0, 3, 1]).
+Use when users need to drag items to target zones.
+
+Required structure:
+- "option_s": Must be an array with 2 to a MAXIMUM of 4 strings (draggable options).
+- "dropZones": Must be an array of exactly 2 strings (e.g. ["Category A", "Category B"]).
+- "correctAnswer_s": Must be an array of the **same length as option_s**, where:
+   - Each item is either `0` or `1` (indicating the dropZone).
+   - The number `0` means the option belongs in `dropZones[0]`
+   - The number `1` means the option belongs in `dropZones[1]`
+VERY IMPORTANT:
+If `correctAnswer_s.length !== option_s.length`, the output is INVALID and REJECTED.
+The system will drop the response entirely if this rule is broken.
 
 - "line-connect-event":
 Use when users match items in two columns (left and right).

@@ -1,5 +1,6 @@
 import { Box, Button } from "@mui/material";
 import type { QuestionStateType, ExplainStateType } from "../utils/LLMFetcher";
+import { useEffect, useState } from "react";
 
 type NextQuestionType = {
     handleNextQuestion: () => void;
@@ -18,7 +19,28 @@ const NextQuestion = ({
     age,
     experience
 }: NextQuestionType) => {
-    const isDisabled = questionState.q_data.length === 0 || explanationState.e_fetch || answerCorrect === true;
+    const [isFakeloader, setIsFakeloader] = useState(false);
+    const [previousCount, setPreviousCount] = useState(0);
+
+    useEffect(() => {
+        const currentCount = questionState.q_data?.length ?? 0;
+
+        if (previousCount === currentCount || previousCount < currentCount) {
+            setPreviousCount(currentCount);
+            return; // count increased fakeloader not active
+        }
+        if (currentCount < 2) return; // brake out of useEffect if only one question is in queue
+        setIsFakeloader(true);
+        const timeout = setTimeout(() => {
+            setIsFakeloader(false);
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [questionState]);
+
+    const isDisabled =
+        isFakeloader || questionState.q_data.length === 0 || explanationState.e_fetch || answerCorrect === true;
     return (
         <Box
             sx={{

@@ -1,4 +1,10 @@
 import { Button } from "@mui/material";
+/* ***************************
+ THIS WILL BE ONLY USED FOR:
+SINGLE CHOCIE EVENT
+MULTIPLE CHOICE EVENT
+THINK EVENT
+ *************************** */
 
 type AnswerHighlighterProps = {
     index: number;
