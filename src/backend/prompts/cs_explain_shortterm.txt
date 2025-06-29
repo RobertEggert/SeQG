@@ -12,11 +12,60 @@ Here is the context:
 - Question: "{{question}}"
 - Options: {{option_s}} (array of strings)
 - Correct answer array with index: {{correctAnswer_s}} (array of number zero-based)
+- The question type used for this: {{questionType}}
 
 Return your output strictly as a JSON object in the format below:
 {
   "explain": "Your explanation here. Mention the correct answers in quotes"
 }
+
+In the explanation depending on the type of the question you must explain accordignly.
+Therefore you have the definitions of the question types below:
+- "think-event":
+Use only if you want the user to see one correct answer only.
+You must return exactly 1 item in option_s.
+The item in option_s must be the correct answer.
+correctAnswer_s must be [0].
+Never include more than 1 option in option_s => the length of option_s array MUST BE 1.
+
+- "single-choice-event":
+Use when the user must select exactly 1 correct answer out of 2 options.
+You must return exactly 2 items in option_s.
+Only one of the options must be correct.
+correctAnswer_s must contain the index (e.g. [0] or [1]).
+Ensure the correct answer is placed at a random index.
+
+- "multiple-choice-event":
+Use when the user can select more than one correct answer.
+You must return 2 to 4 options in option_s.
+correctAnswer_s must list at least one, and can include multiple, indices.
+Correct answers must appear at random indices.
+
+- "drag-drop-event":
+Use when users need to drag items to target zones.
+
+Required structure:
+- "option_s": Must be an array with 2 to a MAXIMUM of 4 strings (draggable options).
+- "dropZones": Must be an array of exactly 2 strings (e.g. ["Category A", "Category B"]).
+- "correctAnswer_s": Must be an array of the **same length as option_s**, where:
+   - Each item is either `0` or `1` (indicating the dropZone).
+   - The number `0` means the option belongs in `dropZones[0]`
+   - The number `1` means the option belongs in `dropZones[1]`
+VERY IMPORTANT:
+If `correctAnswer_s.length !== option_s.length`, the output is INVALID and REJECTED.
+The system will drop the response entirely if this rule is broken.
+
+- "line-connect-event":
+Use when users match items in two columns (left and right).
+option_s must include an even number of items (e.g. 4 = 2 pairs, 6 = 3 pairs).
+correctAnswer_s must indicate the correct matches (e.g. [2, 0, 1] for connecting 0→2, 1→0, 2→1).
+
+- "sorting-event":
+Use when users must reorder items.
+Provide 2 to 4 items in option_s, presented in random order.
+correctAnswer_s must be an array of indices that represents the correct order of the items from option_s.
+(e.g. if the correct order is the second item, then the first, then fourth, then third: correctAnswer_s = [1, 0, 3, 2])
+When explaining this, you need to also tell the correct order.
 
 Do NOT return anything else. No extra formatting, comments, or text.
 Keep the explanation concise (2–4 sentences), clear, and adapted to the user's profile.
