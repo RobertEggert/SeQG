@@ -12,7 +12,7 @@
         "backend": "node ./src/backend/server.ts",
         "llmBackend": "node ./src/backend/llm.ts",
         "llm": "ollama run llama3.1",
-        "start:backend": "concurrently -k -n BACKEND,LLMBACKEND,LLAMA3.1 -c cyan,magenta,red \"pnpm run backend\" \"pnpm run llmBackend\" \"pnpm run llm\""
+        "start:backend": "concurrently -k -n BACKEND,LLMBACKEND,LLM -c cyan,magenta,red \"pnpm run backend\" \"pnpm run llmBackend\" \"pnpm run llm\""
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -37,6 +37,8 @@
         "qrcode.react": "^4.2.0",
         "react": "^19.1.0",
         "react-card-flip": "^1.2.3",
+        "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^19.1.0",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1",

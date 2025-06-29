@@ -51,8 +51,11 @@ Frontend (sends age and experience) <--> LLMBackend <--> LLM (receives the promp
 5. Line Connect
 6. Sorting Events
 7. Image Selection (is kind of hard but possible)
-8. think event (You have a question with a not shown answer and you have 10 seconds or smth like that, where you answer for yourself and then press "Yes i knew the answer" or "No i didnt")
+8. Think event (You have a question with a not shown answer and you have 10 seconds or smth like that, where you answer for yourself and then press "Yes i knew the answer" or "No i didnt")
 
 Implemented:
 
 1. Single Choice
+2. Multiple Choice
+3. Drag and Drop events
+4. Think event

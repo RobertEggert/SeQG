@@ -51,8 +51,10 @@ const ThinkEvent = ({
                     }}
                 >
                     <Card
+                        onClick={() => setShowAnswer(true)}
                         elevation={4}
                         sx={{
+                            cursor: showAnswer ? undefined : "pointer",
                             marginTop: 3,
                             minWidth: 400,
                             backgroundColor: "#f5f5f5"
