@@ -88,5 +88,3 @@ correctAnswer_s must be an array of indices that represents the correct order of
 (e.g. if the correct order is the second item, then the first, then fourth, then third: correctAnswer_s = [1, 0, 3, 2])
 
 Any!!! deviation from the above mentioned things will be rejected.
-
-As i am testing only return "sorting-event" questionTypes!!!!!!!!!!!!!
