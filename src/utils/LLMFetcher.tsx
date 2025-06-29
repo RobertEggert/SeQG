@@ -49,6 +49,7 @@ type FetchExplanationType = {
     question?: string;
     option_s?: string[];
     correctAnswer_s?: number[];
+    questionType: string;
 };
 
 type FetchUserDataType = {
@@ -83,33 +84,14 @@ export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }
     });
 };
 
-export const fetchExplanationFromLLMLongTerm = async ({
-    setExplanationState,
-    age,
-    experience
-}: FetchExplanationType) => {
-    const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/explanation/simpleprompt`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ age, experience })
-    });
-    const LLMdata: LLM_API_Explanation_Type = await response.json();
-
-    if (!LLMdata?.explain) {
-        console.error("Invalid response from server:", LLMdata);
-        return;
-    }
-
-    setExplanationState({ e_fetch: false, e_data: LLMdata });
-};
-
 export const fetchExplanationFromLLMShortTerm = async ({
     setExplanationState,
     age,
     experience,
     question,
     option_s,
-    correctAnswer_s
+    correctAnswer_s,
+    questionType
 }: FetchExplanationType) => {
     const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/explanation/shortterm`, {
         method: "POST",
@@ -119,7 +101,8 @@ export const fetchExplanationFromLLMShortTerm = async ({
             experience,
             question,
             option_s,
-            correctAnswer_s
+            correctAnswer_s,
+            questionType
         })
     });
     const LLMdata: LLM_API_Explanation_Type = await response.json();

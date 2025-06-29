@@ -4,7 +4,7 @@ import SingleChoiceEvent from "../QuestionTypes/SingleChoiceEvent";
 import { Box } from "@mui/material";
 import LineConnectEvent from "../QuestionTypes/LineConnectEvent";
 import MultipleChoiceEvent from "../QuestionTypes/MultipleChoiceEvent";
-import SortingEvent from "../QuestionTypes/SortingEvent";
+import SortingEvent from "../QuestionTypes/sorting-event/SortingEvent";
 import ThinkEvent from "../QuestionTypes/ThinkEvent";
 import DragAndDropEvent from "../QuestionTypes/drag-drop-event/DragAndDropEvent";
 import QuestionTypeOverlay from "../QuestionTypes/QuestionTypeOverlay";

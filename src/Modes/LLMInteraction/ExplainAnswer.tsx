@@ -24,7 +24,7 @@ const ExplainAnswer = ({
 }: ExplainAnswerType) => {
     useEffect(() => {
         if (explanationState.e_fetch && questionState.q_data) {
-            const { question, option_s, correctAnswer_s } = questionState.q_data[0]; // ensurance that the first element is always used
+            const { question, option_s, correctAnswer_s, questionType } = questionState.q_data[0]; // ensurance that the first element is always used
             // safe to use them here
             fetchExplanationFromLLMShortTerm({
                 setExplanationState,
@@ -32,7 +32,8 @@ const ExplainAnswer = ({
                 experience,
                 question,
                 option_s,
-                correctAnswer_s
+                correctAnswer_s,
+                questionType
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

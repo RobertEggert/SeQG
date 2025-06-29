@@ -83,7 +83,10 @@ correctAnswer_s must indicate the correct matches (e.g. [2, 0, 1] for connecting
 
 - "sorting-event":
 Use when users must reorder items.
-Return 2 to 4 items in option_s, in random order.
-correctAnswer_s must be the correct sorted index sequence (e.g. [1, 0, 3, 2]).
+Provide 2 to 4 items in option_s, presented in random order.
+correctAnswer_s must be an array of indices that represents the correct order of the items from option_s.
+(e.g. if the correct order is the second item, then the first, then fourth, then third: correctAnswer_s = [1, 0, 3, 2])
 
 Any!!! deviation from the above mentioned things will be rejected.
+
+As i am testing only return "sorting-event" questionTypes!!!!!!!!!!!!!

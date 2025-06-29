@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import type { QuestionTypeProps } from "../../LLMInteraction/QuestionTypeRecognizer";
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import { useState } from "react";
 import DragItem, { type DragItemType } from "./DragItem";
 import DropZone from "./DropZone";
@@ -64,7 +64,7 @@ const DragAndDropEvent = ({
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 {questionData?.question}
             </Typography>
-            <DndProvider backend={HTML5Backend}>
+            <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
                 <Box sx={{ ...flexAllCenter }}>
                     <Grid container sx={{ ...flexAlignColumn }} justifyContent="center" spacing={2}>
                         <Grid sx={{ ...flexAlignRow }}>

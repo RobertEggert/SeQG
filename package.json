@@ -15,6 +15,10 @@
         "start:backend": "concurrently -k -n BACKEND,LLMBACKEND,LLM -c cyan,magenta,red \"pnpm run backend\" \"pnpm run llmBackend\" \"pnpm run llm\""
     },
     "dependencies": {
+        "@dnd-kit/core": "^6.3.1",
+        "@dnd-kit/modifiers": "^9.0.0",
+        "@dnd-kit/sortable": "^10.0.0",
+        "@dnd-kit/utilities": "^3.2.2",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
         "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -31,6 +35,7 @@
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "font-awesome": "^4.7.0",
+        "framer-motion": "^12.19.2",
         "jsonwebtoken": "^9.0.2",
         "node-fetch": "^3.3.2",
         "prettier": "^3.5.3",
@@ -38,7 +43,7 @@
         "react": "^19.1.0",
         "react-card-flip": "^1.2.3",
         "react-dnd": "^16.0.1",
-        "react-dnd-html5-backend": "^16.0.1",
+        "react-dnd-touch-backend": "^16.0.1",
         "react-dom": "^19.1.0",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1",

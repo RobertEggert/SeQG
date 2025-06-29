@@ -37,6 +37,8 @@ Now you have installed the current in use model
 If not sure look up llm.ts, where the request to the model is send, there will be a defined model, which is in use
 Everytime (for now) when starting Ollamas llm you have to close the process completely as it will interrupt the backend service
 
+To change the model, you have to adjust the script in the package.json and inside your .env.local file
+
 # Current process flow
 
 Frontend <-----> Backend (client / host architecture for a session)  
