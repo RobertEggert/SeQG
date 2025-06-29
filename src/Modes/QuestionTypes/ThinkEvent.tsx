@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { flexAlignColumn } from "../../styling/theme";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
+import QuestionBubble from "./QuestionBubble";
 
 const ThinkEvent = ({
     handleNextQuestion,
@@ -39,9 +40,7 @@ const ThinkEvent = ({
 
     return (
         <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>
-                {questionData?.question}
-            </Typography>
+            <QuestionBubble question={questionData?.question ?? ""} />
             <ReactCardFlip isFlipped={showAnswer} flipDirection="horizontal">
                 {/* THINKING */}
                 <Box

@@ -9,6 +9,8 @@ import ThinkEvent from "../QuestionTypes/ThinkEvent";
 import DragAndDropEvent from "../QuestionTypes/drag-drop-event/DragAndDropEvent";
 import QuestionTypeOverlay from "../QuestionTypes/QuestionTypeOverlay";
 import LoadingData from "./LoadingData";
+import spyImage from "../../img/spy.png";
+import { flexAlignRow } from "../../styling/theme";
 
 export type QuestionTypeProps = {
     handleNextQuestion: () => void;
@@ -71,7 +73,23 @@ const QuestionTypeRecognizer = ({
         <LoadingData isQuestion={true} />
     ) : QuestionTypeComponent ? (
         <QuestionTypeOverlay questionType={questionData.questionType}>
-            <QuestionTypeComponent {...sharedProps} />
+            <Box sx={{ ...flexAlignRow }}>
+                <Box
+                    component="img"
+                    src={spyImage}
+                    alt="Charakter"
+                    sx={{
+                        gridRow: "1 / span 2",
+                        width: "auto",
+                        maxWidth: 200,
+                        height: "100%",
+                        objectFit: "contain",
+                        mr: "8px"
+                    }}
+                />
+
+                <QuestionTypeComponent {...sharedProps} />
+            </Box>
         </QuestionTypeOverlay>
     ) : (
         <Box>New question type?: {questionData.questionType}</Box>
