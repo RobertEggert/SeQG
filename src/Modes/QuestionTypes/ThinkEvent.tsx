@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { flexAlignColumn } from "../../styling/theme";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
-import QuestionBubble from "./QuestionBubble";
+import QuestionBubble from "../LLMInteraction/QuestionBubble";
 
 const ThinkEvent = ({
     handleNextQuestion,

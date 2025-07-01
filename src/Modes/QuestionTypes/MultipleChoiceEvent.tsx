@@ -3,7 +3,7 @@ import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
-import QuestionBubble from "./QuestionBubble";
+import QuestionBubble from "../LLMInteraction/QuestionBubble";
 
 const MultipleChoiceEvent = ({
     handleNextQuestion,
