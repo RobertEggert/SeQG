@@ -4,6 +4,7 @@ import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
 import QuestionBubble from "../LLMInteraction/QuestionBubble";
+import { flexAlignColumn } from "../../styling/theme";
 const SingleChoiceEvent = ({
     handleNextQuestion,
     setExplanationState,
@@ -33,11 +34,8 @@ const SingleChoiceEvent = ({
     return (
         <Box
             sx={{
-                display: "grid",
-                gridTemplateColumns: "140px 1fr",
-                gridTemplateRows: "auto 1fr",
-                gap: 3,
-                alignItems: "stretch"
+                ...flexAlignColumn,
+                gap: 2
             }}
         >
             <Box sx={{ gridColumn: 2, gridRow: 1 }}>

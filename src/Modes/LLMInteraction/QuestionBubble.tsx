@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { imgContainerGuest } from "../../utils/imgContainer";
+import { imgContainer } from "../../utils/imgContainer";
 import { flexAlignRow } from "../../styling/theme";
 
 type QuestionBubbleProps = {
@@ -8,15 +8,23 @@ type QuestionBubbleProps = {
     typingSpeed?: number;
 };
 
-const guestImages = Object.values(imgContainerGuest);
-const randomGuestImage = guestImages[Math.floor(Math.random() * guestImages.length)];
+const randImages = Object.values(imgContainer);
 
 const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => {
     const [displayedText, setDisplayedText] = useState("");
+    const [randomGuestImage, setRandomGuestImage] = useState<string>("");
 
     useEffect(() => {
-        setDisplayedText("");
-        let index = 0;
+        const randomImage = randImages[Math.floor(Math.random() * randImages.length)];
+        setRandomGuestImage(randomImage);
+    }, []);
+
+    useEffect(() => {
+        if (!question) return;
+
+        let index = 1; // Wir zeigen das erste Zeichen direkt
+
+        setDisplayedText(question.charAt(0)); // Erster Buchstabe sofort sichtbar
 
         const interval = setInterval(() => {
             setDisplayedText((prev) => prev + question.charAt(index));
@@ -31,19 +39,21 @@ const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => 
 
     return (
         <Box sx={{ ...flexAlignRow }}>
-            <Box
-                component="img"
-                src={randomGuestImage}
-                alt="Charakter"
-                sx={{
-                    gridRow: "1 / span 2",
-                    width: "auto",
-                    maxWidth: 80,
-                    height: "100%",
-                    objectFit: "contain",
-                    mr: "2%"
-                }}
-            />
+            {randomGuestImage && (
+                <Box
+                    component="img"
+                    src={randomGuestImage}
+                    alt="Charakter"
+                    sx={{
+                        gridRow: "1 / span 2",
+                        width: "auto",
+                        maxWidth: 80,
+                        height: "100%",
+                        objectFit: "contain",
+                        mr: "2%"
+                    }}
+                />
+            )}
             <Box
                 sx={{
                     position: "relative",
