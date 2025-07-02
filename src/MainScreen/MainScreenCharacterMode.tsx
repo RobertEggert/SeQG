@@ -10,6 +10,7 @@ import type { MODES } from "./MainScreen";
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import InfoPopup from "./MainScreenComponents/InfoPopup";
 import { flexAlignColumn } from "../styling/theme";
+import ModeDescription from "./MainScreenComponents/ModeDescription";
 
 type MainScreenCharacterModeProps = {
     setMode: Dispatch<SetStateAction<MODES>>;
@@ -76,6 +77,7 @@ const MainScreenCharacterMode = ({ setMode, mode }: MainScreenCharacterModeProps
                     }}
                 >
                     <FadedImageChange enteringMode={enteringMode} mode={mode} />
+                    <ModeDescription mode={mode} />
                     <ChangeModeButton handleModeSwitch={handleModeSwitch} enteringMode={enteringMode} mode={mode} />
                 </Box>
             </Box>

@@ -127,8 +127,9 @@ const GuestMode = () => {
                                         userSelect: "none"
                                     }}
                                 >
-                                    In this mode, your experience will be based on previous users. <br />
-                                    You can close the session whenever you like by clossing the tab.
+                                    In this mode, your experience will be based on your self assessment. <br />
+                                    You can close the session whenever you like by clossing the tab or pushing the
+                                    button.
                                 </Typography>
                             </>
                         )}

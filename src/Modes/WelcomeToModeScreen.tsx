@@ -1,10 +1,20 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
+import { useState, useEffect } from "react";
 import { disconnectClientLLM } from "../utils/LLMDisconnector";
 
 const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Private" | "Guest" }) => {
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setVisible(true);
+        }, 100);
+
+        return () => clearTimeout(timeout);
+    }, []);
+
     const handleDisconnect = async () => {
         const result = await disconnectClientLLM(session);
-        console.log("Disconnect result:", result.status);
         if (result.status === "disconnected") {
             alert("Disconnected successfully!");
         } else {
@@ -43,7 +53,15 @@ const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Privat
                     color: "white"
                 }}
             >
-                <Typography variant="h4" fontWeight="bold" gutterBottom>
+                <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    gutterBottom
+                    sx={{
+                        opacity: visible ? 1 : 0,
+                        transition: "opacity 1s ease-in-out"
+                    }}
+                >
                     Welcome to {mode} Mode
                 </Typography>
                 <Typography variant="body1" mb={4}>
