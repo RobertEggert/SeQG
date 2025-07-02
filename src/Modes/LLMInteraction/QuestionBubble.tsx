@@ -20,11 +20,9 @@ const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => 
     }, []);
 
     useEffect(() => {
-        if (!question) return;
-
-        let index = 1; // Wir zeigen das erste Zeichen direkt
-
-        setDisplayedText(question.charAt(0)); // Erster Buchstabe sofort sichtbar
+        setDisplayedText("");
+        let index = 0;
+        setDisplayedText(question.charAt(0)); // ersten Buchstaben sofort setzen
 
         const interval = setInterval(() => {
             setDisplayedText((prev) => prev + question.charAt(index));
