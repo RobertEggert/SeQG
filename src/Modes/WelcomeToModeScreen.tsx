@@ -1,6 +1,7 @@
-import { Box, Typography, Button, Paper, Fade } from "@mui/material";
+import { Box, Typography, IconButton, Paper, Fade } from "@mui/material";
 import { disconnectClientLLM } from "../utils/LLMDisconnector";
 import { flexAllCenter } from "../styling/theme";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Private" | "Guest" }) => {
     const handleDisconnect = async () => {
@@ -45,15 +46,9 @@ const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Privat
                         You can now use the Display. Please enter your age and experience to begin.
                     </Typography>
                 </Fade>
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="large"
-                    onClick={handleDisconnect}
-                    sx={{ borderRadius: 2 }}
-                >
-                    Disconnect Session
-                </Button>
+                <IconButton color="error" size="large" onClick={handleDisconnect} sx={{ borderRadius: 2 }}>
+                    <LogoutIcon sx={{ transform: "scaleX(-1)" }} />
+                </IconButton>
             </Paper>
         </Box>
     );
