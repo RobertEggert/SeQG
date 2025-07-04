@@ -44,7 +44,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
             }
         };
 
-        if (age === null && experience === null) {
+        if (age === null && experience === null && userId !== "") {
             getUserData(userId);
         }
     }, [userId, age, experience]);
@@ -63,33 +63,37 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                             setExperience={setExperience}
                             age={age}
                             experience={experience}
+                            userId={userId}
                             isPriv={true}
                         />
                     </>
                 )}
-
-                {/* Question */}
-                <Question
-                    handleNextQuestion={handleNextQuestion}
-                    setAnswerCorrect={setAnswerCorrect}
-                    answerCorrect={answerCorrect}
-                    setQuestionState={setQuestionState}
-                    setExplanationState={setExplanationState}
-                    questionState={questionState}
-                    explanationState={explanationState}
-                    questionsFetchedRef={questionsFetchedRef}
-                    age={age}
-                    experience={experience}
-                    userId={userId}
-                />
-                {/* Explanation if wrongfully answered */}
-                <ExplainAnswer
-                    setExplanationState={setExplanationState}
-                    questionState={questionState}
-                    explanationState={explanationState}
-                    age={age}
-                    experience={experience}
-                />
+                {isProfileSubmitted && (
+                    <>
+                        {/* Question */}
+                        <Question
+                            handleNextQuestion={handleNextQuestion}
+                            setAnswerCorrect={setAnswerCorrect}
+                            answerCorrect={answerCorrect}
+                            setQuestionState={setQuestionState}
+                            setExplanationState={setExplanationState}
+                            questionState={questionState}
+                            explanationState={explanationState}
+                            questionsFetchedRef={questionsFetchedRef}
+                            age={age}
+                            experience={experience}
+                            userId={userId}
+                        />
+                        {/* Explanation if wrongfully answered */}
+                        <ExplainAnswer
+                            setExplanationState={setExplanationState}
+                            questionState={questionState}
+                            explanationState={explanationState}
+                            age={age}
+                            experience={experience}
+                        />
+                    </>
+                )}
             </Box>
 
             {/* Grading or Ending Session - TODO */}

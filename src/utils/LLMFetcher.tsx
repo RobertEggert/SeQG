@@ -59,7 +59,7 @@ type FetchUserDataType = {
 
 const LOCAL_ADDRESS = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
 const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
-const LLM_PORT = import.meta.env.VITE_LLM_PORT || 3001;
+const LLM_PORT = import.meta.env.VITE_LLM_PORT || 3002;
 
 export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }: FetchQuestionType) => {
     const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/question`, {

@@ -2,6 +2,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, B
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { QuestionStateType } from "../../utils/LLMFetcher";
 import { useNavigate } from "@tanstack/react-router";
+import { sendAgeAndExperiencePrivate } from "../../utils/LLMSaver";
 
 type ConfirmDialogProps = {
     setIsProfileSubmitted: Dispatch<SetStateAction<boolean>>;
@@ -9,9 +10,17 @@ type ConfirmDialogProps = {
     age: string | null;
     experience: number | null;
     isPriv: boolean;
+    userId?: string;
 };
 
-const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experience, isPriv }: ConfirmDialogProps) => {
+const ConfirmDialog = ({
+    setIsProfileSubmitted,
+    setQuestionState,
+    age,
+    experience,
+    isPriv,
+    userId
+}: ConfirmDialogProps) => {
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -23,6 +32,7 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
     const handleDialogConfirm = () => {
         setIsProfileSubmitted(true);
         setQuestionState({ q_fetch: true, q_data: [] });
+        if (age && experience && userId && userId !== "") sendAgeAndExperiencePrivate(age, experience, userId);
         setOpenDialog(false);
     };
 
@@ -60,12 +70,8 @@ const ConfirmDialog = ({ setIsProfileSubmitted, setQuestionState, age, experienc
                         a more personalised experience.
                         <br />
                         Do you allow to use them?
-                        {isPriv && (
-                            <p>
-                                You are currently in the private Mode, which saves your age and experience for one month
-                                server side. Do you wish to instead go to Guest mode?
-                            </p>
-                        )}
+                        {isPriv &&
+                            "\tYou are currently in the private Mode, which saves your age and experience for one month server side. Do you wish to instead go to Guest mode?"}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ display: "flex", justifyContent: "space-between" }}>
