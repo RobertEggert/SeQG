@@ -42,7 +42,7 @@ interface ExplenationResponse {
     explain: string;
 }
 
-type ProgressTrackingType = {
+export type ProgressTrackingType = {
     user_id: string;
     age: string | null;
     experience: number | null;
@@ -215,6 +215,7 @@ app.post("/api/explanation/shortterm", async (req: Request<object, object, Exple
     }
 });
 
+// TIPS
 app.get("/api/security/tips", async (_, res: Response) => {
     const prompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_tips.txt"), "utf-8");
     console.log("FETCH TIP");
@@ -243,7 +244,7 @@ app.get("/api/security/tips", async (_, res: Response) => {
 
 //#region SAVING
 // SAVE ANSWER
-app.post("/api/save", async (req: Request<object, object, SaveRequest>, res: Response) => {
+app.post("/api/saveAnswer", async (req: Request<object, object, SaveRequest>, res: Response) => {
     const { isAnswerCorrect, userId, topic } = req.body;
 
     try {
@@ -256,19 +257,13 @@ app.post("/api/save", async (req: Request<object, object, SaveRequest>, res: Res
         const rawData = fs.readFileSync(userFilePath, "utf-8");
         const parsedData: ProgressTrackingType = JSON.parse(rawData);
 
-        // Ensure progress exists
-        if (!parsedData.progress) {
-            parsedData.progress = {};
-        }
-
-        // Ensure topic tracking exists
+        // Ensure topic tracking exists if not create
         if (!parsedData.progress[topic]) {
             parsedData.progress[topic] = { correct: 0, total: 0 };
         }
 
         // Update the progress
         parsedData.progress[topic].total += 1;
-        console.log(isAnswerCorrect, userId, topic);
         if (isAnswerCorrect) {
             parsedData.progress[topic].correct += 1;
         }

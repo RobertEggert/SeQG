@@ -9,6 +9,7 @@ import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { fileURLToPath } from "url";
+import type { ProgressTrackingType } from "./llm";
 
 dotenv.config({ path: `.env.local`, override: true });
 
@@ -39,12 +40,13 @@ const BE_PORT = process.env.VITE_BE_PORT || 3001;
 
 const activeSessions = new Map<string, { host?: string; client?: string }>();
 
-const getTopics = (): string[] => {
-    const topicsFilePath = path.join(__dirname, "./memory/TOPICS_LIST.json");
-    const raw = fs.readFileSync(topicsFilePath, "utf-8");
-    const parsed = JSON.parse(raw);
-    return parsed.topics || [];
-};
+// currently not needed maybe in future
+// const getTopics = (): string[] => {
+//     const topicsFilePath = path.join(__dirname, "./memory/TOPICS_LIST.json");
+//     const raw = fs.readFileSync(topicsFilePath, "utf-8");
+//     const parsed = JSON.parse(raw);
+//     return parsed.topics || [];
+// };
 
 app.get("/connect/host", (_: Request, res: Response) => {
     if (activeSessions.size === 1) {
@@ -60,8 +62,9 @@ app.get("/connect/host", (_: Request, res: Response) => {
 
 app.get("/user-data/:userId", (req: Request, res: Response) => {
     const userId = req.params.userId;
-    const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
 
+    const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
+    console.log(userFilePath);
     if (!fs.existsSync(userFilePath)) {
         res.status(404).json({ error: "User not found" });
     }
@@ -106,6 +109,37 @@ app.post("/disconnect/client", (req: Request<object, object, { session: string }
     }
     res.json({ status: "error in func" });
 });
+
+app.post(
+    "/private/saveAgeAndExprience",
+    (req: Request<object, object, { age: string; experience: number; userId: string }>, res: Response) => {
+        const { age, experience, userId } = req.body;
+
+        try {
+            const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
+
+            if (!fs.existsSync(userFilePath)) {
+                res.status(404).json({ error: "User not found" });
+            }
+
+            const rawData = fs.readFileSync(userFilePath, "utf-8");
+            const parsedData: ProgressTrackingType = JSON.parse(rawData);
+
+            if (!parsedData.age) {
+                parsedData.age = age;
+            }
+
+            if (!parsedData.experience) {
+                parsedData.experience = experience;
+            }
+
+            // Save it back to the file
+            fs.writeFileSync(userFilePath, JSON.stringify(parsedData, null, 2));
+        } catch (err) {
+            console.error("Error writing age and experience progress:", err);
+        }
+    }
+);
 
 io.on("connection", (socket: Socket) => {
     console.log("Someone tries connecting:", socket.id);
@@ -216,8 +250,7 @@ io.on("connection", (socket: Socket) => {
             if (role === "client") {
                 const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
                 if (!fs.existsSync(userFilePath)) {
-                    const topics = getTopics();
-                    const progress = Object.fromEntries(topics.map((topic) => [topic, { correct: 0, total: 0 }]));
+                    const progress = {};
                     const userData = {
                         user_id: userId,
                         time: Date.now(),

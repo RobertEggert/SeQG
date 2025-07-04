@@ -27,6 +27,7 @@ type AgeExprienceType = {
     age: string | null;
     experience: number | null;
     isPriv: boolean;
+    userId?: string;
 };
 
 const customIcons: {
@@ -50,7 +51,8 @@ const AgeExperience = ({
     setExperience,
     age,
     experience,
-    isPriv
+    isPriv,
+    userId
 }: AgeExprienceType) => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
@@ -112,6 +114,7 @@ const AgeExperience = ({
                 age={age}
                 experience={experience}
                 isPriv={isPriv}
+                userId={userId}
             />
         </>
     );
