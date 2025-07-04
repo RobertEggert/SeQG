@@ -128,8 +128,8 @@ const GuestMode = () => {
                                     }}
                                 >
                                     In this mode, your experience will be based on your self assessment. <br />
-                                    You can close the session whenever you like by clossing the tab or pushing the
-                                    button.
+                                    You can close the session whenever you like by clossing the tab or pressing the
+                                    button on your phone screen.
                                 </Typography>
                             </>
                         )}

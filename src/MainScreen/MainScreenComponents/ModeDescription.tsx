@@ -20,11 +20,8 @@ const ModeDescription = ({ mode }: ModeDescriptionProps) => {
         <Box
             sx={{
                 ...flexAlignColumn,
-                mt: 3,
-                px: 3,
-                py: 2,
                 maxWidth: 600,
-                mx: "auto",
+                padding: 1,
                 textAlign: "center",
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 border: "1px solid rgba(255, 255, 255, 0.3)",
@@ -32,9 +29,7 @@ const ModeDescription = ({ mode }: ModeDescriptionProps) => {
                 color: "rgba(255,255,255,0.9)",
                 fontStyle: "italic",
                 fontWeight: 400,
-                fontSize: { xs: 14, sm: 16 },
-                userSelect: "none",
-                position: "relative",
+                fontSize: 14,
                 zIndex: 2
             }}
         >
