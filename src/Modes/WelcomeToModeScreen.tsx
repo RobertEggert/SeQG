@@ -1,12 +1,10 @@
-import { Box, Typography, Button } from "@mui/material";
-import { flexColumnCenterOfScreen } from "../styling/theme";
+import { Box, Typography, Button, Paper, Fade } from "@mui/material";
 import { disconnectClientLLM } from "../utils/LLMDisconnector";
+import { flexAllCenter } from "../styling/theme";
 
 const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Private" | "Guest" }) => {
     const handleDisconnect = async () => {
         const result = await disconnectClientLLM(session);
-
-        console.log("Disconnect result:", result.status);
         if (result.status === "disconnected") {
             alert("Disconnected successfully!");
         } else {
@@ -17,16 +15,46 @@ const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Privat
     return (
         <Box
             sx={{
-                ...flexColumnCenterOfScreen,
-                gap: 5, // spacing between children
-                padding: 2, // optional padding for small devices
-                textAlign: "center" // center text inside Typography
+                ...flexAllCenter,
+                position: "fixed",
+                width: "100%",
+                height: "100%",
+                background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+                padding: 2,
+                zIndex: 0
             }}
         >
-            <Typography fontSize={40}>Client! Welcome to the {mode} Mode!</Typography>
-            <Button variant="contained" onClick={handleDisconnect}>
-                DISCONNECT SESSION
-            </Button>
+            <Paper
+                elevation={6}
+                sx={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    borderRadius: 4,
+                    padding: 5,
+                    textAlign: "center",
+                    color: "white"
+                }}
+            >
+                <Fade in timeout={1500}>
+                    <Typography variant="h4" fontWeight="bold" gutterBottom>
+                        Welcome to {mode} Mode
+                    </Typography>
+                </Fade>
+                <Fade in timeout={5000}>
+                    <Typography sx={{ paddingBottom: 4 }}>
+                        You can now use the Display. Please enter your age and experience to begin.
+                    </Typography>
+                </Fade>
+                <Button
+                    variant="contained"
+                    color="error"
+                    size="large"
+                    onClick={handleDisconnect}
+                    sx={{ borderRadius: 2 }}
+                >
+                    Disconnect Session
+                </Button>
+            </Paper>
         </Box>
     );
 };

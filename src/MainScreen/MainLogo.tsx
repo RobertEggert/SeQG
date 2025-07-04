@@ -45,9 +45,9 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
             sx={{
                 zIndex: 1,
                 borderRadius: 3,
-                width: isPressed ? "10vh" : "140vh",
-                height: isPressed ? "10vh" : "80vh",
-                marginTop: isPressed ? "2%" : "5%",
+                width: isPressed ? 75 : "140vh",
+                height: isPressed ? 75 : "80vh",
+                marginTop: isPressed ? 1 : 10,
                 transition: "all 1s ease"
             }}
         >

@@ -135,7 +135,8 @@ const PrivateMode = () => {
                                 >
                                     In this mode, you will get personalised content based on your profile and
                                     performance. <br />
-                                    You can close the session whenever you like by closing the tab or logging out.
+                                    You can close the session whenever you like by closing the tab or pressing the
+                                    button on your phone screen.
                                 </Typography>
                             </>
                         )}

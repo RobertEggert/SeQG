@@ -23,36 +23,38 @@ const ChangeModeButton = ({ handleModeSwitch, enteringMode, mode }: ChangeModeBu
     }, [mode]); // whenever `mode` changes, disable button for 1.5s
 
     return (
-        <FadedComponent externalFade={!enteringMode ? undefined : enteringMode} timeout={2000} fadeTime={1000}>
-            <IconButton
-                onClick={handleModeSwitch}
-                disabled={isAnimation}
-                sx={{
-                    outline: isAnimation ? "1px solid black" : 0,
-                    backgroundColor: isAnimation ? "grey" : "white",
-                    marginTop: "15%",
-                    borderRadius: 5,
-                    width: "20rem",
-                    "&:hover": {
-                        backgroundColor: "white"
-                    },
-                    "&:disabled": {
-                        backgroundColor: "darkgrey"
-                    }
-                }}
-            >
-                <Box
+        <Box sx={{ display: "flex" }}>
+            <FadedComponent externalFade={!enteringMode ? undefined : enteringMode} timeout={2000} fadeTime={1000}>
+                <IconButton
+                    onClick={handleModeSwitch}
+                    disabled={isAnimation}
                     sx={{
-                        ...flexAlignColumn,
-                        paddingRight: 2
+                        outline: isAnimation ? "1px solid black" : 0,
+                        backgroundColor: isAnimation ? "grey" : "white",
+                        marginTop: "15%",
+                        borderRadius: 5,
+                        width: "20rem",
+                        "&:hover": {
+                            backgroundColor: "white"
+                        },
+                        "&:disabled": {
+                            backgroundColor: "darkgrey"
+                        }
                     }}
                 >
-                    <Typography fontSize={30}>Press or Swipe!</Typography>
-                    <Typography>Switch Mode</Typography>
-                </Box>
-                <DoubleArrowIcon sx={{ fontSize: 50 }} />
-            </IconButton>
-        </FadedComponent>
+                    <Box
+                        sx={{
+                            ...flexAlignColumn,
+                            paddingRight: 2
+                        }}
+                    >
+                        <Typography fontSize={30}>Press or Swipe!</Typography>
+                        <Typography>Switch Mode</Typography>
+                    </Box>
+                    <DoubleArrowIcon sx={{ fontSize: 50 }} />
+                </IconButton>
+            </FadedComponent>
+        </Box>
     );
 };
 
