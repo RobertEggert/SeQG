@@ -4,8 +4,10 @@ import AgeExperience from "../AgeExperience/AgeExperience";
 import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
-import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
 import EndSessionButton from "../EndSessionButton";
+import GuestDashboard from "./GuestDashboard";
+
+import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
 
 const GuestLLMQuestions = ({ session }: { session: string }) => {
     const [age, setAge] = useState<string | null>(null);
@@ -21,15 +23,39 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         e_data: null
     });
 
+    const [stats, setStats] = useState<Record<string, { correct: number; total: number }>>({});
+    const [showDashboard, setShowDashboard] = useState(false);
+
     const questionsFetchedRef = useRef(0);
 
     const handleNextQuestion = () => {
-        //  queue for 3 questions max
+        // Queue for 3 questions max
         questionsFetchedRef.current -= 1;
         setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
         setAnswerCorrect(null);
         setExplanationState({ e_fetch: false, e_data: null });
     };
+
+    const handleTrackStats = (topic: string, isCorrect: boolean) => {
+        setStats((prev) => {
+            const current = prev[topic] || { correct: 0, total: 0 };
+            return {
+                ...prev,
+                [topic]: {
+                    correct: current.correct + (isCorrect ? 1 : 0),
+                    total: current.total + 1
+                }
+            };
+        });
+    };
+
+    const handleEndSession = () => {
+        setShowDashboard(true);
+    };
+
+    if (showDashboard && age && experience !== null) {
+        return <GuestDashboard stats={stats} age={age} experience={experience} session={session} />;
+    }
 
     return (
         <>
@@ -56,7 +82,12 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                     <>
                         <Question
                             handleNextQuestion={handleNextQuestion}
-                            setAnswerCorrect={setAnswerCorrect}
+                            setAnswerCorrect={(val: boolean | null) => {
+                                setAnswerCorrect(val);
+                                if (val !== null && questionState.q_data[0]?.topic) {
+                                    handleTrackStats(questionState.q_data[0].topic, val);
+                                }
+                            }}
                             answerCorrect={answerCorrect}
                             setQuestionState={setQuestionState}
                             setExplanationState={setExplanationState}
@@ -78,8 +109,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                 )}
             </Box>
 
-            {/* Grading or Ending Session - TODO */}
-            <EndSessionButton session={session} />
+            <EndSessionButton session={session} onEndSession={handleEndSession} />
 
             {/* Refetching Question */}
             <NextQuestion
