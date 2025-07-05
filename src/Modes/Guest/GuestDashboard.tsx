@@ -9,8 +9,8 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 
 type StatsType = {
     [topic: string]: {
-        correct: number;
-        total: number;
+    correct: number;
+    total: number;
     };
 };
 
@@ -36,6 +36,7 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
     useEffect(() => {
         const fetchFeedback = async () => {
             try {
+                
                 const res = await fetch("http://localhost:3002/api/guest-feedback", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -123,9 +124,9 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
                 <Radar
                     data={data}
                     options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: { r: { min: 0, max: 100 } }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { min: 0, max: 100 } }
                     }}
                 />
             </Box>
