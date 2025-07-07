@@ -74,7 +74,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                 src={guestChar}
                 sx={{
                     padding: 2,
-                    height: "50vh",
+                    height: "40vh",
                     zIndex: isPriv ? 2 : 1,
                     animation: isPriv ? `${rotateGuestStart} 2s ease-in-out` : `${rotateGuestEnd} 2s ease-in-out`,
                     animationFillMode: "forwards",
@@ -88,7 +88,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
                 src={privateChar}
                 sx={{
                     padding: 2,
-                    height: "50vh",
+                    height: "40vh",
                     zIndex: isGuest ? 2 : 1,
                     animation: isGuest ? `${rotatePrivateStart} 2s ease-in-out` : `${rotatePrivateEnd} 2s ease-in-out`,
                     animationFillMode: "forwards",

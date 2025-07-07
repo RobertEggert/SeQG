@@ -45,9 +45,11 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
             sx={{
                 zIndex: 1,
                 borderRadius: 3,
-                width: isPressed ? 75 : "140vh",
-                height: isPressed ? 75 : "80vh",
-                marginTop: isPressed ? 1 : 10,
+                width: isPressed ? 75 : "90vw",
+                maxWidth: 600,
+                height: isPressed ? 75 : "70vh",
+                maxHeight: 800,
+                marginTop: isPressed ? 1 : 30,
                 transition: "all 1s ease"
             }}
         >
@@ -105,11 +107,13 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                             textAlign: "center",
                             zIndex: 3,
                             padding: 2,
-                            width: "100%",
+                            width: "90%",
                             minHeight: 100,
                             maxHeight: 130,
-                            maxWidth: 1000,
-                            bottom: 80
+                            margin: "0 auto",
+                            bottom: 80,
+                            left: 0,
+                            right: 0
                         }}
                     >
                         <Typography

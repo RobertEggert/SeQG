@@ -3,17 +3,19 @@ import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { useNavigate } from "@tanstack/react-router";
-import { colorModes, flexAlignColumn } from "../../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
 import PrivateLLMQuestions from "./PrivateLLMQuestions";
 import FadedComponent from "../../utils/FadedComponent";
 import type { STATUS } from "../../utils/types";
+import Background from "../../MainScreen/MainScreenComponents/Background";
+import EndSessionButton from "../EndSessionButton";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState("");
     const [privateSession, setPrivateSession] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [status, setStatus] = useState<STATUS>("pending"); // only for client
+    const [status, setStatus] = useState<STATUS>("pending");
     const hasFetchedRef = useRef(false);
 
     const LOCAL_SERVER = import.meta.env.VITE_LOCAL_ADDRESS || "NO_IP";
@@ -43,8 +45,7 @@ const PrivateMode = () => {
         };
 
         fetchHostData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [BE_PORT, LOCAL_SERVER]);
+    }, [BE_PORT, LOCAL_SERVER, navigate]);
 
     useEffect(() => {
         if (privateSession && token) {
@@ -63,7 +64,6 @@ const PrivateMode = () => {
             });
 
             socket.on("client-id", ({ userId }) => {
-                // You can store this in state, context, etc.
                 setUserId(userId);
             });
 
@@ -71,78 +71,91 @@ const PrivateMode = () => {
                 socket.disconnect();
             };
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [BE_PORT, LOCAL_SERVER, privateSession, token]);
+    }, [BE_PORT, LOCAL_SERVER, navigate, privateSession, token]);
 
     if (!privateSession || !token) return null;
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
-    console.log(connectUrl);
+
     return (
-        <Box
-            sx={{
-                backgroundColor: colorModes.private,
-                display: "flex",
-                justifyContent: "center",
-                width: "100vw",
-                height: "100vh"
-            }}
-        >
-            <Paper
-                elevation={3}
+        <Box>
+            <Background />
+            <Box
                 sx={{
                     ...flexAlignColumn,
-                    marginTop: 10,
-                    padding: 10,
-                    width: "70%",
-                    height: "70%"
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100vw",
+                    height: "100vh",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    zIndex: 1
                 }}
             >
-                {status === "connected" ? (
-                    <PrivateLLMQuestions userId={userId} session={privateSession} />
-                ) : (
-                    <>
-                        {status === "pending" && (
-                            <>
-                                <FadedComponent timeout={3000}>
-                                    <Box sx={{ marginBottom: 4 }}>
-                                        <Typography
-                                            variant="h5"
-                                            align="center"
-                                            sx={{
-                                                fontStyle: "italic",
-                                                color: "text.secondary"
-                                            }}
-                                        >
-                                            Welcome to the private mode!
-                                        </Typography>
-                                        <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
-                                            Scan this QR code to log in!
-                                        </Typography>
-                                    </Box>
-                                </FadedComponent>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        ...flexAlignColumn,
+                        marginTop: 10,
+                        padding: 10,
+                        width: "70%",
+                        height: "70%",
+                        position: "relative"
+                    }}
+                >
+                    <EndSessionButton
+                        session={privateSession}
+                        onEndSession={() => {
+                            navigate({ to: "/" });
+                        }}
+                    />
+                    {status === "connected" ? (
+                        <PrivateLLMQuestions userId={userId} session={privateSession} />
+                    ) : (
+                        <>
+                            {status === "pending" && (
+                                <>
+                                    <FadedComponent timeout={3000}>
+                                        <Box sx={{ marginBottom: 4 }}>
+                                            <Typography
+                                                variant="h5"
+                                                align="center"
+                                                sx={{
+                                                    fontStyle: "italic",
+                                                    color: "text.secondary"
+                                                }}
+                                            >
+                                                Welcome to the private mode!
+                                            </Typography>
+                                            <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
+                                                Scan this QR code to log in!
+                                            </Typography>
+                                        </Box>
+                                    </FadedComponent>
 
-                                <QRCodeSVG value={connectUrl} size={200} />
+                                    <QRCodeSVG value={connectUrl} size={200} />
 
-                                <Typography
-                                    align="center"
-                                    sx={{
-                                        paddingTop: "22rem",
-                                        color: "text.secondary",
-                                        fontSize: 16,
-                                        userSelect: "none"
-                                    }}
-                                >
-                                    In this mode, you will get personalised content based on your profile and
-                                    performance. <br />
-                                    You can close the session whenever you like by closing the tab or pressing the
-                                    button on your phone screen.
-                                </Typography>
-                            </>
-                        )}
-                    </>
-                )}
-            </Paper>
+                                    <Typography
+                                        align="center"
+                                        sx={{
+                                            paddingTop: "22rem",
+                                            color: "text.secondary",
+                                            fontSize: 16,
+                                            userSelect: "none"
+                                        }}
+                                    >
+                                        In this mode, you will get personalised content based on your profile and
+                                        performance. <br />
+                                        You can close the session whenever you like by closing the tab or pressing the
+                                        button on your phone screen.
+                                    </Typography>
+                                </>
+                            )}
+                        </>
+                    )}
+                </Paper>
+            </Box>
         </Box>
     );
 };

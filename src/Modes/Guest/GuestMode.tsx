@@ -4,9 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import GuestLLMQuestions from "./GuestLLMQuestions";
 import { useNavigate } from "@tanstack/react-router";
-import { colorModes, flexAlignColumn } from "../../styling/theme";
+import { flexAlignColumn } from "../../styling/theme";
 import FadedComponent from "../../utils/FadedComponent";
 import type { STATUS } from "../../utils/types";
+import Background from "../../MainScreen/MainScreenComponents/Background";
+import EndSessionButton from "../EndSessionButton";
+import logoStart from "../../img/logoandtext.png"; // <-- IMPORTA AQUÍ EL LOGO
 
 const GuestMode = () => {
     const navigate = useNavigate();
@@ -43,8 +46,7 @@ const GuestMode = () => {
         };
 
         fetchHostData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [BE_PORT, LOCAL_SERVER]);
+    }, [BE_PORT, LOCAL_SERVER, navigate]);
 
     useEffect(() => {
         if (session && token) {
@@ -62,8 +64,7 @@ const GuestMode = () => {
                 socket.disconnect();
             };
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [BE_PORT, LOCAL_SERVER, session, token]);
+    }, [BE_PORT, LOCAL_SERVER, navigate, session, token]);
 
     if (!session || !token) return null;
 
@@ -71,71 +72,89 @@ const GuestMode = () => {
     console.log(connectUrl);
 
     return (
-        <Box
-            sx={{
-                backgroundColor: colorModes.guest,
-                display: "flex",
-                justifyContent: "center",
-                width: "100vw",
-                height: "100vh"
-            }}
-        >
-            <Paper
-                elevation={3}
+        <Box>
+            <Background />
+            <Box
                 sx={{
                     ...flexAlignColumn,
-                    marginTop: 10,
-                    padding: 10,
-                    width: "70%",
-                    height: "70%"
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100vw",
+                    height: "100vh",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    zIndex: 1
                 }}
             >
-                {status === "connected" ? (
-                    <GuestLLMQuestions session={session} />
-                ) : (
-                    <>
-                        {status === "pending" && (
-                            <>
-                                <FadedComponent timeout={3000}>
-                                    <Box sx={{ marginBottom: 4 }}>
-                                        <Typography
-                                            variant="h5"
-                                            align="center"
-                                            sx={{
-                                                fontStyle: "italic",
-                                                color: "text.secondary"
-                                            }}
-                                        >
-                                            Welcome to the guest mode!
-                                        </Typography>
-                                        <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
-                                            By scanning this QR code, you will start a session (no personal information
-                                            is saved)
-                                        </Typography>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        ...flexAlignColumn,
+                        marginTop: 10,
+                        padding: 10,
+                        width: "70%",
+                        height: "70%",
+                        position: "relative"
+                    }}
+                >
+                    <EndSessionButton
+                        session={session}
+                        onEndSession={() => {
+                            navigate({ to: "/" });
+                        }}
+                    />
+                    {status === "connected" ? (
+                        <GuestLLMQuestions session={session} />
+                    ) : (
+                        <>
+                            {status === "pending" && (
+                                <>
+                                    <FadedComponent timeout={3000}>
+                                        <Box sx={{ marginBottom: 4 }}>
+                                            <Typography
+                                                variant="h5"
+                                                align="center"
+                                                sx={{
+                                                    fontStyle: "italic",
+                                                    color: "text.secondary"
+                                                }}
+                                            >
+                                                Welcome to the guest mode!
+                                            </Typography>
+                                            <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
+                                                By scanning this QR code, you will start a session (no personal
+                                                information is saved)
+                                            </Typography>
+                                        </Box>
+                                    </FadedComponent>
+
+                                    <Typography>Scan this Guest QR Code:</Typography>
+                                    <QRCodeSVG value={connectUrl} size={200} />
+
+                                    {/* LOGO ENTRE EL QR Y EL TEXTO FINAL */}
+                                    <Box sx={{ marginTop: 3, marginBottom: 3 }}>
+                                        <img src={logoStart} alt="Main Logo" style={{ width: 180 }} />
                                     </Box>
-                                </FadedComponent>
 
-                                <Typography>Scan this Guest QR Code:</Typography>
-                                <QRCodeSVG value={connectUrl} size={200} />
-
-                                <Typography
-                                    align="center"
-                                    sx={{
-                                        paddingTop: "23rem",
-                                        color: "text.secondary",
-                                        fontSize: 16,
-                                        userSelect: "none"
-                                    }}
-                                >
-                                    In this mode, your experience will be based on your self assessment. <br />
-                                    You can close the session whenever you like by clossing the tab or pressing the
-                                    button on your phone screen.
-                                </Typography>
-                            </>
-                        )}
-                    </>
-                )}
-            </Paper>
+                                    <Typography
+                                        align="center"
+                                        sx={{
+                                            color: "text.secondary",
+                                            fontSize: 25,
+                                            userSelect: "none"
+                                        }}
+                                    >
+                                        In this mode, your experience will be based on your self assessment. <br />
+                                        You can close the session whenever you like by closing the tab or pressing the
+                                        button on your phone screen.
+                                    </Typography>
+                                </>
+                            )}
+                        </>
+                    )}
+                </Paper>
+            </Box>
         </Box>
     );
 };

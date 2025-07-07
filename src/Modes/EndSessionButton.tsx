@@ -1,20 +1,38 @@
-import { Box, Button } from "@mui/material";
-import { disconnectClientLLM } from "../utils/LLMDisconnector";
+import { Box, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-const EndSessionButton = ({ session }: { session: string }) => {
+const EndSessionButton = ({ onEndSession }: { session: string; onEndSession?: () => void }) => {
+    const handleClick = () => {
+        if (onEndSession) {
+            onEndSession();
+        }
+    };
+
     return (
         <Box
             sx={{
-                display: "flex",
-                marginTop: 4,
-                left: "12%",
-                bottom: "10%",
-                position: "fixed"
+                position: "absolute",
+                top: 8,
+                right: 8,
+                zIndex: 10
             }}
         >
-            <Button variant="contained" onClick={() => disconnectClientLLM(session)}>
-                END SESSION
-            </Button>
+            <IconButton
+                onClick={handleClick}
+                aria-label="End Session"
+                sx={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: "error.main",
+                    color: "white",
+                    "&:hover": {
+                        backgroundColor: "error.dark"
+                    },
+                    boxShadow: "0px 4px 8px rgba(0,0,0,0.3)"
+                }}
+            >
+                <CloseIcon sx={{ fontSize: 32 }} />
+            </IconButton>
         </Box>
     );
 };
