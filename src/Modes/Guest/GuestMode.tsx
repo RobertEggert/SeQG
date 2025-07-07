@@ -10,6 +10,7 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png"; // <-- IMPORTA AQUÍ EL LOGO
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const GuestMode = () => {
     const navigate = useNavigate();
@@ -99,9 +100,8 @@ const GuestMode = () => {
                     }}
                 >
                     <EndSessionButton
-                        session={session}
                         onEndSession={() => {
-                            navigate({ to: "/" });
+                            disconnectClientLLM(session);
                         }}
                     />
                     {status === "connected" ? (

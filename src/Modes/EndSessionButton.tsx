@@ -1,7 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const EndSessionButton = ({ onEndSession }: { session: string; onEndSession?: () => void }) => {
+const EndSessionButton = ({ onEndSession }: { onEndSession?: () => void }) => {
     const handleClick = () => {
         if (onEndSession) {
             onEndSession();

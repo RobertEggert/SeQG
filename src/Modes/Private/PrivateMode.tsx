@@ -9,6 +9,7 @@ import FadedComponent from "../../utils/FadedComponent";
 import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -105,9 +106,8 @@ const PrivateMode = () => {
                     }}
                 >
                     <EndSessionButton
-                        session={privateSession}
                         onEndSession={() => {
-                            navigate({ to: "/" });
+                            disconnectClientLLM(privateSession);
                         }}
                     />
                     {status === "connected" ? (
