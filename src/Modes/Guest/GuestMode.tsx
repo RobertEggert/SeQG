@@ -9,7 +9,7 @@ import FadedComponent from "../../utils/FadedComponent";
 import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
-import logoStart from "../../img/logoandtext.png"; // <-- IMPORTA AQUÍ EL LOGO
+import logoStart from "../../img/logoandtext.png";
 import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const GuestMode = () => {
@@ -56,7 +56,7 @@ const GuestMode = () => {
                 socket.emit("register", { token, role: "host" });
             });
 
-            socket.on("status", (msg) => {
+            socket.on("status", (msg: string) => {
                 if (msg === "connected") setStatus("connected");
                 else if (msg === "disconnected") navigate({ to: "/" });
             });
@@ -132,16 +132,15 @@ const GuestMode = () => {
                                     <Typography>Scan this Guest QR Code:</Typography>
                                     <QRCodeSVG value={connectUrl} size={200} />
 
-                                    {/* LOGO ENTRE EL QR Y EL TEXTO FINAL */}
                                     <Box sx={{ marginTop: 3, marginBottom: 3 }}>
-                                        <img src={logoStart} alt="Main Logo" style={{ width: 180 }} />
+                                        <img src={logoStart} alt="Main Logo" style={{ width: 300 }} />
                                     </Box>
 
                                     <Typography
                                         align="center"
                                         sx={{
                                             color: "text.secondary",
-                                            fontSize: 25,
+                                            fontSize: 20,
                                             userSelect: "none"
                                         }}
                                     >

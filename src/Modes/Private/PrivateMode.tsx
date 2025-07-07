@@ -9,6 +9,7 @@ import FadedComponent from "../../utils/FadedComponent";
 import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
+import logoStart from "../../img/logoandtext.png";
 import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const PrivateMode = () => {
@@ -59,12 +60,12 @@ const PrivateMode = () => {
                 });
             });
 
-            socket.on("status", (msg) => {
+            socket.on("status", (msg: string) => {
                 if (msg === "connected") setStatus("connected");
                 else if (msg === "disconnected") navigate({ to: "/" });
             });
 
-            socket.on("client-id", ({ userId }) => {
+            socket.on("client-id", ({ userId }: { userId: string }) => {
                 setUserId(userId);
             });
 
@@ -128,18 +129,21 @@ const PrivateMode = () => {
                                             >
                                                 Welcome to the private mode!
                                             </Typography>
-                                            <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
-                                                Scan this QR code to log in!
-                                            </Typography>
                                         </Box>
                                     </FadedComponent>
-
+                                    <Typography variant="body1" align="center" sx={{ color: "text.secondary" }}>
+                                        Scan this QR code to log in!
+                                    </Typography>
                                     <QRCodeSVG value={connectUrl} size={200} />
+
+                                    <Box sx={{ marginTop: 3, marginBottom: 3 }}>
+                                        <img src={logoStart} alt="Main Logo" style={{ width: 300 }} />
+                                    </Box>
 
                                     <Typography
                                         align="center"
                                         sx={{
-                                            paddingTop: "22rem",
+                                            paddingTop: "1rem",
                                             color: "text.secondary",
                                             fontSize: 16,
                                             userSelect: "none"
