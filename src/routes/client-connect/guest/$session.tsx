@@ -18,7 +18,6 @@ const GuestSession = () => {
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
-        console.log("TEST GUEST");
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 

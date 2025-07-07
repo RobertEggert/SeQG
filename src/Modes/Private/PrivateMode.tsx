@@ -10,7 +10,6 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -106,11 +105,7 @@ const PrivateMode = () => {
                         position: "relative"
                     }}
                 >
-                    <EndSessionButton
-                        onEndSession={() => {
-                            disconnectClientLLM(privateSession);
-                        }}
-                    />
+                    <EndSessionButton session={privateSession} />
                     {status === "connected" ? (
                         <PrivateLLMQuestions userId={userId} session={privateSession} />
                     ) : (
