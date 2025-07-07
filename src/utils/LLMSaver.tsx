@@ -16,7 +16,6 @@ export const sendAnswerToLLMBackend = (isAnswerCorrect: boolean, userId: string,
 
 export const sendAgeAndExperiencePrivate = (age: string, experience: number, userId: string) => {
     // this actually fetches nothing but it has to be called fetch
-    console.log("SAVING DATA");
     fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/private/saveAgeAndExprience`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

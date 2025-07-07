@@ -46,7 +46,9 @@ const MainScreenCharacterMode = ({ setMode, mode }: MainScreenCharacterModeProps
                     onBlur={() => setInfoOpen(!infoOpen)}
                     disableRipple
                     sx={{
-                        backgroundColor: "transparent"
+                        backgroundColor: "transparent",
+
+                        marginBottom: 20
                     }}
                 >
                     <Typography

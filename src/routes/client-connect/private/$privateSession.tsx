@@ -19,7 +19,6 @@ const PrivateSession = () => {
     const BE_PORT = import.meta.env.VITE_BE_PORT || 3001;
 
     useEffect(() => {
-        console.log("TEST PRIVATE");
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
 
@@ -29,7 +28,6 @@ const PrivateSession = () => {
                 const userId = uuidv4();
                 localStorage.setItem("SeQG-User-Key", userId);
             }
-            console.log(localStorage.getItem("SeQG-User-Key"));
             socket.emit("register-private", {
                 token,
                 role: "client",

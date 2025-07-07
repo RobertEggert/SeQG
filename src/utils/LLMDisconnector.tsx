@@ -10,7 +10,6 @@ export const disconnectClientLLM = async (session: string) => {
         });
 
         const data = await response.json();
-        console.log("Response to Disconnect: ", data);
         return data;
     } catch (err) {
         console.error("Disconnect failed:", err);

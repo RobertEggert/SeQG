@@ -48,7 +48,7 @@ const MainLogo = ({ isPressed, setIsPressed }: MainLogoProps) => {
                 width: isPressed ? 75 : "90vw",
                 maxWidth: 600,
                 height: isPressed ? 75 : "70vh",
-                maxHeight: 800,
+                maxHeight: 1200,
                 marginTop: isPressed ? 1 : 30,
                 transition: "all 1s ease"
             }}

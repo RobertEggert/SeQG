@@ -11,9 +11,10 @@ const ModeDescription = ({ mode }: ModeDescriptionProps) => {
 
     if (mode === "PRIVATE") {
         description =
-            "You are selecting Private Mode, where your experience will be based on your profile and performance";
+            "You are selecting Private Mode, where you will answer questions based on your profile and your performance in different cybersecurity topics";
     } else {
-        description = "You are selecting Guest Mode, where your experience will be based on your self assessment";
+        description =
+            "You are selecting Guest Mode, where you will answer cybersecurity questions based on your self assessment";
     }
 
     return (
