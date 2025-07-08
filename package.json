@@ -31,6 +31,7 @@
         "@tanstack/react-router": "^1.120.5",
         "@tanstack/react-router-devtools": "^1.120.6",
         "@types/jsonwebtoken": "^9.0.9",
+        "@xyflow/react": "^12.8.1",
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
         "express": "^5.1.0",

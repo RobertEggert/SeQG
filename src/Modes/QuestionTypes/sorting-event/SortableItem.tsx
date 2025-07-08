@@ -9,30 +9,40 @@ type SortingItemProps = {
     isFeedback: boolean;
     handleFeedbackColor: (index: number) => string;
 };
-const SortableItem: FC<SortingItemProps> = ({ id, option, isFeedback, handleFeedbackColor }: SortingItemProps) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
-    const smoothMove = {
-        transform: CSS.Transform.toString(transform),
-        transition
-    };
+const SortableItem: FC<SortingItemProps> = ({ id, option, isFeedback, handleFeedbackColor }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
     return (
         <Card
             elevation={4}
             sx={{
                 cursor: "pointer",
+                touchAction: "none",
                 padding: 1.5,
                 marginTop: 1,
-                ...smoothMove,
-                backgroundColor: isFeedback ? handleFeedbackColor(id) : "white"
+                transform: transform ? CSS.Translate.toString(transform) : undefined,
+                transition,
+                width: "100%", // Ensures consistent width
+                backgroundColor: isFeedback ? handleFeedbackColor(id) : "white",
+                backfaceVisibility: "hidden",
+                willChange: "transform"
             }}
             ref={setNodeRef}
             {...attributes}
             {...listeners}
         >
             <Box>
-                <Typography>{option}</Typography>
+                <Typography
+                    sx={{
+                        display: "inline-block",
+                        width: "100%",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                    }}
+                >
+                    {option}
+                </Typography>
             </Box>
         </Card>
     );
