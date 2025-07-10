@@ -2,7 +2,7 @@ import { useEffect, useState, type Dispatch, type ElementType, type SetStateActi
 import type { ExplainStateType, QuestionType, LLM_API_Question_Type } from "../../utils/LLMFetcher";
 import SingleChoiceEvent from "../QuestionTypes/SingleChoiceEvent";
 import { Box } from "@mui/material";
-import LineConnectEvent from "../QuestionTypes/LineConnectEvent";
+import LineConnectEvent from "../QuestionTypes/line-connect-event/LineConnectEvent";
 import MultipleChoiceEvent from "../QuestionTypes/MultipleChoiceEvent";
 import SortingEvent from "../QuestionTypes/sorting-event/SortingEvent";
 import ThinkEvent from "../QuestionTypes/ThinkEvent";

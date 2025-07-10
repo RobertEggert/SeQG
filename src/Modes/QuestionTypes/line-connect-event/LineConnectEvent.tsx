@@ -7,53 +7,21 @@ import {
     useEdgesState,
     useNodesState,
     type Edge,
-    type Node,
-    Position,
-    Handle
+    type Node
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
-import submitAnswer from "../LLMInteraction/AnswerHandeling";
+import { Box, Button, Typography } from "@mui/material";
+import type { QuestionTypeProps } from "../../LLMInteraction/QuestionTypeRecognizer";
+import submitAnswer from "../../LLMInteraction/AnswerHandeling";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { flexAlignRow } from "../../styling/theme";
+import { flexAlignRow } from "../../../styling/theme";
+import PaperNode from "./PaperNode";
 
 type CustomNode = Node;
 type CustomEdge = Edge;
 
-const CardNode = ({ data }: { data: { label: string; pos: string } }) => {
-    const isSource = data.pos === "left";
-    return (
-        <Paper sx={{ padding: 1, position: "relative", width: 150, minHeight: 20 }} elevation={4}>
-            <Typography align="center" fontSize={10}>
-                {data.label}
-            </Typography>
-            {isSource && (
-                <Handle
-                    type="source"
-                    position={Position.Right}
-                    style={{
-                        background: "#1976d2",
-                        border: "2px solid #fff"
-                    }}
-                />
-            )}
-            {!isSource && (
-                <Handle
-                    type="target"
-                    position={Position.Left}
-                    style={{
-                        background: "#1976d2",
-                        border: "2px solid #fff"
-                    }}
-                />
-            )}
-        </Paper>
-    );
-};
-
 const nodeTypes = {
-    cardNode: CardNode
+    paperNode: PaperNode
 };
 
 const LineConnectEvent = ({
@@ -67,30 +35,30 @@ const LineConnectEvent = ({
 }: QuestionTypeProps) => {
     // Initialize edges state with CustomEdge type
     const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdge>([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>([]);
+
     const halfPoint = Math.ceil(questionData.option_s.length / 2);
     const isDisabled =
         explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true || edges.length === 0;
-    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>([]);
-    // const [isFeedback, setIsFeedback] = useState(false);
 
-    // Initialize nodes only once when component mounts
+    // initialize
     useEffect(() => {
         setNodes([
             ...questionData.option_s.slice(0, halfPoint).map((option, index) => ({
                 id: `left-${index}`,
-                type: "cardNode",
+                type: "paperNode",
                 position: { x: 50, y: 100 + index * 100 },
-                data: { label: option, pos: "left" }
+                data: { label: option, pos: "left", isCorrect: undefined }
             })),
             ...questionData.option_s.slice(halfPoint).map((option, index) => ({
                 id: `right-${index}`,
-                type: "cardNode",
+                type: "paperNode",
                 position: { x: 350, y: 100 + index * 100 },
-                data: { label: option, pos: "right" }
+                data: { label: option, pos: "right", isCorrect: undefined }
             }))
         ]);
-        console.log(nodes);
-    }, [questionData.option_s, halfPoint, setNodes]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [questionData.option_s, halfPoint]);
 
     // Handle new connections
     const onConnect = useCallback(
@@ -126,10 +94,17 @@ const LineConnectEvent = ({
         [setEdges]
     );
 
+    const handleFeedback = () => {
+        const checkIsCorrect = () => {
+            return false;
+        };
+        // check if the edges on the nodes are correct ==> this means you can automatically make two nodes at a time red or give them no color
+    };
+
     const handleSubmit = () => {
         // Validate connections
-        const isCorrect = true;
-        // setIsFeedback(true);
+        const isCorrect = false;
+        handleFeedback();
         submitAnswer(userId, isCorrect, questionData, setAnswerCorrect, setExplanationState, handleNextQuestion);
     };
 
@@ -150,11 +125,11 @@ const LineConnectEvent = ({
                     onEdgesChange={onEdgesChange}
                     onConnect={onConnect}
                     nodeTypes={nodeTypes}
+                    nodesDraggable={false}
                     panOnDrag={false}
                     zoomOnScroll={false}
                     zoomOnPinch={false}
                     zoomOnDoubleClick={false}
-                    nodesDraggable={false}
                     fitView
                     connectionRadius={30}
                     onlyRenderVisibleElements={false}
