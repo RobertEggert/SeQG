@@ -1,10 +1,10 @@
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { disconnectClientLLM } from "../utils/LLMDisconnector";
+import type { Dispatch, SetStateAction } from "react";
 
-const EndSessionButton = ({ session }: { session: string }) => {
+const EndSessionButton = ({ setShowDashboard }: { setShowDashboard: Dispatch<SetStateAction<boolean>> }) => {
     const handleClick = () => {
-        disconnectClientLLM(session);
+        setShowDashboard(true);
     };
 
     return (

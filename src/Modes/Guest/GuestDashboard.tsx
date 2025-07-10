@@ -9,8 +9,8 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 
 type StatsType = {
     [topic: string]: {
-    correct: number;
-    total: number;
+        correct: number;
+        total: number;
     };
 };
 
@@ -36,7 +36,6 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
     useEffect(() => {
         const fetchFeedback = async () => {
             try {
-                
                 const res = await fetch("http://localhost:3002/api/guest-feedback", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -69,7 +68,10 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
             countdownRef.current = setInterval(() => {
                 counter--;
                 setCountdown(counter);
-                if (counter <= 0) navigate({ to: "/" });
+                if (counter <= 0) {
+                    disconnectClientLLM(session);
+                    navigate({ to: "/" });
+                }
             }, 1000);
         }, 60000);
 
@@ -121,9 +123,9 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
                 <Radar
                     data={data}
                     options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: { r: { min: 0, max: 100 } }
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { r: { min: 0, max: 100 } }
                     }}
                 />
             </Box>
@@ -131,85 +133,83 @@ const GuestDashboard = ({ stats, age, experience, session }: GuestDashboardProps
     };
 
     return (
-    <Box
-        sx={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        overflowY: "auto",
-        padding: 4
-        }}
-    >
-        <Typography variant="h4" gutterBottom>
-            🧠 Your Cybersecurity Awareness Summary
-        </Typography>
-
-        {chunkedTopics.map((chunk, index) => renderRadarChart(chunk, index))}
-
-        <Paper
-            elevation={3}
+        <Box
             sx={{
-                p: 3,
-                mt: 4,
-                width: "100%",
-                maxWidth: 800,
-                backgroundColor: "#f7f9fc"
+                width: "100vw",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                overflowY: "auto",
+                padding: 4
             }}
         >
-
-        <Typography variant="h6" gutterBottom>
-            🎯 Personalized Feedback
-        </Typography>
-
-        {loading ? (
-            <>
-            <Typography variant="body2" sx={{ mb: 2 }}>
-                Generating personalized recommendations based on your performance...
+            <Typography variant="h4" gutterBottom>
+                🧠 Your Cybersecurity Awareness Summary
             </Typography>
-            <CircularProgress/>
-            </>
-        ) : (
-            <Typography sx={{ whiteSpace: "pre-line" }}>{feedback}</Typography>
-        )}
-        </Paper>
 
-        <Box sx={{ mt: 4 }}>
-            <Button variant="contained" color="primary" size="large" onClick={handleReturn}>
-                Return to Main Screen
-            </Button>
-        </Box>
+            {chunkedTopics.map((chunk, index) => renderRadarChart(chunk, index))}
 
-        <Modal open={showModal}>
             <Paper
-                elevation={5}
+                elevation={3}
                 sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                padding: 4,
-                textAlign: "center"
+                    p: 3,
+                    mt: 4,
+                    width: "100%",
+                    maxWidth: 800,
+                    backgroundColor: "#f7f9fc"
                 }}
             >
                 <Typography variant="h6" gutterBottom>
-                    Are you still viewing your results?
+                    🎯 Personalized Feedback
                 </Typography>
 
-                <Typography variant="body2" gutterBottom>
-                    Returning to main screen in {countdown} seconds...
-                </Typography>
-
-                <Button variant="contained" color="secondary" onClick={handleStay}>
-                    I'm still here!
-                </Button>
+                {loading ? (
+                    <>
+                        <Typography variant="body2" sx={{ mb: 2 }}>
+                            Generating personalized recommendations based on your performance...
+                        </Typography>
+                        <CircularProgress />
+                    </>
+                ) : (
+                    <Typography sx={{ whiteSpace: "pre-line" }}>{feedback}</Typography>
+                )}
             </Paper>
-        </Modal>
-    </Box>
+
+            <Box sx={{ mt: 4 }}>
+                <Button variant="contained" color="primary" size="large" onClick={handleReturn}>
+                    Return to Main Screen
+                </Button>
+            </Box>
+
+            <Modal open={showModal}>
+                <Paper
+                    elevation={5}
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        padding: 4,
+                        textAlign: "center"
+                    }}
+                >
+                    <Typography variant="h6" gutterBottom>
+                        Are you still viewing your results?
+                    </Typography>
+
+                    <Typography variant="body2" gutterBottom>
+                        Returning to main screen in {countdown} seconds...
+                    </Typography>
+
+                    <Button variant="contained" color="secondary" onClick={handleStay}>
+                        I'm still here!
+                    </Button>
+                </Paper>
+            </Modal>
+        </Box>
     );
 };
 
 export default GuestDashboard;
-  

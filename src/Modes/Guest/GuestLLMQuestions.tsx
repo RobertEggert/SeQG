@@ -49,10 +49,6 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         });
     };
 
-    const handleEndSession = () => {
-        setShowDashboard(true);
-    };
-
     if (showDashboard && age && experience !== null) {
         return <GuestDashboard stats={stats} age={age} experience={experience} session={session} />;
     }
@@ -109,7 +105,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                 )}
             </Box>
 
-            <EndSessionButton session={session} onEndSession={handleEndSession} />
+            <EndSessionButton setShowDashboard={setShowDashboard} />
 
             {/* Refetching Question */}
             <NextQuestion
