@@ -61,3 +61,5 @@ Implemented:
 2. Multiple Choice
 3. Drag and Drop events
 4. Think event
+5. Sorting Event
+6. Line Connect Event

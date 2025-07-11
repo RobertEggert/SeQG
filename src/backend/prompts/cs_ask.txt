@@ -79,7 +79,7 @@ The system will drop the response entirely if this rule is broken.
 - "line-connect-event":
 Use when users match items in two columns (left and right).
 option_s must include an even number of items (e.g. 4 = 2 pairs, 6 = 3 pairs).
-correctAnswer_s must indicate the correct matches (e.g. [2, 0, 1] for connecting 0→2, 1→0, 2→1).
+correctAnswer_s must indicate the correct matches from left to right (e.g. 4 = 2 pairs: [0, 3, 1, 2] for connecting 0→3, 1→2 BUT! not!!!! 3→1 or 2→0).
 
 - "sorting-event":
 Use when users must reorder items.
@@ -88,3 +88,5 @@ correctAnswer_s must be an array of indices that represents the correct order of
 (e.g. if the correct order is the second item, then the first, then fourth, then third: correctAnswer_s = [1, 0, 3, 2])
 
 Any!!! deviation from the above mentioned things will be rejected.
+
+As i am testing only give me "line-connect-event" questionTypes
