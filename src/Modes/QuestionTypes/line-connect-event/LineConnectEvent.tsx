@@ -2,7 +2,6 @@ import { useCallback, useEffect } from "react";
 import {
     ReactFlow,
     Controls,
-    Background,
     type Connection,
     useEdgesState,
     useNodesState,
@@ -33,7 +32,6 @@ const LineConnectEvent = ({
     answerCorrect,
     userId
 }: QuestionTypeProps) => {
-    // Initialize edges state with CustomEdge type
     const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdge>([]);
     const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>([]);
 
@@ -45,30 +43,35 @@ const LineConnectEvent = ({
     useEffect(() => {
         setNodes([
             ...questionData.option_s.slice(0, halfPoint).map((option, index) => ({
-                id: `left-${index}`,
+                id: `${index}`,
                 type: "paperNode",
                 position: { x: 50, y: 100 + index * 100 },
                 data: { label: option, pos: "left", isCorrect: undefined }
             })),
             ...questionData.option_s.slice(halfPoint).map((option, index) => ({
-                id: `right-${index}`,
+                id: `${index + halfPoint}`,
                 type: "paperNode",
                 position: { x: 350, y: 100 + index * 100 },
                 data: { label: option, pos: "right", isCorrect: undefined }
             }))
         ]);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questionData.option_s, halfPoint]);
+    }, [questionData.option_s, halfPoint, setNodes]);
 
     // Handle new connections
     const onConnect = useCallback(
         (params: Connection) => {
-            // Prevent connections within the same column
-            const isSameColumn = params.source?.startsWith("left") === params.target?.startsWith("left");
+            const sourceIndex = parseInt(params.source ?? "", 10);
+            const targetIndex = parseInt(params.target ?? "", 10);
+
+            if (isNaN(sourceIndex) || isNaN(targetIndex)) return;
+
+            const sourceIsLeft = sourceIndex < halfPoint;
+            const targetIsLeft = targetIndex < halfPoint;
+
+            const isSameColumn = sourceIsLeft === targetIsLeft;
 
             if (!isSameColumn && params.source && params.target) {
                 setEdges((eds) => {
-                    // Remove existing connections for these nodes
                     const newEdges = eds.filter(
                         (e) =>
                             !(
@@ -77,7 +80,6 @@ const LineConnectEvent = ({
                             )
                     );
 
-                    // Create the new edge
                     const newEdge = {
                         id: `${params.source}-${params.target}`,
                         source: params.source,
@@ -91,20 +93,31 @@ const LineConnectEvent = ({
                 });
             }
         },
-        [setEdges]
+        [halfPoint, setEdges]
     );
 
-    const handleFeedback = () => {
-        const checkIsCorrect = () => {
-            return false;
-        };
+    const handleFeedback = (correctConnections: [string, string][]) => {
+        console.log("The correct answers would be: ", correctConnections);
         // check if the edges on the nodes are correct ==> this means you can automatically make two nodes at a time red or give them no color
+        // you would later reset the nodes but only the "isCorrect" boolean ofcourse, this will automatically change the color in the PaperNode component
     };
 
     const handleSubmit = () => {
-        // Validate connections
-        const isCorrect = false;
-        handleFeedback();
+        const correctAnswer_s = questionData.correctAnswer_s;
+        const correctConnections: [string, string][] = [];
+        // make pairs for correct connections (maybe let this llm do later?)
+        // we assume an even length from the llm
+        for (let i = 0; i < correctAnswer_s.length; i += 2) {
+            const a = correctAnswer_s[i].toString();
+            const b = correctAnswer_s[i + 1].toString();
+            correctConnections.push([a, b]);
+        }
+        const isCorrect = edges.every((edge) =>
+            correctConnections.some(
+                ([a, b]) => (a === edge.source && b === edge.target) || (a === edge.target && b === edge.source)
+            )
+        );
+        handleFeedback(correctConnections);
         submitAnswer(userId, isCorrect, questionData, setAnswerCorrect, setExplanationState, handleNextQuestion);
     };
 
@@ -117,7 +130,15 @@ const LineConnectEvent = ({
             </Typography>
 
             {/* React Flow container */}
-            <Box sx={{ height: 500, width: "100%", position: "relative" }}>
+            <Box
+                sx={{
+                    height: 400,
+                    width: "100%",
+                    minWidth: 1000, // or larger depending on your layout
+                    position: "relative",
+                    overflowX: "auto" // allow horizontal scroll if needed
+                }}
+            >
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}
@@ -127,20 +148,28 @@ const LineConnectEvent = ({
                     nodeTypes={nodeTypes}
                     nodesDraggable={false}
                     panOnDrag={false}
+                    panOnScroll={false}
+                    autoPanOnConnect={false}
+                    preventScrolling={false}
                     zoomOnScroll={false}
                     zoomOnPinch={false}
                     zoomOnDoubleClick={false}
+                    minZoom={1}
+                    maxZoom={1}
                     fitView
                     connectionRadius={30}
                     onlyRenderVisibleElements={false}
                 >
-                    <Background />
-                    <Controls showInteractive={false} />
+                    <Controls showZoom={false} showFitView={false} showInteractive={false} />
                 </ReactFlow>
             </Box>
 
             <Box sx={{ ...flexAlignRow, gap: 2, marginTop: 2 }}>
-                <Button variant="contained" onClick={handleSubmit} disabled={isDisabled}>
+                <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    disabled={isDisabled || Math.floor(nodes.length / 2) !== edges.length}
+                >
                     Submit Answer
                 </Button>
                 <Button startIcon={<DeleteIcon />} variant="contained" onClick={handleRevert} disabled={isDisabled}>
