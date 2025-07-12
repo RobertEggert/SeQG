@@ -36,6 +36,8 @@ const IsCorrectComponent = ({ answerCorrect }: { answerCorrect: boolean | null }
     );
 };
 
+const AMOUNT_OF_PREFETCHED_QUESTIONS = 3;
+
 const Question = ({
     handleNextQuestion,
     setQuestionState,
@@ -50,15 +52,16 @@ const Question = ({
     userId
 }: QuestionType) => {
     useEffect(() => {
-        if (questionState.q_fetch || questionsFetchedRef.current < 3) {
+        if (questionState.q_fetch && questionsFetchedRef.current < AMOUNT_OF_PREFETCHED_QUESTIONS) {
             fetchQuestionFromLLM({ setQuestionState, age, experience });
             questionsFetchedRef.current += 1;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questionState, setQuestionState]);
+    }, [questionState.q_fetch, questionState.q_data.length]);
+
     console.log(questionState.q_data);
 
-    return questionState.q_data.length === 0 && questionState.q_fetch ? (
+    return questionState.q_data.length === 0 || questionState.q_fetch ? (
         <LoadingData isQuestion={true} />
     ) : (
         <Box

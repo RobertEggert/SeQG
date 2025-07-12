@@ -9,7 +9,7 @@ import {
     type IconContainerProps,
     type SelectChangeEvent
 } from "@mui/material";
-import { type Dispatch, type SetStateAction, type SyntheticEvent } from "react";
+import { type Dispatch, type RefObject, type SetStateAction, type SyntheticEvent } from "react";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
@@ -26,8 +26,9 @@ type AgeExprienceType = {
     setExperience: React.Dispatch<React.SetStateAction<number | null>>;
     age: string | null;
     experience: number | null;
-    isPriv: boolean;
+    questionsFetchedRef: RefObject<number>;
     userId?: string;
+    isPriv: boolean;
 };
 
 const customIcons: {
@@ -51,8 +52,9 @@ const AgeExperience = ({
     setExperience,
     age,
     experience,
-    isPriv,
-    userId
+    questionsFetchedRef,
+    userId,
+    isPriv
 }: AgeExprienceType) => {
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
@@ -113,8 +115,9 @@ const AgeExperience = ({
                 setQuestionState={setQuestionState}
                 age={age}
                 experience={experience}
-                isPriv={isPriv}
+                questionsFetchedRef={questionsFetchedRef}
                 userId={userId}
+                isPriv={isPriv}
             />
         </>
     );
