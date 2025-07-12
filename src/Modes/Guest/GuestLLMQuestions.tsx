@@ -13,7 +13,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
     const [questionState, setQuestionState] = useState<QuestionStateType>({
-        q_fetch: false,
+        q_fetch: true,
         q_data: []
     });
     const [explanationState, setExplanationState] = useState<ExplainStateType>({
@@ -25,17 +25,15 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
 
     const handleNextQuestion = () => {
         //  queue for 3 questions max
-        if (questionsFetchedRef.current <= 3) {
-            questionsFetchedRef.current -= 1;
-            setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
-            setAnswerCorrect(null);
-        }
+        questionsFetchedRef.current -= 1;
+        setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
+        setAnswerCorrect(null);
         setExplanationState({ e_fetch: false, e_data: null });
     };
 
     return (
         <>
-            <Box sx={{ p: 3 }}>
+            <Box sx={{ padding: 3 }}>
                 {!isProfileSubmitted && (
                     <>
                         {/* Ask about age and experience */}
@@ -47,6 +45,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                             setExperience={setExperience}
                             age={age}
                             experience={experience}
+                            questionsFetchedRef={questionsFetchedRef}
                             isPriv={false}
                         />
                     </>

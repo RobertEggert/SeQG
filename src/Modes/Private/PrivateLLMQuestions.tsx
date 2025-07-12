@@ -13,7 +13,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
     const [questionState, setQuestionState] = useState<QuestionStateType>({
-        q_fetch: false,
+        q_fetch: true,
         q_data: []
     });
     const [explanationState, setExplanationState] = useState<ExplainStateType>({
@@ -25,11 +25,9 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
 
     const handleNextQuestion = () => {
         //  queue for 3 questions max
-        if (questionsFetchedRef.current <= 3) {
-            questionsFetchedRef.current -= 1;
-            setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
-            setAnswerCorrect(null);
-        }
+        questionsFetchedRef.current -= 1;
+        setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
+        setAnswerCorrect(null);
         setExplanationState({ e_fetch: false, e_data: null });
     };
 
@@ -51,7 +49,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
 
     return (
         <>
-            <Box sx={{ p: 3 }}>
+            <Box sx={{ padding: 3 }}>
                 {/* Ask about age and experience */}
                 {!isProfileSubmitted && (
                     <>
@@ -63,6 +61,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                             setExperience={setExperience}
                             age={age}
                             experience={experience}
+                            questionsFetchedRef={questionsFetchedRef}
                             userId={userId}
                             isPriv={true}
                         />
