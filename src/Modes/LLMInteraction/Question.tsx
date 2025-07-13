@@ -61,7 +61,7 @@ const Question = ({
 
     console.log(questionState.q_data);
 
-    return questionState.q_data.length === 0 || questionState.q_fetch ? (
+    return questionState.q_data.length === 0 ? (
         <LoadingData isQuestion={true} />
     ) : (
         <Box
@@ -70,17 +70,15 @@ const Question = ({
                 marginTop: 2
             }}
         >
-            {questionState.q_data.length !== 0 && (
-                <QuestionTypeRecognizer
-                    handleNextQuestion={handleNextQuestion}
-                    setExplanationState={setExplanationState}
-                    setAnswerCorrect={setAnswerCorrect}
-                    questionData={questionState.q_data?.[0] ?? []}
-                    explanationState={explanationState}
-                    answerCorrect={answerCorrect}
-                    userId={userId}
-                />
-            )}
+            <QuestionTypeRecognizer
+                handleNextQuestion={handleNextQuestion}
+                setExplanationState={setExplanationState}
+                setAnswerCorrect={setAnswerCorrect}
+                questionData={questionState.q_data?.[0] ?? []}
+                explanationState={explanationState}
+                answerCorrect={answerCorrect}
+                userId={userId}
+            />
             <IsCorrectComponent answerCorrect={answerCorrect} />
         </Box>
     );
