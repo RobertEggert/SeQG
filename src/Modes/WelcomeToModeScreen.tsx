@@ -46,8 +46,8 @@ const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Privat
                         You can now use the Display. Please enter your age and experience to begin.
                     </Typography>
                 </Fade>
-                <IconButton color="error" size="large" onClick={handleDisconnect} sx={{ borderRadius: 2 }}>
-                    <LogoutIcon sx={{ transform: "scaleX(-1)" }} />
+                <IconButton color="error" size="large" onClick={handleDisconnect} sx={{ outline: 1, borderRadius: 10 }}>
+                    <LogoutIcon sx={{ fontSize: 30, transform: "scaleX(-1)" }} />
                 </IconButton>
             </Paper>
         </Box>

@@ -45,11 +45,10 @@ const NextQuestion = ({
     return (
         <Box
             sx={{
-                display: "flex",
-                marginTop: 4,
-                right: "12%",
-                bottom: "10%",
-                position: "fixed"
+                position: "absolute",
+                bottom: 8,
+                right: 8,
+                zIndex: 10
             }}
         >
             <Button variant="contained" disabled={isDisabled} onClick={handleNextQuestion}>
