@@ -1,8 +1,9 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
-import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
+import QuestionBubble from "../LLMInteraction/QuestionBubble";
 
 const MultipleChoiceEvent = ({
     handleNextQuestion,
@@ -42,9 +43,7 @@ const MultipleChoiceEvent = ({
 
     return (
         <>
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionData?.question}
-            </Typography>
+            <QuestionBubble question={questionData?.question ?? ""} />
             <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
                     const isSelected = selectedAnswer_s.includes(index);
@@ -62,7 +61,7 @@ const MultipleChoiceEvent = ({
                     );
                 })}
             </Box>
-            <Button variant="contained" onClick={handleSubmit} disabled={isDisabled || selectedAnswer_s.length === 0}>
+            <Button variant="contained" onClick={handleSubmit} disabled={isDisabled}>
                 Submit Answer
             </Button>
         </>

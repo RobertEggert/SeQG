@@ -1,8 +1,10 @@
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import type { QuestionTypeProps } from "../LLMInteraction/QuestionTypeRecognizer";
 import { useState } from "react";
 import AnswerHighlighter from "./AnswerHighlighter";
 import submitAnswer from "../LLMInteraction/AnswerHandeling";
+import QuestionBubble from "../LLMInteraction/QuestionBubble";
+import { flexAlignColumn } from "../../styling/theme";
 const SingleChoiceEvent = ({
     handleNextQuestion,
     setExplanationState,
@@ -30,16 +32,32 @@ const SingleChoiceEvent = ({
     const isDisabled = explanationState.e_data !== null || explanationState.e_fetch || answerCorrect === true;
 
     return (
-        <>
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionData?.question}
-            </Typography>
-            <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+        <Box
+            sx={{
+                ...flexAlignColumn,
+                gap: 2
+            }}
+        >
+            <Box sx={{ gridColumn: 2, gridRow: 1 }}>
+                <QuestionBubble question={questionData?.question ?? ""} />
+            </Box>
+
+            <Box
+                sx={{
+                    gridColumn: 2,
+                    gridRow: 2,
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: 2,
+                    marginTop: 2
+                }}
+            >
                 {questionData?.option_s.map((option, index) => {
                     const isCorrect = correctAnswer_s.includes(index);
                     const isSelected = selectedAnswer_s.includes(index);
                     return (
                         <AnswerHighlighter
+                            key={index}
                             index={index}
                             option={option}
                             isDisabled={isDisabled}
@@ -51,7 +69,7 @@ const SingleChoiceEvent = ({
                     );
                 })}
             </Box>
-        </>
+        </Box>
     );
 };
 

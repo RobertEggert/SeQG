@@ -14,14 +14,14 @@ const rotateGuestStart = keyframes`
     filter: grayscale(80%);
   }
   100% {
-    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem) translateX(10rem);
     filter: grayscale(0%);
   }
 `;
 
 const rotateGuestEnd = keyframes`
   0% {
-    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem) translateX(10rem);
     filter: grayscale(0%);
   }
   100% {
@@ -63,7 +63,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
         <Box
             sx={{
                 ...flexAllCenter,
-                transform: enteringMode ? (isPriv ? "translateX(23%)" : "translateX(17%)") : "translateX(0%)",
+                transform: enteringMode ? "translateX(23%)" : "translateX(0%)",
                 transition: "transform 1s ease-in-out",
                 paddingBottom: 4
             }}
