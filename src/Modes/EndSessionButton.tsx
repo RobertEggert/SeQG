@@ -1,12 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import type { Dispatch, SetStateAction } from "react";
 
-const EndSessionButton = ({ onClick }: { onClick: () => void}) => {
-    const handleClick = () => {
-        setShowDashboard(true);
-    };
-
+const EndSessionButton = ({ handleEndSession }: { handleEndSession: () => void }) => {
     return (
         <Box
             sx={{
@@ -17,7 +12,7 @@ const EndSessionButton = ({ onClick }: { onClick: () => void}) => {
             }}
         >
             <IconButton
-                onClick={onClick}
+                onClick={handleEndSession}
                 aria-label="End Session"
                 sx={{
                     width: 48,

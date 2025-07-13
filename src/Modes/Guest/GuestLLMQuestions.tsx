@@ -8,8 +8,11 @@ import EndSessionButton from "../EndSessionButton";
 import GuestDashboard from "./GuestDashboard";
 
 import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { useNavigate } from "@tanstack/react-router";
 
 const GuestLLMQuestions = ({ session }: { session: string }) => {
+    const navigate = useNavigate();
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [isProfileSubmitted, setIsProfileSubmitted] = useState(false);
@@ -22,9 +25,8 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         e_fetch: false,
         e_data: null
     });
-
-    const [stats, setStats] = useState<Record<string, { correct: number; total: number }>>({});
     const [showDashboard, setShowDashboard] = useState(false);
+    const [stats, setStats] = useState<Record<string, { correct: number; total: number }>>({});
 
     const questionsFetchedRef = useRef(0);
 
@@ -34,6 +36,13 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
         setAnswerCorrect(null);
         setExplanationState({ e_fetch: false, e_data: null });
+    };
+
+    const handleSetAnswerCorrect = (isCorrect: boolean | null) => {
+        setAnswerCorrect(isCorrect);
+        if (isCorrect !== null && questionState.q_data[0]?.topic) {
+            handleTrackStats(questionState.q_data[0].topic, isCorrect);
+        }
     };
 
     const handleTrackStats = (topic: string, isCorrect: boolean) => {
@@ -50,7 +59,12 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
     };
 
     const handleEndSession = () => {
-        setShowDashboard(true);
+        if (age && experience) {
+            setShowDashboard(true);
+        } else {
+            disconnectClientLLM(session);
+            navigate({ to: "/" });
+        }
     };
 
     if (showDashboard && age && experience !== null) {
@@ -82,12 +96,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                     <>
                         <Question
                             handleNextQuestion={handleNextQuestion}
-                            setAnswerCorrect={(val: boolean | null) => {
-                                setAnswerCorrect(val);
-                                if (val !== null && questionState.q_data[0]?.topic) {
-                                    handleTrackStats(questionState.q_data[0].topic, val);
-                                }
-                            }}
+                            setAnswerCorrect={handleSetAnswerCorrect}
                             answerCorrect={answerCorrect}
                             setQuestionState={setQuestionState}
                             setExplanationState={setExplanationState}
@@ -109,7 +118,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                 )}
             </Box>
 
-            <EndSessionButton setShowDashboard={handleEndSession} />
+            <EndSessionButton handleEndSession={handleEndSession} />
 
             {/* Refetching Question */}
             <NextQuestion

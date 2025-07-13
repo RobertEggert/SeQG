@@ -72,10 +72,10 @@ const GuestMode = () => {
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/guest/${session}?token=${token}`;
     console.log(connectUrl);
 
-    const handleReturn = () => { 
-        disconnectClientLLM(session); 
-        navigate({ to: "/" }); 
-      };
+    const handleEndSession = () => {
+        disconnectClientLLM(session);
+        navigate({ to: "/" });
+    };
 
     return (
         <Box>
@@ -104,13 +104,13 @@ const GuestMode = () => {
                         position: "relative"
                     }}
                 >
-                    <EndSessionButton session={session} onClick={handleReturn}/>
                     {status === "connected" ? (
                         <GuestLLMQuestions session={session} />
                     ) : (
                         <>
                             {status === "pending" && (
                                 <>
+                                    <EndSessionButton handleEndSession={handleEndSession} />
                                     <FadedComponent timeout={3000}>
                                         <Box sx={{ marginBottom: 4 }}>
                                             <Typography

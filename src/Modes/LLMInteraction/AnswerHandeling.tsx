@@ -7,7 +7,7 @@ const submitAnswer = (
     userId: string | undefined,
     isCorrect: boolean,
     questionData: LLM_API_Question_Type | null,
-    setAnswerCorrect: Dispatch<SetStateAction<boolean | null>>,
+    setAnswerCorrect: (isCorrect: boolean | null) => void,
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>,
     handleNextQuestion: () => void
 ) => {
