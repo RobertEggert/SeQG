@@ -10,6 +10,7 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png";
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -79,6 +80,11 @@ const PrivateMode = () => {
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
     console.log(connectUrl);
 
+    const handleEndSession = () => {
+        disconnectClientLLM(privateSession);
+        navigate({ to: "/" });
+    };
+
     return (
         <Box>
             <Background />
@@ -106,13 +112,13 @@ const PrivateMode = () => {
                         position: "relative"
                     }}
                 >
-                    <EndSessionButton session={privateSession} />
                     {status === "connected" ? (
                         <PrivateLLMQuestions userId={userId} session={privateSession} />
                     ) : (
                         <>
                             {status === "pending" && (
                                 <>
+                                    <EndSessionButton handleEndSession={handleEndSession} />
                                     <FadedComponent timeout={3000}>
                                         <Box sx={{ marginBottom: 4 }}>
                                             <Typography

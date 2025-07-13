@@ -6,8 +6,12 @@ import NextQuestion from "../NextQuestion";
 import { type QuestionStateType, type ExplainStateType, fetchUserData } from "../../utils/LLMFetcher";
 import AgeExperience from "../AgeExperience/AgeExperience";
 import EndSessionButton from "../EndSessionButton";
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { useNavigate } from "@tanstack/react-router";
+import Dashboard from "../Grading/Dashboard";
 
 const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: string }) => {
+    const navigate = useNavigate();
     const [age, setAge] = useState<string | null>(null);
     const [experience, setExperience] = useState<number | null>(null);
     const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
@@ -20,16 +24,10 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
         e_fetch: false,
         e_data: null
     });
+    const [showDashboard, setShowDashboard] = useState(false);
+    const [stats, setStats] = useState<Record<string, { correct: number; total: number }>>({});
 
     const questionsFetchedRef = useRef(0);
-
-    const handleNextQuestion = () => {
-        //  queue for 3 questions max
-        questionsFetchedRef.current -= 1;
-        setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
-        setAnswerCorrect(null);
-        setExplanationState({ e_fetch: false, e_data: null });
-    };
 
     useEffect(() => {
         const getUserData = async (userId: string) => {
@@ -46,6 +44,47 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
             getUserData(userId);
         }
     }, [userId, age, experience]);
+
+    const handleNextQuestion = () => {
+        //  queue for 3 questions max
+        questionsFetchedRef.current -= 1;
+        setQuestionState({ q_fetch: true, q_data: questionState.q_data.slice(1) });
+        setAnswerCorrect(null);
+        setExplanationState({ e_fetch: false, e_data: null });
+    };
+
+    const handleSetAnswerCorrect = (isCorrect: boolean | null) => {
+        setAnswerCorrect(isCorrect);
+        if (isCorrect !== null && questionState.q_data[0]?.topic) {
+            handleTrackStats(questionState.q_data[0].topic, isCorrect);
+        }
+    };
+
+    const handleTrackStats = (topic: string, isCorrect: boolean) => {
+        setStats((prev) => {
+            const current = prev[topic] || { correct: 0, total: 0 };
+            return {
+                ...prev,
+                [topic]: {
+                    correct: current.correct + (isCorrect ? 1 : 0),
+                    total: current.total + 1
+                }
+            };
+        });
+    };
+
+    const handleEndSession = () => {
+        if (age && experience) {
+            setShowDashboard(true);
+        } else {
+            disconnectClientLLM(session);
+            navigate({ to: "/" });
+        }
+    };
+
+    if (showDashboard && age && experience) {
+        return <Dashboard stats={stats} age={age} experience={experience} session={session} />;
+    }
 
     return (
         <>
@@ -72,7 +111,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                         {/* Question */}
                         <Question
                             handleNextQuestion={handleNextQuestion}
-                            setAnswerCorrect={setAnswerCorrect}
+                            setAnswerCorrect={handleSetAnswerCorrect}
                             answerCorrect={answerCorrect}
                             setQuestionState={setQuestionState}
                             setExplanationState={setExplanationState}
@@ -96,7 +135,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
             </Box>
 
             {/* Grading or Ending Session - TODO */}
-            <EndSessionButton session={session} />
+            <EndSessionButton handleEndSession={handleEndSession} />
 
             {/* Refetching Question */}
             <NextQuestion

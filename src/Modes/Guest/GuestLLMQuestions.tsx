@@ -5,11 +5,11 @@ import ExplainAnswer from "../LLMInteraction/ExplainAnswer";
 import Question from "../LLMInteraction/Question";
 import NextQuestion from "../NextQuestion";
 import EndSessionButton from "../EndSessionButton";
-import GuestDashboard from "./GuestDashboard";
 
 import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
 import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 import { useNavigate } from "@tanstack/react-router";
+import Dashboard from "../Grading/Dashboard";
 
 const GuestLLMQuestions = ({ session }: { session: string }) => {
     const navigate = useNavigate();
@@ -67,8 +67,8 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         }
     };
 
-    if (showDashboard && age && experience !== null) {
-        return <GuestDashboard stats={stats} age={age} experience={experience} session={session} />;
+    if (showDashboard && age && experience) {
+        return <Dashboard stats={stats} age={age} experience={experience} session={session} />;
     }
 
     return (
