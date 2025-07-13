@@ -38,7 +38,7 @@ const SingleChoiceEvent = ({
                 gap: 2
             }}
         >
-            <QuestionBubble question={questionData?.question ?? ""} />
+            <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
 
             <Box
                 sx={{

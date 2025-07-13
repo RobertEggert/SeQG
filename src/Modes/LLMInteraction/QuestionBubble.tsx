@@ -4,16 +4,22 @@ import { imgContainer } from "../../utils/imgContainer";
 import { flexAlignRow } from "../../styling/theme";
 import GenerativeText, { type GenerativeTextProps } from "../GenerativeText";
 
-const randImages = Object.values(imgContainer);
+const privateImages = Object.values(imgContainer.private);
+const guestImages = Object.values(imgContainer.guest);
 const lightBlue = "#AFEEEE";
 
-const QuestionBubble = ({ question, typingSpeed = 30 }: GenerativeTextProps) => {
+const QuestionBubble = ({ question, typingSpeed = 30, mode }: GenerativeTextProps) => {
     const [randomGuestImage, setRandomGuestImage] = useState("");
-
+    const isGuest = mode === "GUEST";
     useEffect(() => {
-        const randomImage = randImages[Math.floor(Math.random() * randImages.length)];
-        setRandomGuestImage(randomImage);
-    }, [question]);
+        if (isGuest) {
+            const randomGuestImage = guestImages[Math.floor(Math.random() * guestImages.length)];
+            setRandomGuestImage(randomGuestImage);
+        } else {
+            const randomPrivateImage = privateImages[Math.floor(Math.random() * privateImages.length)];
+            setRandomGuestImage(randomPrivateImage);
+        }
+    }, [isGuest, question]);
 
     return (
         <Box sx={{ ...flexAlignRow, alignItems: "flex-start" }}>

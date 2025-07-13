@@ -127,7 +127,7 @@ const LineConnectEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                <QuestionBubble question={questionData?.question ?? ""} />
+                <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
 
             {/* React Flow container */}

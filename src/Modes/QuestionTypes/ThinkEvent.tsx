@@ -40,7 +40,7 @@ const ThinkEvent = ({
 
     return (
         <Box sx={{ textAlign: "center" }}>
-            <QuestionBubble question={questionData?.question ?? ""} />
+            <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             <ReactCardFlip isFlipped={showAnswer} flipDirection="horizontal">
                 {/* THINKING */}
                 <Box

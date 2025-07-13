@@ -63,7 +63,7 @@ const DragAndDropEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                <QuestionBubble question={questionData?.question ?? ""} />
+                <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
             <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
                 <Box sx={{ ...flexAllCenter }}>

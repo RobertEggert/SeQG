@@ -43,7 +43,7 @@ const MultipleChoiceEvent = ({
 
     return (
         <>
-            <QuestionBubble question={questionData?.question ?? ""} />
+            <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                 {options.map((option, index) => {
                     const isSelected = selectedAnswer_s.includes(index);

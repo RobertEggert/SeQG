@@ -5,6 +5,7 @@ export type GenerativeTextProps = {
     sx?: SxProps;
     question: string;
     typingSpeed?: number;
+    mode?: "GUEST" | "PRIVATE"; // only for QuestionBubble currently
 };
 
 const GenerativeText = ({ sx, question, typingSpeed = 30 }: GenerativeTextProps) => {

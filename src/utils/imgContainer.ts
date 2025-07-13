@@ -8,12 +8,16 @@ import woman_angry from "../img/woman_angry.png";
 import woman_surprised from "../img/woman_surprised.png";
 
 export const imgContainer = {
-    spy: spy,
-    spy_hands: spy_hands,
-    spy_pockets: spy_pockets,
-    spy_sad: spy_sad,
-    woman_angry: woman_angry,
-    woman_happy: woman_happy,
-    woman_sad: woman_sad,
-    woman_surprised: woman_surprised
+    guest: {
+        spy: spy,
+        spy_hands: spy_hands,
+        spy_pockets: spy_pockets,
+        spy_sad: spy_sad
+    },
+    private: {
+        woman_angry: woman_angry,
+        woman_happy: woman_happy,
+        woman_sad: woman_sad,
+        woman_surprised: woman_surprised
+    }
 };

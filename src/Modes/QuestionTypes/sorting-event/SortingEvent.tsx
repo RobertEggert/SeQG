@@ -90,7 +90,7 @@ const SortingEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                <QuestionBubble question={questionData?.question ?? ""} />
+                <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={option_sOrder} strategy={verticalListSortingStrategy}>
