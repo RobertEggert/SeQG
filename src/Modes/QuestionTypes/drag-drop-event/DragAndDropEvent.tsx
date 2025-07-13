@@ -8,6 +8,7 @@ import DropZone from "./DropZone";
 import { flexAlignColumn, flexAlignRow, flexAllCenter } from "../../../styling/theme";
 import submitAnswer from "../../LLMInteraction/AnswerHandeling";
 import DeleteIcon from "@mui/icons-material/Delete";
+import QuestionBubble from "../../LLMInteraction/QuestionBubble";
 
 const DragAndDropEvent = ({
     handleNextQuestion,
@@ -62,7 +63,7 @@ const DragAndDropEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionData?.question}
+                <QuestionBubble question={questionData?.question ?? ""} />
             </Typography>
             <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
                 <Box sx={{ ...flexAllCenter }}>

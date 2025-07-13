@@ -15,6 +15,7 @@ import submitAnswer from "../../LLMInteraction/AnswerHandeling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { flexAlignRow } from "../../../styling/theme";
 import PaperNode from "./PaperNode";
+import QuestionBubble from "../../LLMInteraction/QuestionBubble";
 
 type CustomNode = Node;
 type CustomEdge = Edge;
@@ -126,7 +127,7 @@ const LineConnectEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionData?.question}
+                <QuestionBubble question={questionData?.question ?? ""} />
             </Typography>
 
             {/* React Flow container */}

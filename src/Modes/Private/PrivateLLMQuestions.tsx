@@ -86,7 +86,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                         {/* Explanation if wrongfully answered */}
                         <ExplainAnswer
                             setExplanationState={setExplanationState}
-                            questionState={questionState}
+                            questionData={questionState.q_data[0]}
                             explanationState={explanationState}
                             age={age}
                             experience={experience}
