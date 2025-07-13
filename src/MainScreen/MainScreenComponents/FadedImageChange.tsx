@@ -14,14 +14,14 @@ const rotateGuestStart = keyframes`
     filter: grayscale(80%);
   }
   100% {
-    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem) translateX(10rem);
     filter: grayscale(0%);
   }
 `;
 
 const rotateGuestEnd = keyframes`
   0% {
-    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem);
+    transform: perspective(60rem) rotateY(135deg) translateZ(25rem) rotateY(-135deg) translateY(-6.25rem) translateX(10rem);
     filter: grayscale(0%);
   }
   100% {
