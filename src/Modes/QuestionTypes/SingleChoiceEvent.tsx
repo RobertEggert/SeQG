@@ -38,9 +38,7 @@ const SingleChoiceEvent = ({
                 gap: 2
             }}
         >
-            <Box sx={{ gridColumn: 2, gridRow: 1 }}>
-                <QuestionBubble question={questionData?.question ?? ""} />
-            </Box>
+            <QuestionBubble question={questionData?.question ?? ""} />
 
             <Box
                 sx={{
