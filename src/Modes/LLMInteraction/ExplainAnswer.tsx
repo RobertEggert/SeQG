@@ -4,8 +4,9 @@ import {
     type ExplainStateType,
     type QuestionStateType
 } from "../../utils/LLMFetcher";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import LoadingData from "./LoadingData";
+import GenerativeText from "../GenerativeText";
 
 type ExplainAnswerType = {
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;
@@ -43,7 +44,7 @@ const ExplainAnswer = ({
         <LoadingData isQuestion={false} />
     ) : (
         <Box sx={{ marginTop: 4 }}>
-            <Typography>{explanationState.e_data?.explain}</Typography>
+            <GenerativeText sx={{ maxWidth: 1000 }} question={explanationState.e_data?.explain ?? ""} />
         </Box>
     );
 };
