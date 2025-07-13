@@ -22,11 +22,11 @@ const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => 
     useEffect(() => {
         setDisplayedText("");
         let index = 0;
-        setDisplayedText(question.charAt(0)); // ersten Buchstaben sofort setzen
 
         const interval = setInterval(() => {
-            setDisplayedText((prev) => prev + question.charAt(index));
             index++;
+            setDisplayedText(question.slice(0, index));
+
             if (index >= question.length) {
                 clearInterval(interval);
             }
@@ -35,8 +35,10 @@ const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => 
         return () => clearInterval(interval);
     }, [question, typingSpeed]);
 
+    const isTyping = displayedText.length < question.length;
+
     return (
-        <Box sx={{ ...flexAlignRow }}>
+        <Box sx={{ ...flexAlignRow, alignItems: "flex-start" }}>
             {randomGuestImage && (
                 <Box
                     component="img"
@@ -60,24 +62,39 @@ const QuestionBubble = ({ question, typingSpeed = 20 }: QuestionBubbleProps) => 
                     padding: "12px 16px",
                     maxWidth: "90%",
                     whiteSpace: "pre-wrap",
+                    overflow: "visible",
                     "&::after": {
                         content: '""',
                         position: "absolute",
-                        top: "10px",
-                        left: "-5px",
+                        top: "16px",
+                        left: "-10px",
                         width: 0,
                         height: 0,
                         border: "10px solid transparent",
                         borderRightColor: "#AFEEEE",
-                        borderLeft: 0,
-                        marginTop: "-5px"
+                        borderLeft: 0
                     }
                 }}
             >
-                <Typography variant="body1">
-                    {displayedText}
-                    <span style={{ opacity: 0.6 }}>|</span>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        opacity: 0,
+                        visibility: "hidden",
+                        pointerEvents: "none",
+                        userSelect: "none",
+                        whiteSpace: "pre-wrap"
+                    }}
+                >
+                    {question}
                 </Typography>
+
+                <Box sx={{ position: "absolute", top: "12px", left: "16px", right: "16px" }}>
+                    <Typography variant="body1">
+                        {displayedText}
+                        {isTyping && <span style={{ opacity: 0.6 }}>|</span>}
+                    </Typography>
+                </Box>
             </Box>
         </Box>
     );

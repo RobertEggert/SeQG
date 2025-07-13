@@ -63,7 +63,7 @@ const FadedImageChange = ({ enteringMode, mode }: FadedImageChangeProps) => {
         <Box
             sx={{
                 ...flexAllCenter,
-                transform: enteringMode ? (isPriv ? "translateX(23%)" : "translateX(17%)") : "translateX(0%)",
+                transform: enteringMode ? "translateX(23%)" : "translateX(0%)",
                 transition: "transform 1s ease-in-out",
                 paddingBottom: 4
             }}
