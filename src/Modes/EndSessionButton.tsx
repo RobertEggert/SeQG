@@ -1,6 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { disconnectClientLLM } from "../utils/LLMDisconnector";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const EndSessionButton = ({ session }: { session: string }) => {
     const handleClick = () => {

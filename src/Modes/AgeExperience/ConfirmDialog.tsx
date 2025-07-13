@@ -80,8 +80,12 @@ const ConfirmDialog = ({
                 <DialogActions sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box>{isPriv && <Button onClick={handleNavGuestmode}>Return to Guest mode</Button>}</Box>
                     <Box>
-                        <Button onClick={handleDialogClose}>NO</Button>
-                        <Button onClick={handleDialogConfirm}>YES</Button>
+                        <Button onClick={handleDialogClose} sx={{ color: "red" }}>
+                            NO
+                        </Button>
+                        <Button onClick={handleDialogConfirm} sx={{ color: "green" }}>
+                            YES
+                        </Button>
                     </Box>
                 </DialogActions>
             </Dialog>
