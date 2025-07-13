@@ -10,6 +10,7 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png";
+import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 
 const GuestMode = () => {
     const navigate = useNavigate();
@@ -71,6 +72,11 @@ const GuestMode = () => {
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/guest/${session}?token=${token}`;
     console.log(connectUrl);
 
+    const handleReturn = () => { 
+        disconnectClientLLM(session); 
+        navigate({ to: "/" }); 
+      };
+
     return (
         <Box>
             <Background />
@@ -98,7 +104,7 @@ const GuestMode = () => {
                         position: "relative"
                     }}
                 >
-                    <EndSessionButton session={session} />
+                    <EndSessionButton session={session} onClick={handleReturn}/>
                     {status === "connected" ? (
                         <GuestLLMQuestions session={session} />
                     ) : (

@@ -109,7 +109,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
                 )}
             </Box>
 
-            <EndSessionButton session={session} onEndSession={handleEndSession} />
+            <EndSessionButton setShowDashboard={handleEndSession} />
 
             {/* Refetching Question */}
             <NextQuestion
