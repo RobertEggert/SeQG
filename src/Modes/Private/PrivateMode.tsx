@@ -77,6 +77,7 @@ const PrivateMode = () => {
     if (!privateSession || !token) return null;
 
     const connectUrl = `http://${LOCAL_SERVER}:${VITE_PORT}/client-connect/private/${privateSession}?token=${token}`;
+    console.log(connectUrl);
 
     return (
         <Box>

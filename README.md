@@ -31,6 +31,8 @@ Then do:
 
 ```batch
 $ ollama pull llama3.1
+// OR for better result
+$ ollama pull deepseek-r1:14b
 ```
 
 Now you have installed the current in use model

@@ -9,6 +9,7 @@ import { flexAlignColumn, flexAlignRow, flexAllCenter } from "../../../styling/t
 import submitAnswer from "../../LLMInteraction/AnswerHandeling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import QuestionBubble from "../../LLMInteraction/QuestionBubble";
+import DragPreview from "./DragPreview";
 
 const DragAndDropEvent = ({
     handleNextQuestion,
@@ -65,7 +66,8 @@ const DragAndDropEvent = ({
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
                 <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
-            <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
+            <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true, preview: true }}>
+                <DragPreview />
                 <Box sx={{ ...flexAllCenter }}>
                     <Grid container sx={{ ...flexAlignColumn }} justifyContent="center" spacing={2}>
                         <Grid sx={{ ...flexAlignRow }}>

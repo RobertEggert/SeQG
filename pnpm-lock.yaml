@@ -95,6 +95,12 @@ importers:
       react-dnd:
         specifier: ^16.0.1
         version: 16.0.1(@types/node@22.15.21)(@types/react@19.1.4)(react@19.1.0)
+      react-dnd-html5-backend:
+        specifier: ^16.0.1
+        version: 16.0.1
+      react-dnd-preview:
+        specifier: ^9.0.0
+        version: 9.0.0(react-dnd@16.0.1(@types/node@22.15.21)(@types/react@19.1.4)(react@19.1.0))(react@19.1.0)
       react-dnd-touch-backend:
         specifier: ^16.0.1
         version: 16.0.1
@@ -2035,6 +2041,15 @@ packages:
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
+
+  react-dnd-html5-backend@16.0.1:
+    resolution: {integrity: sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==}
+
+  react-dnd-preview@9.0.0:
+    resolution: {integrity: sha512-WZTbrrNDlCGYJGrITHN/obI2kpdaKV3AY6Il2LLZcA9ApzG5bbDXBlWSFwuw8eTCMjmCXs5Wcv+p2QCMxX1Afw==}
+    peerDependencies:
+      react: ^16.14.0 || ^17.0.2 || ^18.0.0 || ^19.0.0
+      react-dnd: ^16.0.1
 
   react-dnd-touch-backend@16.0.1:
     resolution: {integrity: sha512-NonoCABzzjyWGZuDxSG77dbgMZ2Wad7eQiCd/ECtsR2/NBLTjGksPUx9UPezZ1nQ/L7iD130Tz3RUshL/ClKLA==}
@@ -4409,6 +4424,15 @@ snapshots:
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
+
+  react-dnd-html5-backend@16.0.1:
+    dependencies:
+      dnd-core: 16.0.1
+
+  react-dnd-preview@9.0.0(react-dnd@16.0.1(@types/node@22.15.21)(@types/react@19.1.4)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dnd: 16.0.1(@types/node@22.15.21)(@types/react@19.1.4)(react@19.1.0)
 
   react-dnd-touch-backend@16.0.1:
     dependencies:

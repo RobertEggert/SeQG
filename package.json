@@ -44,6 +44,8 @@
         "react": "^19.1.0",
         "react-card-flip": "^1.2.3",
         "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
+        "react-dnd-preview": "^9.0.0",
         "react-dnd-touch-backend": "^16.0.1",
         "react-dom": "^19.1.0",
         "socket.io": "^4.8.1",

@@ -126,18 +126,18 @@ const LineConnectEvent = ({
 
     return (
         <>
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+            <Typography variant="h6">
                 <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
 
             {/* React Flow container */}
             <Box
                 sx={{
+                    position: "relative",
+                    top: -100,
                     height: 400,
                     width: "100%",
-                    minWidth: 1000, // or larger depending on your layout
-                    position: "relative",
-                    overflowX: "auto" // allow horizontal scroll if needed
+                    minWidth: 1000 // or larger depending on your layout
                 }}
             >
                 <ReactFlow
@@ -165,7 +165,7 @@ const LineConnectEvent = ({
                 </ReactFlow>
             </Box>
 
-            <Box sx={{ ...flexAlignRow, gap: 2, marginTop: 2 }}>
+            <Box sx={{ position: "relative", ...flexAlignRow, gap: 2, top: -100 }}>
                 <Button
                     variant="contained"
                     onClick={handleSubmit}

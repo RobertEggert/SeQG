@@ -38,6 +38,7 @@ const SortingEvent = ({
         }))
     );
     const [isFeedback, setIsFeedback] = useState(false);
+    const startingOrder = option_sOrder;
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -108,7 +109,13 @@ const SortingEvent = ({
                     <Button variant="contained" onClick={handleSubmit} disabled={isDisabled}>
                         Submit Answer
                     </Button>
-                    <Button variant="contained" onClick={handleRevert} disabled={isDisabled}>
+                    <Button
+                        variant="contained"
+                        onClick={handleRevert}
+                        disabled={
+                            isDisabled || startingOrder.every((item, index) => item.id === option_sOrder[index].id)
+                        }
+                    >
                         Revert Order
                     </Button>
                 </Box>
