@@ -31,7 +31,7 @@ type AgeExprienceType = {
     isPriv: boolean;
 };
 
-const customIcons: {
+export const customIcons: {
     [lvl: number]: { icon: React.ReactElement };
 } = {
     1: { icon: <SentimentVeryDissatisfiedIcon color="error" /> },

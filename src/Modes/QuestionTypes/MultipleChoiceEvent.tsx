@@ -50,6 +50,7 @@ const MultipleChoiceEvent = ({
                     const isCorrect = correctAnswers.includes(index);
                     return (
                         <AnswerHighlighter
+                            key={index}
                             index={index}
                             option={option}
                             isDisabled={isDisabled}

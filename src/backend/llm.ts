@@ -276,17 +276,21 @@ app.post("/api/guest-feedback", async (req: Request<object, object, GuestFeedbac
                 stream: false
             })
         });
-
+        console.log("stats are here:", stats);
+        console.log("stats are here:", req.body);
         const data = (await ollamaRes.json()) as { response: string };
         const rawOutput: string = data.response.trim();
 
-        console.log("RAW LLM FEEDBACK RESPONSE:\n", rawOutput);
+        console.log("Feedback fetched successfully!");
+        console.log(" \n", rawOutput);
 
         const jsonStart = rawOutput.indexOf("{");
         const jsonEnd = rawOutput.lastIndexOf("}");
         const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
 
-        const parsed: GuestFeedbackResponse = JSON.parse(jsonString);
+        const cleanJsonString = jsonString.replace(/\n/g, " ").replace(/\r/g, " ").trim();
+
+        const parsed: GuestFeedbackResponse = JSON.parse(cleanJsonString);
         res.json(parsed);
     } catch (err) {
         console.error("Error fetching guest feedback:", err);

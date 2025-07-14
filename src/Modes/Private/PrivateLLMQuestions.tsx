@@ -134,7 +134,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
                 )}
             </Box>
 
-            {/* Grading or Ending Session - TODO */}
+            {/* Grading or Ending Session */}
             <EndSessionButton handleEndSession={handleEndSession} />
 
             {/* Refetching Question */}
