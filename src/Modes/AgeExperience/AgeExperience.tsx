@@ -7,7 +7,8 @@ import {
     Select,
     Typography,
     type IconContainerProps,
-    type SelectChangeEvent
+    type SelectChangeEvent,
+    type SvgIconProps
 } from "@mui/material";
 import { type Dispatch, type RefObject, type SetStateAction, type SyntheticEvent } from "react";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
@@ -31,8 +32,8 @@ type AgeExprienceType = {
     isPriv: boolean;
 };
 
-const customIcons: {
-    [lvl: number]: { icon: React.ReactElement };
+export const customIcons: {
+    [lvl: number]: { icon: React.ReactElement<SvgIconProps> };
 } = {
     1: { icon: <SentimentVeryDissatisfiedIcon color="error" /> },
     2: { icon: <SentimentDissatisfiedIcon color="error" /> },

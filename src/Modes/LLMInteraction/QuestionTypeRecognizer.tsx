@@ -13,7 +13,7 @@ import LoadingData from "./LoadingData";
 export type QuestionTypeProps = {
     handleNextQuestion: () => void;
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;
-    setAnswerCorrect: Dispatch<SetStateAction<boolean | null>>;
+    setAnswerCorrect: (isCorrect: boolean | null) => void;
     questionData: LLM_API_Question_Type;
     explanationState: ExplainStateType;
     answerCorrect: boolean | null;

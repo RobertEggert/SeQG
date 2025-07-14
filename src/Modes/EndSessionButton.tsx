@@ -1,12 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { disconnectClientLLM } from "../utils/LLMDisconnector";
 
-const EndSessionButton = ({ session }: { session: string }) => {
-    const handleClick = () => {
-        disconnectClientLLM(session);
-    };
-
+const EndSessionButton = ({ handleEndSession }: { handleEndSession: () => void }) => {
     return (
         <Box
             sx={{
@@ -17,7 +12,7 @@ const EndSessionButton = ({ session }: { session: string }) => {
             }}
         >
             <IconButton
-                onClick={handleClick}
+                onClick={handleEndSession}
                 aria-label="End Session"
                 sx={{
                     width: 48,

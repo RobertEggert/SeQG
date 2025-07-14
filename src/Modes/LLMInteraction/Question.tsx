@@ -9,7 +9,7 @@ type QuestionType = {
     handleNextQuestion: () => void;
     setQuestionState: Dispatch<SetStateAction<QuestionStateType>>;
     setExplanationState: Dispatch<SetStateAction<ExplainStateType>>;
-    setAnswerCorrect: Dispatch<SetStateAction<boolean | null>>;
+    setAnswerCorrect: (isCorrect: boolean | null) => void;
     questionState: QuestionStateType;
     explanationState: ExplainStateType;
     questionsFetchedRef: RefObject<number>;
@@ -36,7 +36,7 @@ const IsCorrectComponent = ({ answerCorrect }: { answerCorrect: boolean | null }
     );
 };
 
-const AMOUNT_OF_PREFETCHED_QUESTIONS = 1;
+const AMOUNT_OF_PREFETCHED_QUESTIONS = 3;
 
 const Question = ({
     handleNextQuestion,

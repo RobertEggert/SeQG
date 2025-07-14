@@ -42,6 +42,16 @@ interface ExplenationResponse {
     explain: string;
 }
 
+interface GuestFeedbackRequest {
+    age: string;
+    experience: number;
+    stats: { [key: string]: { correct: number; total: number } };
+}
+
+interface GuestFeedbackResponse {
+    feedback: string;
+}
+
 export type ProgressTrackingType = {
     user_id: string;
     age: string | null;
@@ -240,6 +250,56 @@ app.get("/api/security/tips", async (_, res: Response) => {
     const parsed: SecurityTipsResponse = JSON.parse(jsonString);
     res.json(parsed);
 });
+
+// FEEDBACK
+app.post("/api/guest-feedback", async (req: Request<object, object, GuestFeedbackRequest>, res: Response) => {
+    const { age, experience, stats } = req.body;
+
+    try {
+        const statsText = Object.entries(stats)
+            .map(([topic, { correct, total }]) => `- ${topic}: ${correct}/${total}`)
+            .join("\n");
+
+        const rawPrompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_feedback.txt"), "utf-8");
+        const prompt = rawPrompt
+            .replace("{{age}}", age)
+            .replace("{{experience}}", String(experience))
+            .replace("{{stats}}", statsText);
+
+        console.log("Fetching guest feedback from LLM...");
+        const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: LLM_MODEL,
+                prompt,
+                stream: false
+            })
+        });
+        console.log("stats are here:", stats);
+        console.log("stats are here:", req.body);
+        const data = (await ollamaRes.json()) as { response: string };
+        const rawOutput: string = data.response.trim();
+
+        console.log("Feedback fetched successfully!");
+        console.log(" \n", rawOutput);
+
+        const jsonStart = rawOutput.indexOf("{");
+        const jsonEnd = rawOutput.lastIndexOf("}");
+        const jsonString = rawOutput.substring(jsonStart, jsonEnd + 1);
+
+        const cleanJsonString = jsonString.replace(/\n/g, " ").replace(/\r/g, " ").trim();
+
+        const parsed: GuestFeedbackResponse = JSON.parse(cleanJsonString);
+        res.json(parsed);
+    } catch (err) {
+        console.error("Error fetching guest feedback:", err);
+        res.status(500).json({
+            error: "Failed to fetch feedback from LLM"
+        });
+    }
+});
+
 //#endregion FETCHING
 
 //#region SAVING
