@@ -20,6 +20,7 @@ import { Box, Button, Typography } from "@mui/material";
 import type { QuestionTypeProps } from "../../LLMInteraction/QuestionTypeRecognizer";
 import submitAnswer from "../../LLMInteraction/AnswerHandeling";
 import { flexAlignRow } from "../../../styling/theme";
+import QuestionBubble from "../../LLMInteraction/QuestionBubble";
 
 const SortingEvent = ({
     handleNextQuestion,
@@ -89,7 +90,7 @@ const SortingEvent = ({
     return (
         <>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                {questionData?.question}
+                <QuestionBubble question={questionData?.question ?? ""} mode={userId ? "PRIVATE" : "GUEST"} />
             </Typography>
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={option_sOrder} strategy={verticalListSortingStrategy}>
