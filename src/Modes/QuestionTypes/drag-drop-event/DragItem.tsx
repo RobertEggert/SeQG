@@ -1,4 +1,5 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
+import { useRef, useEffect } from "react";
 import { useDrag } from "react-dnd";
 
 export type DragItemType = {
@@ -17,7 +18,8 @@ const DragItem = ({
     isFeedback: boolean;
     handleFeedbackColor: (index: number) => string;
 }) => {
-    const [{ isDragging }, dragRef] = useDrag(() => ({
+    const ref = useRef<HTMLDivElement>(null);
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: "option",
         item: { index, text },
         collect: (monitor) => ({
@@ -25,20 +27,27 @@ const DragItem = ({
         })
     }));
 
-    return dragRef(
-        <div>
+    useEffect(() => {
+        drag(ref);
+    }, [drag]);
+
+    return (
+        <Box ref={ref}>
             <Paper
                 sx={{
                     padding: 2,
                     margin: 1,
                     backgroundColor: isFeedback ? handleFeedbackColor(index) : isDragging ? "grey" : "white",
-                    cursor: "move"
+                    cursor: "move",
+                    opacity: isDragging ? 0.5 : 1,
+                    transform: isDragging ? "scale(1.05)" : "scale(1)",
+                    transition: "transform 0.2s, opacity 0.2s"
                 }}
-                elevation={3}
+                elevation={isDragging ? 6 : 3}
             >
-                <Typography>{text}</Typography>
+                <Typography sx={{ userSelect: "none" }}>{text}</Typography>
             </Paper>
-        </div>
+        </Box>
     );
 };
 

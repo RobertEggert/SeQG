@@ -36,7 +36,7 @@ const IsCorrectComponent = ({ answerCorrect }: { answerCorrect: boolean | null }
     );
 };
 
-const AMOUNT_OF_PREFETCHED_QUESTIONS = 3;
+const AMOUNT_OF_PREFETCHED_QUESTIONS = 1;
 
 const Question = ({
     handleNextQuestion,
