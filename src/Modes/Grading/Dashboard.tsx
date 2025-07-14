@@ -1,4 +1,4 @@
-import { Box, Typography, Card, CardContent, CircularProgress, Button, Modal, Paper , Divider } from "@mui/material";
+import { Box, Typography, Card, CardContent, CircularProgress, Button, Modal, Paper, Divider } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Radar } from "react-chartjs-2";
@@ -6,7 +6,6 @@ import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler,
 import { disconnectClientLLM } from "../../utils/LLMDisconnector";
 import { customIcons } from "../AgeExperience/AgeExperience";
 import * as React from "react";
-import { flexAlignColumn } from "../../styling/theme";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -77,7 +76,7 @@ const Dashboard = ({ stats, age, experience, session }: GuestDashboardProps) => 
             }, 1000);
         }, 60000);
     };
-    
+
     useEffect(() => {
         startInactivityMonitor();
 
@@ -85,15 +84,15 @@ const Dashboard = ({ stats, age, experience, session }: GuestDashboardProps) => 
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
             if (countdownRef.current) clearInterval(countdownRef.current);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate, session]);
 
     const handleStay = () => {
         setShowModal(false);
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         if (countdownRef.current) clearInterval(countdownRef.current);
-        startInactivityMonitor(); 
+        startInactivityMonitor();
     };
-   
 
     const handleReturn = () => {
         disconnectClientLLM(session);
@@ -147,134 +146,134 @@ const Dashboard = ({ stats, age, experience, session }: GuestDashboardProps) => 
     };
 
     return (
-        
         <Box
-        sx={{
-          zIndex: 1,
-          borderRadius: 3,
-          width: "90vw",
-          maxWidth: 600,
-          height: "70vh",
-          maxHeight: 1200,
-          marginTop: 4,
-          boxShadow: 4,
-          overflowY: "auto",
-          p: 3,
-        }}
-      >
-        <Typography variant="h4" align="center" gutterBottom>
-          🔒 SeQG - Your Cybersecurity Assessment Results
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "stretch",
-            gap: 2,
-            flexWrap: "nowrap",
-            mb: 3
-          }}
-        >
-          <Card>
-            <CardContent
-              sx={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                minHeight: 150,
-                minWidth: 150
-              }}
-            >
-              <Typography variant="h3">
-                {totalQuestions > 0 ? `${Math.round((totalCorrect / totalQuestions) * 100)}%` : "—"}
-              </Typography>
-              <Typography variant="h6">Overall Score</Typography>
-            </CardContent>
-          </Card>
-      
-          <Card>
-            <CardContent
-              sx={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                minHeight: 150,
-                minWidth: 150
-              }}
-            >
-              <Typography variant="h3">{sessionDuration}</Typography>
-              <Typography variant="h6">Minute(s)</Typography>
-            </CardContent>
-          </Card>
-      
-          <Card>
-            <CardContent
-              sx={{
-                textAlign: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-                minHeight: 150,
-                minWidth: 150
-              }}
-            >
-              <Typography variant="h6">Your Experience</Typography>
-              {customIcons[experience]
-                ? React.cloneElement(customIcons[experience].icon, { fontSize: "large" })
-                : <Typography>{experience}</Typography>
-              }
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="h6">Your Age</Typography>
-              <Typography variant="h4">
-                {age === "Do not wish to answer" ? "Prefer not to say" : age}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-      
-        {chunkedTopics.map((chunk, i) => renderRadarChart(chunk, i))}
-      
-        <Card sx={{ my: 3 }}>
-          <CardContent>
-            <Typography variant="h6">🎯 Personalized Feedback</Typography>
-            {loading ? (
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", py: 2 }}>
-                <CircularProgress />
-                <Typography>Generating feedback...</Typography>
-              </Box>
-            ) : (
-              <Typography>{feedback}</Typography>
-            )}
-          </CardContent>
-        </Card>
-      
-        <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={handleReturn}>
-          Return to Main Screen
-        </Button>
-      
-        <Modal open={showModal}>
-          <Paper
             sx={{
-              p: 3,
-              textAlign: "center",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              borderRadius: 2,
-              maxWidth: 400
+                zIndex: 1,
+                borderRadius: 3,
+                width: "90vw",
+                maxWidth: 600,
+                height: "70vh",
+                maxHeight: 1200,
+                marginTop: 4,
+                boxShadow: 4,
+                overflowY: "auto",
+                p: 3
             }}
-          >
-            <Typography variant="h6">Are you still viewing?</Typography>
-            <Typography>Returning in {countdown} sec...</Typography>
-            <Button variant="contained" onClick={handleStay}>
-                        I'm still here!
+        >
+            <Typography variant="h4" align="center" gutterBottom>
+                🔒 SeQG - Your Cybersecurity Assessment Results
+            </Typography>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "stretch",
+                    gap: 2,
+                    flexWrap: "nowrap",
+                    mb: 3
+                }}
+            >
+                <Card>
+                    <CardContent
+                        sx={{
+                            textAlign: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            minHeight: 150,
+                            minWidth: 150
+                        }}
+                    >
+                        <Typography variant="h3">
+                            {totalQuestions > 0 ? `${Math.round((totalCorrect / totalQuestions) * 100)}%` : "—"}
+                        </Typography>
+                        <Typography variant="h6">Overall Score</Typography>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardContent
+                        sx={{
+                            textAlign: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            minHeight: 150,
+                            minWidth: 150
+                        }}
+                    >
+                        <Typography variant="h3">{sessionDuration}</Typography>
+                        <Typography variant="h6">Minute(s)</Typography>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardContent
+                        sx={{
+                            textAlign: "center",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            minHeight: 150,
+                            minWidth: 150
+                        }}
+                    >
+                        <Typography variant="h6">Your Experience</Typography>
+                        {customIcons[experience] ? (
+                            React.cloneElement(customIcons[experience].icon, { fontSize: "large" })
+                        ) : (
+                            <Typography>{experience}</Typography>
+                        )}
+                        <Divider sx={{ my: 1 }} />
+                        <Typography variant="h6">Your Age</Typography>
+                        <Typography variant="h4">
+                            {age === "Do not wish to answer" ? "Prefer not to say" : age}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+
+            {chunkedTopics.map((chunk, i) => renderRadarChart(chunk, i))}
+
+            <Card sx={{ my: 3 }}>
+                <CardContent>
+                    <Typography variant="h6">🎯 Personalized Feedback</Typography>
+                    {loading ? (
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", py: 2 }}>
+                            <CircularProgress />
+                            <Typography>Generating feedback...</Typography>
+                        </Box>
+                    ) : (
+                        <Typography>{feedback}</Typography>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={handleReturn}>
+                Return to Main Screen
             </Button>
-          </Paper>
-        </Modal>
-      </Box>
+
+            <Modal open={showModal}>
+                <Paper
+                    sx={{
+                        p: 3,
+                        textAlign: "center",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
+                        borderRadius: 2,
+                        maxWidth: 400
+                    }}
+                >
+                    <Typography variant="h6">Are you still viewing?</Typography>
+                    <Typography>Returning in {countdown} sec...</Typography>
+                    <Button variant="contained" onClick={handleStay}>
+                        I'm still here!
+                    </Button>
+                </Paper>
+            </Modal>
+        </Box>
     );
 };
 
-export default Dashboard;   
+export default Dashboard;
