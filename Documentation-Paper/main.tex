@@ -1,0 +1,91 @@
+\documentclass{thesisclass}
+\usepackage[english]{babel}
+\usepackage{graphicx} 											
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./figures/}} %TODO: Save your figures in the figures folder, if you want to include graphics in your thesis. This template will reference to that folder.									
+\usepackage[natbibapa]{apacite}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage[]{todonotes}
+\usepackage{etoolbox}
+\makeatletter
+\makeatother
+\usepackage{chngcntr}
+\makeatletter
+\makeatother
+\usepackage{mathptmx}
+\setkomafont{disposition}{\bfseries}
+
+
+\newcommand{\type}{Project Documentation} 
+\newcommand{\group}{Finn Kock, Alejandro Castilla, Sergio Pajuelo, Robert Eggert}
+\newcommand{\mytitle}{SeQG - A Security Question Generator as a Webapplication}
+\newcommand{\course}{Practical Course Usable Security}
+
+\newcommand{\reviewerone}{Dr. Vikrotija Paneva and Doruntina Murtezaj}
+\newcommand{\prof}{Prof. Florian Alt}
+\newcommand{\timeend}{30.07.2025}
+\newcommand{\submissiontime}{30.07.2025}
+
+\hypersetup{
+ pdfauthor={\group},
+ pdftitle={\mytitle},
+ pdfsubject={\type},
+ pdfkeywords={\type}
+}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{textblock}{10}[0,0](10,2.5)
+	\end{textblock}
+	\changefont{ppl}{m}{n}
+	\vspace*{3cm}
+	\begin{center}
+		\Huge{\mytitle}
+		\vspace*{1.6cm}\\ % reduce vspace if title page spreads over two pages
+		\Large{
+			\type\\of
+		}\\
+		\vspace*{1cm}
+		\huge{\group}\\
+		\vspace*{1cm} % reduce vspace if title page spreads over two pages
+		\Large{
+			{Ludwig-Maximilians-Universität München}
+			\\
+			\course
+		}
+	\end{center}
+	\vspace*{1.8cm} % reduce vspace if title page spreads over two pages
+	\Large{
+		\begin{center}
+			\begin{tabular}[ht]{l c l}
+
+				Reviewer: & \hfill  & \reviewerone\\
+                Professor: & \hfill & \prof
+			
+			\end{tabular}
+		\end{center}
+	}
+	
+	
+	\vspace{1.8cm} % reduce vspace if title page spreads over two pages
+	\begin{center}
+		\timeend
+	 \end{center}
+	
+	
+	
+\end{titlepage}
+\clearpage
+% Inside the main nothing but the Title is allowed! this way we keep it clean :)
+\input{introduction}
+\input{frontend/frontend}
+\input{backend/backend}
+
+
+\end{document}
