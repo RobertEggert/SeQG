@@ -11,6 +11,7 @@ dotenv.config({ path: `.env.local`, override: true });
 interface QuestionRequest {
     age: string;
     experience: number;
+    userId?: string; // Optional for private questions
 }
 
 interface ExplenationRequest {
@@ -131,21 +132,26 @@ app.post("/api/question", async (req: Request<object, object, QuestionRequest>, 
 
 // PRIVATE QUESTION
 app.post("/api/question/private", async (req: Request<object, object, QuestionRequest>, res: Response) => {
-    const { age, experience } = req.body;
+    const { age, experience, userId } = req.body;
 
     try {
         // Load topic list and choose one randomly
+        const statsPath = path.join(__dirname, `./memory/private-users/${userId}.json`);
+        const statsListRaw = fs.readFileSync(statsPath, "utf-8");
+        const progressList = JSON.parse(statsListRaw).progress;
+
         const topicsPath = path.join(__dirname, "./memory/TOPICS_LIST.json");
         const topicListRaw = fs.readFileSync(topicsPath, "utf-8");
         const topicList = JSON.parse(topicListRaw).topics as string[];
         const topic = topicList[Math.floor(Math.random() * topicList.length)];
 
         // Load prompt and inject dynamic values
-        const rawPrompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_ask.txt"), "utf-8");
+        const rawPrompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_ask_private.txt"), "utf-8");
         const prompt = rawPrompt
             .replace("{{age}}", age)
             .replace("{{experience}}", String(experience))
-            .replace("{{topic}}", topic);
+            .replace("{{topic}}", topic)
+            .replace("{{stats}}", String(progressList));
 
         console.log("Fetching question from LLM...");
         const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {

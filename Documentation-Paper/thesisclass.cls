@@ -57,22 +57,6 @@
 %\selectbiblanguage{ngerman}			% for \bibliographystyle{babalpha}
 %% --- End of Packages ---
 
-
-%% --------------------------------
-%% | Bugfix for babel/germanb.dtx |
-%% --------------------------------
-%% see: http://www.macrotron.net/babel-hyphens.txt
-\declare@shorthand{german}{"~}{\textormath{\leavevmode\hbox{-}\bbl@allowhyphens}{-}}
-\declare@shorthand{ngerman}{"~}{\textormath{\leavevmode\hbox{-}\bbl@allowhyphens}{-}}
-
-%% -------------------------------
-%% |        Declarations         |
-%% -------------------------------
-\DeclareGraphicsExtensions{.svg}
-%% --- End of Declarations ---
-
-
-
 %% -------------------------------
 %% |         New commands        |
 %% -------------------------------
@@ -90,17 +74,14 @@
 %% -------------------------------
 %% |      Globale Settings       |
 %% -------------------------------
-\setcounter{secnumdepth}{3} % Numbering also for \subsubsections
-\setcounter{tocdepth}{3}    % Register \subsubsections in content directory
 
 \setpapersize{A4}
 \setmarginsrb{3cm}{1cm}{3cm}{1cm}{6mm}{7mm}{5mm}{15mm}
-
+\setcounter{section}{1}
 \parindent 0cm                     % Do not indent beginning of paragraph
 \parskip1.5ex plus0.5ex minus0.5ex % Margin between paragraphs
+\RedeclareSectionCommand[style=section]{chapter}
 %% --- End of global Settings ---
-
-
 
 %% -------------------------------
 %% |          Headings           |
@@ -121,57 +102,6 @@
 \fancyfoot[C]{\thepage}
 }
 %% --- End of Headings ---
-
-
-
-%% -------------------------------
-%% |      Style of captions      |
-%% -------------------------------
-\renewcommand{\chaptername}{}
-
-\renewcommand{\section}{%
-\@startsection{section}%
-{1}		% Structure level
-{0mm}	% Indention
-{2ex plus 1ex minus 1ex}			% Pre-Margin
-{0.5ex plus 0.5ex minus 0.5ex}		% Post-Margin
-{\chapterheadfont\Large\bfseries}	% Style
-}
-\renewcommand{\subsection}{%
-\@startsection{subsection}%
-{2}		% Structure level
-{0mm}	% Indention
-{1.5ex plus 1ex minus 0.5ex}		% Pre-Margin
-{0.3ex plus 0.3ex minus 0.3ex}		% Post-Margin
-{\chapterheadfont\large\bfseries}	% Style
-}
-\renewcommand{\subsubsection}{%
-\@startsection{subsubsection}%
-{3}		% Structure level
-{0mm}	% Indention
-{1.5ex plus 1ex minus 0.5ex}			% Pre-Margin
-{0.2ex plus 0.2ex minus 0.2ex}			% Post-Margin
-{\chapterheadfont\normalsize\bfseries}	% Style
-}
-\renewcommand{\paragraph}{%
-\@startsection{paragraph}%
-{4}		% Structure level
-{0mm}	% Indention
-{1.3ex plus 1ex minus 0.3ex}			% Pre-Margin
-{0.2ex plus 0.2ex minus 0.2ex}			% Post-Margin
-{\chapterheadfont\normalsize\bfseries}	% Style
-}
-\renewcommand{\subparagraph}{%
-\@startsection{subparagraph}%
-{5}		% Structure level
-{0mm}	% Indention
-{1ex plus 1ex minus 0.2ex}				% Pre-Margin
-{0.1ex plus 0.1ex minus 0.1ex}			% Post-Margin
-{\chapterheadfont\normalsize\bfseries}	% Style
-}
-%% --- End of captions style ---
-
-
 
 %% ---------------------------------
 %% |   Style of chapter captions   |
@@ -232,37 +162,5 @@
    \renewcommand\thefigure{\Alph{section}.\arabic{figure}}
    \renewcommand\thetable{\Alph{section}.\arabic{table}}}
 %% --- End of appenix numbering style ---
-
-
-
-%% ----------------------------------
-%% |  Erklärung                     |
-%% ----------------------------------
- \def\Erklaerung{
-   \cleardoubleemptypage
-   \parindent0pt
-   \chapter*{Erkl\"arung}
-   \bigskip
-%   Ich versichere, dass ich die Arbeit ohne fremde Hilfe und ohne Benutzung
-%   anderer als der angegebenen Quellen angefertigt habe, und dass die Arbeit in
-%   gleicher oder \"ahnlicher Form noch keiner anderen Pr\"ufungsbeh\"orde
-%   vorgelegen hat und von dieser als Teil einer Pr\"ufungsleistung angenommen
-%   wurde. Alle Ausf\"uhrungen, die w\"ortlich oder sinngem\"a\ss \"ubernommen
-%   wurden, sind als solche gekennzeichnet. \\[4cm]
-% new on 2012-11-19, see http://www.kit.edu/studieren/amtlicheBekanntmachungen_2126.php
-   Ich versichere, dass ich die Arbeit selbstst\"andig verfasst habe und keine
-   anderen als die angegebenen Quellen und Hilfsmittel benutzt habe, die
-   w\"ortlich oder inhaltlich \"ubernommenen Stellen als solche
-   kenntlich gemacht und die Satzung des KIT zur Sicherung guter wissenschaftlicher
-   Praxis in der jeweils gültigen Fassung beachtet habe.
-   Die Arbeit wurde in gleicher oder \"ahnlicher Form noch keiner
-   anderen Pr\"ufungsbeh\"orde vorgelegt und von dieser als Teil
-   einer Pr\"ufungsleistung angenommen. \\[4cm]
-
-   Karlsruhe, den \today\hfill
-
-   \hfill{\vbox{\hrule{\hbox{\small(\myname)}}}}
-   \thispagestyle{empty}
- }
 
 %% **** END OF CLASS ****

@@ -40,6 +40,7 @@ type FetchQuestionType = {
     setQuestionState: Dispatch<SetStateAction<QuestionStateType>>;
     age?: string | null;
     experience?: number | null;
+    userId?: string; // Optional for private questions
 };
 
 type FetchExplanationType = {
@@ -66,6 +67,29 @@ export const fetchQuestionFromLLM = async ({ setQuestionState, age, experience }
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ age, experience })
+    });
+    const LLMdata: LLM_API_Question_Type = await response.json();
+
+    if (!LLMdata?.option_s || !Array.isArray(LLMdata.option_s)) {
+        console.error("Invalid response from server:", LLMdata);
+        return [];
+    }
+
+    setQuestionState((prev) => {
+        const newData = prev.q_data ? [...prev.q_data, LLMdata] : [LLMdata];
+
+        return {
+            q_fetch: false,
+            q_data: newData
+        };
+    });
+};
+
+export const fetchQuestionPrivateFromLLM = async ({ setQuestionState, age, experience, userId }: FetchQuestionType) => {
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${LLM_PORT}/api/question/private`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ age, experience, userId })
     });
     const LLMdata: LLM_API_Question_Type = await response.json();
 

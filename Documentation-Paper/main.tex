@@ -1,8 +1,7 @@
 \documentclass{thesisclass}
 \usepackage[english]{babel}
 \usepackage{graphicx} 											
-\DeclareGraphicsExtensions{.pdf,.png,.jpg}
-\graphicspath{{./figures/}} %TODO: Save your figures in the figures folder, if you want to include graphics in your thesis. This template will reference to that folder.									
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}								
 \usepackage[natbibapa]{apacite}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -76,13 +75,14 @@
 	\vspace{1.8cm} % reduce vspace if title page spreads over two pages
 	\begin{center}
 		\timeend
-	 \end{center}
+	\end{center}
 	
 	
 	
 \end{titlepage}
 \clearpage
 % Inside the main nothing but the Title is allowed! this way we keep it clean :)
+\input{index}
 \input{introduction}
 \input{frontend/frontend}
 \input{backend/backend}
