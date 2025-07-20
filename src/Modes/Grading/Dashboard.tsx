@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Radar } from "react-chartjs-2";
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from "chart.js";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 import { customIcons } from "../AgeExperience/AgeExperience";
 import * as React from "react";
 
@@ -70,7 +70,7 @@ const Dashboard = ({ stats, age, experience, session }: GuestDashboardProps) => 
                 setCountdown(counter);
                 if (counter <= 0) {
                     clearInterval(countdownRef.current!);
-                    disconnectClientLLM(session);
+                    disconnectAllLLM(session);
                     navigate({ to: "/" });
                 }
             }, 1000);
@@ -95,7 +95,7 @@ const Dashboard = ({ stats, age, experience, session }: GuestDashboardProps) => 
     };
 
     const handleReturn = () => {
-        disconnectClientLLM(session);
+        disconnectAllLLM(session);
         navigate({ to: "/" });
     };
 

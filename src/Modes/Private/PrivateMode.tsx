@@ -10,7 +10,7 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 
 const PrivateMode = () => {
     const navigate = useNavigate();
@@ -81,7 +81,7 @@ const PrivateMode = () => {
     console.log(connectUrl);
 
     const handleEndSession = () => {
-        disconnectClientLLM(privateSession);
+        disconnectAllLLM(privateSession);
         navigate({ to: "/" });
     };
 

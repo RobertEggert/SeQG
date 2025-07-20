@@ -1,0 +1,49 @@
+\section{LLM - Connection}
+Before the user gets to actually answer questions provided by the LLM, we need to submit our age and experience, if we did not already do so.
+Only then the questions will start to get fetched from the LLM API.
+But this is not happening directly, for that we also implemented a little backend, that needs to be started, which then handles all needed API calls.
+Currently though the backend is not protected against calls from outside, so it is not recommended to run it on a public server.
+One might first want to implement some kind of authentication, before doing so. 
+The same goes for the LLM API, as it is a Ollama Backend that runns openly.
+Here we also recommend to implement authentication procedures such as private keys or doing network segmentation only for the API to prevent unwanted access.
+
+\subsection{Tips}
+...
+
+\subsection{Questions}
+Here we differentiate between the two modes as one of them has a userId and the other one does not.
+Considering that, lets first look at the guest-mode question api request.
+For that we have prepared a prompt and a list of topics from which the llm can choose.
+Both of them are stored in the backend folder.
+From here on we directly pass arguments into the prompt such as age, experience and the topic.
+When we are done, we simply send over the whole prompt to the LLM API, which then responds with a specific json format.
+The json format is then parsed and send over to the host front-end.
+Formatted the json represents this structure:
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+    "question": ... ,
+    "option_s": ... ,
+    "dropZones": ... ,
+    "correctAnswer_s": ... ,
+    "topic": ... ,
+    "questionType": ...
+}
+\end{lstlisting}
+Each one having there own meaning.
+\begin{itemize}
+    \item \textbf{question}: The question that the user has to answer (String).
+    \item \textbf{option\_s}: The options that the user can choose from (String array).
+    \item \textbf{dropZones}: Represent drop zones in a drag \& drop event, where the user can drag and drop the options (String array).
+    \item \textbf{correctAnswer\_s}: Correct answers for the question (String array).
+    \item \textbf{topic}: The overall topic of the question (String).
+    \item \textbf{questionType}: The event-type of the question (String).
+\end{itemize}
+
+\subsection{Explanation}
+...
+\subsection{Saving Answers}
+...
+\subsection{Feedback}
+...
+\section{Anti-Breaching Sessions}
+\section{File Cleansing}

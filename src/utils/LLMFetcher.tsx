@@ -192,7 +192,7 @@ export const fetchSecurityTipsFromLLM = async (): Promise<SecurityTipsType | nul
 };
 
 export const fetchUserData = async (userId: string) => {
-    const response = await fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/user-data/${userId}`);
+    const response = await fetch(`http://${LOCAL_ADDRESS}:${BE_PORT}/private/user-data/${userId}`);
     const userData: FetchUserDataType = await response.json();
     return userData;
 };

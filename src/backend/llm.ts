@@ -154,7 +154,7 @@ app.post("/api/question/private", async (req: Request<object, object, QuestionRe
             .replace("{{stats}}", String(progressList));
 
         console.log("Fetching question from LLM...");
-        const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+        const ollamaRes = await fetch(`http://${LOCAL_SERVER}:${LLM_API_PORT}/api/generate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -200,7 +200,7 @@ app.post("/api/explanation/shortterm", async (req: Request<object, object, Exple
 
     try {
         console.log("Fetching explanation from LLM");
-        const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+        const ollamaRes = await fetch(`http://${LOCAL_SERVER}:${LLM_API_PORT}/api/generate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -235,7 +235,7 @@ app.post("/api/explanation/shortterm", async (req: Request<object, object, Exple
 app.get("/api/security/tips", async (_, res: Response) => {
     const prompt = fs.readFileSync(path.join(__dirname, "./prompts/cs_tips.txt"), "utf-8");
     console.log("FETCH TIP");
-    const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+    const ollamaRes = await fetch(`http://${LOCAL_SERVER}:${LLM_API_PORT}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -273,7 +273,7 @@ app.post("/api/guest-feedback", async (req: Request<object, object, GuestFeedbac
             .replace("{{stats}}", statsText);
 
         console.log("Fetching guest feedback from LLM...");
-        const ollamaRes = await fetch(`http://localhost:${LLM_API_PORT}/api/generate`, {
+        const ollamaRes = await fetch(`http://${LOCAL_SERVER}:${LLM_API_PORT}/api/generate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -283,12 +283,10 @@ app.post("/api/guest-feedback", async (req: Request<object, object, GuestFeedbac
             })
         });
         console.log("stats are here:", stats);
-        console.log("stats are here:", req.body);
         const data = (await ollamaRes.json()) as { response: string };
         const rawOutput: string = data.response.trim();
 
         console.log("Feedback fetched successfully!");
-        console.log(" \n", rawOutput);
 
         const jsonStart = rawOutput.indexOf("{");
         const jsonEnd = rawOutput.lastIndexOf("}");

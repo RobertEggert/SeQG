@@ -10,7 +10,7 @@ import type { STATUS } from "../../utils/types";
 import Background from "../../MainScreen/MainScreenComponents/Background";
 import EndSessionButton from "../EndSessionButton";
 import logoStart from "../../img/logoandtext.png";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 
 const GuestMode = () => {
     const navigate = useNavigate();
@@ -73,7 +73,7 @@ const GuestMode = () => {
     console.log(connectUrl);
 
     const handleEndSession = () => {
-        disconnectClientLLM(session);
+        disconnectAllLLM(session);
         navigate({ to: "/" });
     };
 
