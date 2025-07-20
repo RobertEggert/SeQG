@@ -38,6 +38,7 @@ const JWL_SECRET = process.env.VITE_JWL_SECRET || "VERI SICRET";
 const LOCAL_ADDRESS = process.env.VITE_LOCAL_ADDRESS || "NO_IP_FOUND";
 const BE_PORT = process.env.VITE_BE_PORT || 3001;
 
+let activePrivateUser: string | null = null; // this is for others trying to connect and do something evil
 const activeSessions = new Map<string, { host?: string; client?: string }>();
 
 // currently not needed maybe in future
@@ -60,7 +61,7 @@ app.get("/connect/host", (_: Request, res: Response) => {
     res.json({ session, token });
 });
 
-app.get("/user-data/:userId", (req: Request, res: Response) => {
+app.get("private/user-data/:userId", (req: Request, res: Response) => {
     const userId = req.params.userId;
 
     const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
@@ -81,9 +82,9 @@ app.get("/user-data/:userId", (req: Request, res: Response) => {
     }
 });
 
-app.post("/disconnect/client", (req: Request<object, object, { session: string }>, res: Response) => {
+app.post("/disconnect/all", (req: Request<object, object, { session: string }>, res: Response) => {
     const { session } = req.body;
-
+    activePrivateUser = null;
     const sessionDisconnect = activeSessions.get(session);
 
     if (sessionDisconnect) {
@@ -247,9 +248,17 @@ io.on("connection", (socket: Socket) => {
             }
 
             // make sure to create a user specific file if not already exists
+
+            if (sessionEntryRegister[role] || activePrivateUser !== null) {
+                socket.emit("status", "already_connected");
+                setTimeout(() => socket.disconnect(), 100);
+                console.log(`Role ${role} already connected for session ${session}`);
+                return;
+            }
             if (role === "client") {
                 const userFilePath = path.join(__dirname, `./memory/private-users/${userId}.json`);
                 if (!fs.existsSync(userFilePath)) {
+                    activePrivateUser = userId;
                     const progress = {};
                     const userData = {
                         user_id: userId,
@@ -263,14 +272,6 @@ io.on("connection", (socket: Socket) => {
                     console.log("Welcome returning user!");
                 }
             }
-
-            if (sessionEntryRegister[role]) {
-                socket.emit("status", "already_connected");
-                setTimeout(() => socket.disconnect(), 100);
-                console.log(`Role ${role} already connected for session ${session}`);
-                return;
-            }
-            console.log("TEST - 3");
             sessionEntryRegister[role] = socket.id;
             activeSessions.set(session, sessionEntryRegister);
 
@@ -302,6 +303,7 @@ io.on("connection", (socket: Socket) => {
                         }
                         delete sessionEntryDisconnect.host;
                         delete sessionEntryDisconnect.client;
+                        activePrivateUser = null;
                     } else if (isClient) {
                         // Client disconnects — only disconnect client
                         if (sessionEntryDisconnect.client) {

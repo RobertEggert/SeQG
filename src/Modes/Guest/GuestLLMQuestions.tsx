@@ -7,7 +7,7 @@ import NextQuestion from "../NextQuestion";
 import EndSessionButton from "../EndSessionButton";
 
 import type { QuestionStateType, ExplainStateType } from "../../utils/LLMFetcher";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 import { useNavigate } from "@tanstack/react-router";
 import Dashboard from "../Grading/Dashboard";
 
@@ -62,7 +62,7 @@ const GuestLLMQuestions = ({ session }: { session: string }) => {
         if (age && experience) {
             setShowDashboard(true);
         } else {
-            disconnectClientLLM(session);
+            disconnectAllLLM(session);
             navigate({ to: "/" });
         }
     };
