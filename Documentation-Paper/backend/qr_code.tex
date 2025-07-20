@@ -27,11 +27,27 @@ The states that should be added for a more detailed error handling are:
 \end{itemize}
 
 \subsection{Registration}
-Making the connection valid though it is not enough to just scan the qr code.
+Making the connection valid though, it is not enough to just scan the qr code.
 We actually need a registration logic that makes sure that the host and client are allowed to connect.
 This is done by the host front-end and clients front-end, who both need to emit a ''register'' message to the backend.
 By registering, the backend recognizes if a host or client is already connected.
 This makes flag handling easier, as the backend can then emit a message to the host or client front-end appropriate to the actual status.
+If the user is in private mode, then we emit a special message called ''register-private'', 
+which then creates a file with a unique uuid and a token in the local storage of the users browser.
+This file and local storage token is only created though if the user submits his age and experience first.
+Such a file would then look like this:
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+    "user_id": "abc123",
+    "age": "< 18",
+    "experience": 2,
+    "progress": {}
+}
+\end{lstlisting}
+Where the \textbf{user\_id} (String) is the unique identifier for the user, 
+\textbf{age} (String) is the apporximate age of the user, 
+\textbf{experience} (Integer) is the experience level of the user and 
+\textbf{progress} (Object) is an object that will hold the progress of the user with counted questionTypes and if they where answered correctly.
 
 \section{API Calls}
 In actuality currently there exist four API calls the qr-code backend is handling.
