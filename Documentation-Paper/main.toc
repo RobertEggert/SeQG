@@ -1,0 +1,30 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Frontend}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}General Setup}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}File Based Routing}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Main Screen}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Welcome Screens}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Modes}{4}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Question Types}{4}{subsection.2.5.1}%
+\contentsline {subsubsection}{\nonumberline Single choice}{4}{subsubsection*.3}%
+\contentsline {subsubsection}{\nonumberline Multiple choice}{4}{subsubsection*.5}%
+\contentsline {subsubsection}{\nonumberline Think Event}{5}{subsubsection*.7}%
+\contentsline {subsubsection}{\nonumberline Drag \& Drop}{5}{subsubsection*.9}%
+\contentsline {subsubsection}{\nonumberline Sorting}{6}{subsubsection*.11}%
+\contentsline {subsubsection}{\nonumberline Line-connect}{6}{subsubsection*.13}%
+\contentsline {chapter}{\numberline {3}Backend}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}QR Code - Connection}{7}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Role \& Status}{7}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Registration}{8}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}API Calls}{8}{section.3.2}%
+\contentsline {section}{\numberline {3.3}LLM - Connection}{8}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Tips}{9}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Questions}{9}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Explanation}{9}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Saving Answers}{10}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Feedback}{10}{subsection.3.3.5}%
+\contentsline {section}{\numberline {3.4}Anti-Breaching Sessions}{11}{section.3.4}%
+\contentsline {section}{\numberline {3.5}File Cleansing}{11}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Contributors}{11}{section.3.6}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

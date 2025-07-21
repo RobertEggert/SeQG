@@ -1,28 +1,29 @@
 \section{LLM - Connection}
-Before the user gets to actually answer questions provided by the LLM, we need to submit our age and experience, if we did not already do so.
+Before the user gets to actually answer questions provided by the LLM, he needs to submit his age and experience, if not already done.
 Only then the questions will start to get fetched from the LLM API.
-But this is not happening directly, for that we also implemented a little backend, that needs to be started, which then handles all needed API calls.
+But this is not happening directly, for which we also implemented a little backend, that needs to be started, which then handles all needed API calls.
 Currently though the backend is not protected against calls from outside, so it is not recommended to run it on a public server.
 One might first want to implement some kind of authentication, before doing so. 
 The same goes for the LLM API, as it is a Ollama Backend that runns openly.
-Here we also recommend to implement authentication procedures such as private keys or doing network segmentation only for the API to prevent unwanted access.
+Here we also recommend to implement authentication procedures, such as private keys or doing network segmentation only for the API, to prevent unwanted access.
 
 \subsection{Tips}
 To catch a potential users attention, we decided to use Tips and eye catching messages on our main screen.
-This shall then make the users interest about our PSUI rise and let him or her approach our Public Display.
+This shall then make the users interest rise about our PSUI and let him or her approach our Public Display.
 These tips are getting fetched from the LLM API.
-Incase of server connection issues, we have a fallback mechanism that uses a locally saved tips.
-Later on in the future, one may also add not only tips but also current news in cybersecurity and generally speaking of security awareness.
+In case of server connection issue, we have a fallback mechanism that uses locally saved tips.
+Later on in the future, one may also add not only tips, but also current news in cybersecurity and generally speaking of security awareness.
+There are multiple API available, even for free, that allow to fetch current events in cybersecurity.
 
 \subsection{Questions}
-Here we differentiate between the two modes as one of them has a userId and the other one does not.
-Considering that, lets first look at the guest-mode question api request.
+Here we differentiate between the two modes, as one of them has a userId and the other one does not.
+Considering that, lets first look at the guest-mode question API request.
 For that we have prepared a prompt and a list of topics from which the llm can choose.
 Both of them are stored in the backend folder.
-From here on we directly pass arguments into the prompt such as age, experience and the topic.
-When we are done, we simply send over the whole prompt to the LLM API, which then responds with a specific json format.
-The json format is then parsed and send over to the host front-end.
-Formatted the json represents this structure:
+From here on we directly pass arguments into the prompt such as: age, experience and the topic.
+When we are done, we simply send over the whole prompt to the LLM API, which then responds with a specific \textbf{json} format.
+The \textbf{json} format is then parsed and send over to the host front end.
+The formatted \textbf{json} respond then, represents this structure:
 \begin{lstlisting}[language=json,firstnumber=1]
 {
     "question": ... ,
@@ -45,12 +46,12 @@ Each one having there own meaning.
 
 \subsection{Explanation}
 In the explanation we actually dont need to differentiate between the two modes, as the explanation should be universal.
-There may be a critical moment where one might think to add some extra explanation features for the private mode but we did not implement that.
-As we have fetched a question from the LLM API we can refeed it with the almost same provided json format.
+There may be a critical moment where one might think to add some extra explanation features for the private mode, but we did not implement that.
+As we have fetched a question from the LLM API we can refeed it with almost the same provided json format.
 In our case we only need the question and the correctAnswer\_s aswell as a boolean telling the LLM we did indeed answer the question incorrectly. \\
-When we do answer correctly there is no need to explain the question as the user already knew the answer (hopefully did not guess).
+When we do answer correctly there is no need to explain the question, as the user already knew the answer (hopefully did not guess).
 This means we have a simple return format for our explanation, because in the end we only need the explanation text. \\
-Therefore our json format looks like this:
+Therefore our \textbf{json} format looks like this:
 \begin{lstlisting}[language=json,firstnumber=1]
 {
     "explanation": ... 
@@ -60,14 +61,14 @@ Where the \textbf{explanation} (String) is the text that the LLM provides us wit
 
 \subsection{Saving Answers}
 When the user enters the guest mode, we do not save anything but rather do a local session with grading at the end.
-However, when the user enters the private mode, we do save the answers so that his or her previously answered questions can be taken into account.
+However, when the user enters the private mode, we do save the answers, so that his or her previously answered questions can be taken into account.
 This makes the LLM way more personalized and the user can also see his or her progress eventually.
-The main idea is, that we get the questionType from the LLM API.
-After that we add to our autogenerated file with the userId as its filename the current questionType.
-For the final part, we increase a counter for the correctly answered questions according to the questionType.
+The main idea is, that we get the Questiontype from the LLM API.
+After that we add to our autogenerated file with the userId as its filename, the current Questiontype.
+For the final part, we increase a counter for the correctly answered questions according to the Questiontype.
 If the user indeed answered the question correctly, we increment by one, otherwise not.
-The total amount of questions is also saved for each questionType.
-This amount always gets incremented by one, no matter if the user answered correctly or not. \\
+The total amount of questions is also saved for each Questiontype.
+This amount always gets incremented by one, no matter the correctness of the answer. \\
 In general a progress output may look like this:
 \begin{lstlisting}[language=json,firstnumber=1]
 {
@@ -92,7 +93,7 @@ Which would mean that in total the user has answered 4 questions, of which he an
 
 \subsection{Feedback}
 The moment the user decides that he or she has had enough of the questions, one can request a feedback.
-This feedback is then generated by the LLM API and sent over to the front-end.
+This feedback is then generated by the LLM API and sent over to the front end.
 The user has now the oppertunity to read the feedback and then decide for himself learning more about a topic or not.
 Feedbackwise we offer a spider chart limited to the maximum amount of 8 topics, where we define from 0 to a 100 percent how well the user did in each topic.
 Aswell as a specificly generated text, that gives the user a more detailed overview of his or her performance.
