@@ -1,3 +1,14 @@
+# SeQG – Security Question Generator
+
+<p align="center">
+  <img src="/src/img/logoandtext.png" alt="SeQG Logo" width="700"/>
+</p>
+
+Welcome to the SeQG project. The LLM which offers you recommended questions according to your previous interactions and based on location, one might say this is a one of a kind Security-Awareness Question
+
+📄 [Read the full documentation of the project (PDF)](Documentation-Paper/main.pdf)
+
+
 # Basic needs to run the project
 
 Needed:
