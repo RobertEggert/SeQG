@@ -76,55 +76,61 @@
 \begin{document}
 
 \begin{titlepage}
-    \centering
+	\begin{textblock}{10}[0,0](10,2.5)
+	\end{textblock}
+	\changefont{ppl}{m}{n}
 
-    % --- Imagen añadida en la portada ---
-    \includegraphics[width=0.8\textwidth]{Documentation-Paper/images/LogoAndText.png}
+	\vspace*{0.05cm} % vertical space before the logo
 
-    \vspace{0.8cm}
+	\begin{center}
+		% Logo with text centered at the top
+		\includegraphics[width=0.7\textwidth]{images/logoandtext.png}
 
-    \changefont{ppl}{m}{n}
+		\vspace*{1cm} % vertical space between logo and title
 
-    \Huge{\mytitle}
-    \vspace{0.8cm} % reduce vspace if title page spreads over two pages
+		\Huge{\mytitle}
+		\vspace*{0.6cm}\\ % reduce vspace if title page spreads over two pages
+		\Large{
+			\type\\of
+		}\\
+		\vspace*{1cm}
+		\huge{\group}\\
+		\vspace*{1cm} % reduce vspace if title page spreads over two pages
+		\Large{
+			{Ludwig-Maximilians-Universität München}
+			\\
+			\course
+            \\
+            \vspace*{0.7cm}
+            \includegraphics[width=0.2\textwidth]{images/Logo_LMU.png}
+		}
+	\end{center}
 
-    \Large{
-        \type\\of
-    }
+	\vspace*{0.3cm} % reduce vspace if title page spreads over two pages
 
-    \vspace{0.5cm} % reduce vspace if title page spreads over two pages
-
-    \huge{\group}
-
-    \vspace{0.5cm} % reduce vspace if title page spreads over two pages
-
-    \Large{
-        Ludwig-Maximilians-Universität München \\
-        \course
-    }
-
-    \vspace{0.8cm} % reduce vspace if title page spreads over two pages
-
-    \Large{
-        \begin{tabular}[ht]{l c l}
-            Reviewer: & \hfill & \reviewerone \\
-            Professor: & \hfill & \prof
-        \end{tabular}
-    }
-
-    \vspace{0.8cm} % reduce vspace if title page spreads over two pages
-
-    \Large{\timeend}
-
+	\Large{
+		\begin{center}
+			\begin{tabular}[ht]{l c l}
+				Reviewer: & \hfill  & \reviewerone\\
+                Professor: & \hfill & \prof
+			\end{tabular}
+		\end{center}
+	}
+	
+	\vspace{1cm} % reduce vspace if title page spreads over two pages
+	\begin{center}
+		\timeend
+	\end{center}
 \end{titlepage}
 
 \renewcommand{\contentsname}{Index}
 \tableofcontents
 \clearpage
-
+% Inside the main nothing but the Title is allowed! this way we keep it clean :)
 \input{introduction}
 \input{frontend/frontend}
 \input{backend/backend}
 \input{contributors}
+
 
 \end{document}
