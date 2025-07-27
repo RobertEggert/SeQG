@@ -10,6 +10,9 @@ import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 import { useNavigate } from "@tanstack/react-router";
 import Dashboard from "../Grading/Dashboard";
 
+/* This + GuestLLMQuestion.tsx shall later be replaced by one component.
+Currently the GuestLLMQuestion.tsx is almost the exact same file it was just better for us to differentiate and analysing the bugs was easiert but it is clearly an antipattern
+writing the same file twice :) */
 const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: string }) => {
     const navigate = useNavigate();
     const [age, setAge] = useState<string | null>(null);

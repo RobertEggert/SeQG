@@ -20,6 +20,7 @@ dist-ssr
 *.out
 *.fls
 *.gz
+*.toc
 
 # Editor directories and files
 .vscode/*

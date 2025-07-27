@@ -1,0 +1,17 @@
+\subsection{Guest Mode}
+Guest Mode is designed for quick, one-time participation without any setup or login. 
+It allows users to access a session instantly without any user data being stored. 
+When someone joins a session in Guest Mode, the application automatically generates a temporary user identity and stores it locally in the browser. 
+This identity helps the system recognize the user during the session. 
+Guest users have full access to participate in the session’s activities, but their presence is temporary and not tied to any personal information. 
+Once the session ends or the browser is closed, the user effectively disappears from the system’s memory.
+This mode is ideal for situations where users are not expected to return.
+
+\subsection{Private Mode}
+Private Mode offers a more structured and secure way to connect to a session. 
+It is used when a user scans a QR code that links to a specific, private session. 
+This link contains a hidden token that identifies the session and grants access to it. 
+When the user opens the link, the application uses this token to establish a secure connection with the backend system. 
+At the same time, the user's device is assigned a unique identifier, which is stored locally and remains available for future sessions on the same device. 
+This allows the system to recognize returning users, maintain a consistent identity across multiple sessions, and apply session-specific rules or roles. 
+The connection is verified before granting access — so users without the correct token or link will be blocked.
