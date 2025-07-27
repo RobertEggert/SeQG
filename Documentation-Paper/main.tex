@@ -1,0 +1,137 @@
+\documentclass{thesisclass}
+\usepackage[english]{babel}
+\usepackage{graphicx} 											
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}								
+\usepackage[natbibapa]{apacite}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage[]{todonotes}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{enumitem}
+
+\makeatletter
+\makeatother
+\usepackage{chngcntr}
+\makeatletter
+\makeatother
+\usepackage{mathptmx}
+\setkomafont{disposition}{\bfseries}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\newcommand{\type}{Project Documentation} 
+\newcommand{\group}{{Finn Kock}, {Alejandro Castilla}, \\
+					{Sergio Pajuelo} , {Robert Eggert}}
+\newcommand{\mytitle}{SeQG - A Security Question Generator as a Webapplication}
+\newcommand{\course}{Practical Course Usable Security}
+
+\newcommand{\reviewerone}{Dr. Viktorija Paneva and Doruntina Murtezaj}
+\newcommand{\prof}{Prof. Florian Alt}
+\newcommand{\timeend}{30.07.2025}
+\newcommand{\submissiontime}{30.07.2025}
+
+\hypersetup{
+ pdfauthor={\group},
+ pdftitle={\mytitle},
+ pdfsubject={\type},
+ pdfkeywords={\type}
+}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{textblock}{10}[0,0](10,2.5)
+	\end{textblock}
+	\changefont{ppl}{m}{n}
+
+	\vspace*{0.05cm} % vertical space before the logo
+
+	\begin{center}
+		% Logo with text centered at the top
+		\includegraphics[width=0.7\textwidth]{images/logoandtext.png}
+
+		\vspace*{1cm} % vertical space between logo and title
+
+		\Huge{\mytitle}
+		\vspace*{0.6cm}\\ % reduce vspace if title page spreads over two pages
+		\Large{
+			\type\\of
+		}\\
+		\vspace*{1cm}
+		\huge{\group}\\
+		\vspace*{1cm} % reduce vspace if title page spreads over two pages
+		\Large{
+			{Ludwig-Maximilians-Universität München}
+			\\
+			\course
+            \\
+            \vspace*{0.7cm}
+            \includegraphics[width=0.2\textwidth]{images/Logo_LMU.png}
+		}
+	\end{center}
+
+	\vspace*{0.3cm} % reduce vspace if title page spreads over two pages
+
+	\Large{
+		\begin{center}
+			\begin{tabular}[ht]{l c l}
+				Reviewer: & \hfill  & \reviewerone\\
+                Professor: & \hfill & \prof
+			\end{tabular}
+		\end{center}
+	}
+	
+	\vspace{1cm} % reduce vspace if title page spreads over two pages
+	\begin{center}
+		\timeend
+	\end{center}
+\end{titlepage}
+
+\renewcommand{\contentsname}{Index}
+\tableofcontents
+\clearpage
+% Inside the main nothing but the Title is allowed! this way we keep it clean :)
+\input{introduction}
+\input{frontend/frontend}
+\input{backend/backend}
+\input{contributors}
+
+
+\end{document}

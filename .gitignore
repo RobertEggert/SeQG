@@ -12,7 +12,15 @@ private-users
 dist
 dist-ssr
 
+# latex
 
+*.aux
+*.bbl
+*.fdb_latexmk
+*.out
+*.fls
+*.gz
+*.toc
 
 # Editor directories and files
 .vscode/*

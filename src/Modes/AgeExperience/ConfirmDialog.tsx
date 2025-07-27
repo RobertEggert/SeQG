@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from "@mui/material";
 import { useState, type Dispatch, type RefObject, type SetStateAction } from "react";
-import { fetchQuestionFromLLM, type QuestionStateType } from "../../utils/LLMFetcher";
+import { fetchQuestionFromLLM, fetchQuestionPrivateFromLLM, type QuestionStateType } from "../../utils/LLMFetcher";
 import { useNavigate } from "@tanstack/react-router";
 import { sendAgeAndExperiencePrivate } from "../../utils/LLMSaver";
 
@@ -33,7 +33,11 @@ const ConfirmDialog = ({
 
     const handleDialogConfirm = () => {
         setIsProfileSubmitted(true);
-        fetchQuestionFromLLM({ setQuestionState, age, experience });
+        if (userId) {
+            fetchQuestionPrivateFromLLM({ setQuestionState, age, experience, userId });
+        } else {
+            fetchQuestionFromLLM({ setQuestionState, age, experience });
+        }
         questionsFetchedRef.current += 1;
         if (age && experience && userId && userId !== "") sendAgeAndExperiencePrivate(age, experience, userId);
         setOpenDialog(false);

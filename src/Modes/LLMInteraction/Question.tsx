@@ -1,6 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, type Dispatch, type RefObject, type SetStateAction } from "react";
-import { fetchQuestionFromLLM, type ExplainStateType, type QuestionStateType } from "../../utils/LLMFetcher";
+import {
+    fetchQuestionFromLLM,
+    fetchQuestionPrivateFromLLM,
+    type ExplainStateType,
+    type QuestionStateType
+} from "../../utils/LLMFetcher";
 import LoadingData from "./LoadingData";
 import QuestionTypeRecognizer from "./QuestionTypeRecognizer";
 import { flexAlignColumn } from "../../styling/theme";
@@ -53,7 +58,11 @@ const Question = ({
 }: QuestionType) => {
     useEffect(() => {
         if (questionState.q_fetch && questionsFetchedRef.current < AMOUNT_OF_PREFETCHED_QUESTIONS) {
-            fetchQuestionFromLLM({ setQuestionState, age, experience });
+            if (userId) {
+                fetchQuestionPrivateFromLLM({ setQuestionState, age, experience, userId });
+            } else {
+                fetchQuestionFromLLM({ setQuestionState, age, experience });
+            }
             questionsFetchedRef.current += 1;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

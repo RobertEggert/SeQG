@@ -1,0 +1,16 @@
+\chapter{Frontend}
+
+The frontend is the core part for interaction between our PSUI and the user, which gives it little room for mistake, as we are dependent on the users interest.
+When the user begins interacting with our front-end, everything sets up for a session dependent on the users choice.
+Either guest or private mode can be selected.
+If the guest mode is chosen then a non saving session will get started, where the user gets the experience answering questions,
+genereted by our localy saved llm.
+Reaching a state, where the user is pleased and does not want to continue answering questions anymore, the session can either be closed or a personal grading can be requested.
+If previously private mode was chosen instead of guest mode, then the users efforts will be saved on server side, so return users can continue where they left of answering.
+After terminating the session the next user can get in line and start answering questions.
+
+\input{frontend/GeneralSetUp}
+\input{frontend/FileBasedRouting}
+\input{frontend/MainScreen}
+\input{frontend/WelcomeScreens}
+\input{frontend/Modes/Modes}

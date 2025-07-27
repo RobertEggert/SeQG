@@ -1,0 +1,52 @@
+\chapter{Contributors}
+
+\href{https://github.com/finnkock}{@Finn Kock}: 
+\begin{itemize}
+	\item Creating UI concept for the mode selection and implementing it
+    \begin{itemize}[nosep]
+        \item[$\cdot$] Animated Background
+	    \item[$\cdot$] Item orientations in the Mode Screen
+	    \item[$\cdot$]  Character Designs
+	    \item[$\cdot$] Character Rotations on touch and button click
+	    \item[$\cdot$] Transparency of character in the back
+    \end{itemize}
+	\item Implement Icons as buttons
+	\item Animating text 
+	\begin{itemize}[nosep]
+        \item[$\cdot$] Create multiple character reactions
+        \item[$\cdot$] Choosing a random character reaction according to the mode each time a question is asked
+        \item[$\cdot$] Putting the question in a question box with a precalculated length
+        \item[$\cdot$] Textanimation for Questiontext and Answertext
+	\end{itemize}
+    \item Questionbutton top left in main screen + Clickable Mode text for information 
+\end{itemize}
+
+\href{https://github.com/alecasbar}{@Alejandro Castilla}: 
+\begin{itemize}
+    \item Security Tips on the main screen, fetched from the LLM API, with a fallback mechanism in case of server issues.
+    \item End Session screen with performance summary (user statistics and grading) and inactivity handling logic (confirmation pop-up and auto-close).
+    \item Spider chart visualization of user performance in percentages, with dynamic splitting in case the user answers questions on too many different topics.
+    \item Feedback message fetched from the LLM, encouraging users to use SeQG again to improve in their weaker topics.
+    \item Adjustments to several components to ensure proper centering in the demo display.
+    \item Backend integration improvements and JSON parsing corrections in the prompts for reliable communication with the LLM.
+\end{itemize}
+
+\href{https://github.com/sergioPajuelo}{@Sergio Pajuelo}:
+\begin{itemize}
+    \item The whole welcome screen when scanning the QR code, including differentiation between modes.
+    \item Additional information to the user, such as the consent to process their data (with pop-ups), fetching information, etc.
+    \item Each mode's screen after selecting the avatar, including the mode description and animated features, dynamic background, etc.
+    \item Answer highlighting in the questions for visual feedback to the user.
+    \item Improving the user's visibility of the modes descriptions.
+    \item Resizing/redesign of the initial screen components and animations as well as the mode selection one due to problems in the demo display.
+\end{itemize}
+
+\href{https://github.com/RobertEggert}{@Robert Eggert}: 
+\begin{itemize}
+    \item The Whole backend logic, including the LLM API, QR Code and the Anti-Breaching Sessions idea (except the Feedback api call).
+    \item File based Routing and the File Cleansing logic.
+    \item Most of the State and session management and the Connection/Disconnection logic.
+    \item All question Types + overlay
+    \item Touch compatability
+    \item Configs
+\end{itemize}

@@ -6,10 +6,13 @@ import NextQuestion from "../NextQuestion";
 import { type QuestionStateType, type ExplainStateType, fetchUserData } from "../../utils/LLMFetcher";
 import AgeExperience from "../AgeExperience/AgeExperience";
 import EndSessionButton from "../EndSessionButton";
-import { disconnectClientLLM } from "../../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../../utils/LLMDisconnector";
 import { useNavigate } from "@tanstack/react-router";
 import Dashboard from "../Grading/Dashboard";
 
+/* This + GuestLLMQuestion.tsx shall later be replaced by one component.
+Currently the GuestLLMQuestion.tsx is almost the exact same file it was just better for us to differentiate and analysing the bugs was easiert but it is clearly an antipattern
+writing the same file twice :) */
 const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: string }) => {
     const navigate = useNavigate();
     const [age, setAge] = useState<string | null>(null);
@@ -77,7 +80,7 @@ const PrivateLLMQuestions = ({ userId, session }: { userId: string; session: str
         if (age && experience) {
             setShowDashboard(true);
         } else {
-            disconnectClientLLM(session);
+            disconnectAllLLM(session);
             navigate({ to: "/" });
         }
     };

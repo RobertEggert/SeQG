@@ -38,7 +38,10 @@ const SortingEvent = ({
         }))
     );
     const [isFeedback, setIsFeedback] = useState(false);
-    const startingOrder = option_sOrder;
+    const startingOrder = (questionData.option_s ?? []).map((text, index) => ({
+        id: index,
+        text
+    }));
 
     const sensors = useSensors(
         useSensor(PointerSensor),

@@ -1,11 +1,11 @@
 import { Box, Typography, IconButton, Paper, Fade } from "@mui/material";
-import { disconnectClientLLM } from "../utils/LLMDisconnector";
+import { disconnectAllLLM } from "../utils/LLMDisconnector";
 import { flexAllCenter } from "../styling/theme";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const WelcomeToModeScreen = ({ session, mode }: { session: string; mode: "Private" | "Guest" }) => {
     const handleDisconnect = async () => {
-        const result = await disconnectClientLLM(session);
+        const result = await disconnectAllLLM(session);
         if (result.status === "disconnected") {
             alert("Disconnected successfully!");
         } else {
