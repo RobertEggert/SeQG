@@ -1,30 +1,6 @@
 \section{Modes}
 
-\subsection{QR Code - Integration}
-QR codes play a central role in how devices connect within \textbf{SeQG}. 
-They are used as a simple and intuitive way to link a user's device to an active session. 
-When a session is started, the application generates a QR code containing a unique link. 
-This link includes a hidden session identifier that tells the system, which session the user can connect to.
-Once scanned, the device opens the link, which automatically redirects the user to the corresponding session within the app. 
-The beauty of this process is that it requires almost no effort from the user, as no code or password is required. 
-Everything happens in just a few seconds by scanning the QR code.
-
-\subsection{Communication with Backend}
-The \textbf{SeQG} frontend communicates with the backend through WebSockets to enable real-time, bidirectional data exchange. 
-Here we differentiate between client and host frontend.
-The host frontend must stay in constant connection with the backend, while a session is active, whereas the client frontend needs to connect only once. 
-Before the client can connect, the host frontend must first request a JWT token and then connect to the backend with this token.
-As the user joins a session, the client's frontend uses the previously fetched JWT token from the host's frontend and connects to the backend, via the URL saved in the QR Code. 
-While connecting, the client's frontend emits an ''register'' event containing:
-\begin{itemize}
-    \item the token from the URL
-    \item a role
-    \item the user's unique ID from localStorage (if private-mode)
-\end{itemize}
-If the session is valid and the user is allowed to join, they're granted access and the interaction begins. 
-If not, they receive a ''already\_connected'' message, which can then be handled as an invalid user.
-This approach makes it easy to manage users in real time.
-
+\input{frontend/Modes/qr+backend}
 \input{frontend/Modes/characters}
 \input{frontend/Modes/questionTypes}
 \input{frontend/Modes/gradings}
