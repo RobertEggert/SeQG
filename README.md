@@ -4,7 +4,7 @@
   <img src="/src/img/logoandtext.png" alt="SeQG Logo" width="700"/>
 </p>
 
-Welcome to the SeQG project. The LLM which offers you recommended questions according to your previous interactions and based on location, one might say this is a one of a kind Security-Awareness Question
+Welcome to the SeQG project. The LLM which offers you recommended questions according to your previous interactions, one might say this is a one of a kind Security-Awareness Question Generator
 
 📄 [Read the full documentation of the project (PDF)](Documentation-Paper/main.pdf)
 
