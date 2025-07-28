@@ -59,6 +59,7 @@ Therefore our \textbf{json} format looks like this:
 \end{lstlisting}
 Where the \textbf{explanation} (String) is the text that the LLM provides us with.
 
+\pagebreak
 \subsection{Saving Answers}
 When the user enters the guest mode, we do not save anything but rather do a local session with grading at the end.
 However, when the user enters the private mode, we do save the answers, so that his or her previously answered questions can be taken into account.
@@ -70,7 +71,6 @@ If the user indeed answered the question correctly, we increment by one, otherwi
 The total amount of questions is also saved for each Questiontype.
 This amount always gets incremented by one, no matter the correctness of the answer. \\
 In general a progress output may look like this:
-\pagebreak
 \begin{lstlisting}[language=json,firstnumber=1]
 {
     ... ,
