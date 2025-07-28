@@ -8,7 +8,6 @@ Welcome to the SeQG project. The LLM which offers you recommended questions acco
 
 📄 [Read the full documentation of the project (PDF)](Documentation-Paper/main.pdf)
 
-
 # Basic needs to run the project
 
 Needed:
@@ -33,6 +32,9 @@ $ npm/pnpm dev --> starts the frontend in an exposed form to the local network
 $ npm/pnpm backend --> starts the backend for host/client side connections and the qr codes
 $ npm/pnpm llmBackend --> starts the communcator between frontend and llm
 $ npm/pnpm llm --> starts the llm itself as it is an api
+
+$ npm/pnpm start:backend --> starts all three needed backend applications
+$ SeQG/start-backend.bat --> ^^ does the same as **start:backend**
 ```
 
 # To use the llama3.1 llm you need to install Ollama first:
@@ -50,7 +52,8 @@ Now you have installed the current in use model
 If not sure look up llm.ts, where the request to the model is send, there will be a defined model, which is in use
 Everytime (for now) when starting Ollamas llm you have to close the process completely as it will interrupt the backend service
 
-To change the model, you have to adjust the script in the package.json and inside your .env.local file
+To change the model, you have to adjust the script in the package.json and inside your .env.local file.
+This is due to the fact, that you cannot use .env variables inside a .json file without complicated tweaks.
 
 # Current process flow
 
